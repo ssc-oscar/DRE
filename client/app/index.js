@@ -1,5 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware} from 'redux';
+import PropTypes from 'prop-types';
 
 import {
   BrowserRouter as Router,
@@ -18,14 +22,21 @@ import HelloWorld from './components/HelloWorld/HelloWorld';
 import './styles/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const store = createStore(
+  (state = {}) => state,
+  applyMiddleware(thunk)
+);
+
 render((
-  <Router>
-    <App>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/helloworld" component={HelloWorld} />
-        <Route component={NotFound} />
-      </Switch>
-    </App>
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <App>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/helloworld" component={HelloWorld} />
+          <Route component={NotFound} />
+        </Switch>
+      </App>
+    </Router>
+  </Provider>
 ), document.getElementById('app'));
