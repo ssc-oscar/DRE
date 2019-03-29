@@ -69,4 +69,4 @@ HelloWorld.propTypes = {
   userSignUpRequest: PropTypes.func.isRequired
 }
 
-export default connect(null, {userSignUpRequest}) (HelloWorld);
+export default connect(null, { userSignUpRequest }) (HelloWorld);
