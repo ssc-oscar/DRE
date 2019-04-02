@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import validateInput from '../../../../server/shared/validations/SignUp';
+import TextFieldGroup from '../common/TextFieldGroup';
 
 class SignUpForm extends React.Component {
   constructor(props) {
@@ -24,24 +25,40 @@ class SignUpForm extends React.Component {
     })
   }
 
+  isValid() {
+    const { errors, isValid } = validateInput(this.state);
+
+    if (!isValid) {
+      this.setState({ errors })
+    }
+
+    return isValid;
+  }
+
   onSubmit(e) {
     e.preventDefault();
-    this.setState({ errors: {} });
-    this.setState({ errors: {}, isLoading: true });
-    this.props.userSignUpRequest(this.state)
-    .then( res => {
-      if (!res.ok) { throw response }
-      return res.json()  //we only get here if there is no error
-    })
-    .then( data => {
-      if (data.success) {
-        console.log('success!')
-      }
-      else {
-        console.log(data);
-        this.setState({ errors: data, isLoading: false });
-      } 
-    })
+
+    if (this.isValid()) {
+      this.setState({ errors: {}, isLoading: true });
+      this.props.userSignUpRequest(this.state)
+      .then( res => {
+        if (!res.ok) { throw response }
+        return res.json()  //we only get here if there is no error
+      })
+      .then( data => {
+        if (data.success) {
+          this.props.addFlashMessage({
+            type: 'success',
+            text: 'Successful sign up! Welcome.'
+          })
+          this.context.router.history.push('/');
+        }
+        else {
+          console.log(data);
+          this.setState({ errors: data, isLoading: false });
+        } 
+      })
+    }
     // .catch( err => {
     //   err.text().then( errorMessage => {
     //     this.props.dispatch(displayTheError(errorMessage))
@@ -81,50 +98,37 @@ class SignUpForm extends React.Component {
     return (
         <form onSubmit={this.onSubmit}>
           <h1>Create your Developer Profile below!</h1>
-          <div className="form-group">
-            <label className="control-label">Username</label>
-            <input
-              value={this.state.username}
-              onChange={this.onChange}
-              type="text"
-              name="username"
-              className={classnames("form-control", { 'is-invalid': errors.username})}
-            />
-            {errors.username && <span className="help-block">{errors.username}</span>}
-          </div>
-          <div className="form-group">
-            <label className="control-label">Email</label>
-            <input
-              value={this.state.email}
-              onChange={this.onChange}
-              type="email"
-              name="email"
-              className={classnames("form-control", { 'is-invalid': errors.email})}
-            />
-            {errors.email && <div className="invalid-feedback d-block">{errors.email}</div>}
-          </div>
-          <div className="form-group">
-            <label className="control-label">Password</label>
-            <input
-              value={this.state.password}
-              onChange={this.onChange}
-              type="password"
-              name="password"
-              className={classnames("form-control", { 'is-invalid': errors.password})}
-            />
-            {errors.email && <div className="invalid-feedback d-block">{errors.password}</div>}
-          </div>
-          <div className="form-group">
-            <label className="control-label">Confirm Password</label>
-            <input
-              value={this.state.confirmPassword}
-              onChange={this.onChange}
-              type="password"
-              name="confirmPassword"
-              className={classnames("form-control", { 'is-invalid': errors.confirmPassword})}
-            />
-            {errors.confirmPassword && <div className="invalid-feedback d-block">{errors.confirmPassword}</div>}                                 
-          </div>
+          <TextFieldGroup
+            error={errors.username}
+            label="Username"
+            onChange={this.onChange}
+            value={this.state.username}
+            field="username"
+          />
+          <TextFieldGroup
+            error={errors.email}
+            label="Email"
+            onChange={this.onChange}
+            value={this.state.email}
+            field="email"
+            type="email"
+          />          
+          <TextFieldGroup
+            error={errors.password}
+            label="Password"
+            onChange={this.onChange}
+            value={this.state.password}
+            field="password"
+            type="password"
+          />
+          <TextFieldGroup
+            error={errors.confirmPassword}
+            label="Confirm Password"
+            onChange={this.onChange}
+            value={this.state.confirmPassword}
+            field="confirmPassword"
+            type="password"
+          />                     
 
           <div className="form-group">
             <button disabled={this.state.isLoading} className="btn btn-primary btn-large">
@@ -137,7 +141,12 @@ class SignUpForm extends React.Component {
 }
 
 SignUpForm.propTypes = {
-  userSignUpRequest: PropTypes.func.isRequired
+  userSignUpRequest: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired
+}
+
+SignUpForm.contextTypes = {
+  router: PropTypes.object.isRequired
 }
 
 export default SignUpForm;
