@@ -1,0 +1,47 @@
+/* Example Styles for React Tags*/
+div.ReactTags__tags {
+  position: relative;
+}
+
+/* Styles for the input */
+/* div.ReactTags__tagInput {
+  width: 100%;
+  border-radius: 2px;
+  display: inline-block;
+} */
+div.ReactTags__tagInput input.ReactTags__tagInputField,
+div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 0;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 400;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.75rem;
+}
+
+/* Styles for selected tags */
+div.ReactTags__selected {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(160px, 1fr));
+  /* grid-template-rows: repeat(auto-fill, 1fr); */
+}
+div.ReactTags__selected span.ReactTags__tag {
+  border: 1px solid #ddd;
+  background: #eee;
+  font-size: 14px;
+  margin: 10px 5px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+div.ReactTags__selected a.ReactTags__remove {
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
+}

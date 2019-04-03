@@ -2,10 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+const required = ['email', 'password', 'confirmPassword']
+
+function isRequired(field) {
+  if (required.indexOf(field) != -1) {
+    return " *"
+  }
+}
+
 const TextFieldGroup = ({ field, value, label, error, type, onChange }) => {
   return (
     <div className="form-group">
-      <label className="control-label">{label}</label>
+      <label className="control-label">{label}{isRequired(field)}</label>
       <input
         value={value}
         onChange={onChange}

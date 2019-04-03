@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now()
   }
-});
+}, { collection: 'users' });
 
 UserSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
