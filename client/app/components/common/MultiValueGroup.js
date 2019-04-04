@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
+import '../../styles/react-tags.css';
 import PropTypes from 'prop-types';
 
 const KeyCodes = {

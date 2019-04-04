@@ -10,7 +10,16 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  isDeleted: {
+  searchParams: {
+    type: Object,
+    default: {
+      fname: '',
+      lname: '',
+      additionalEmails: [],
+      usernames: []
+    }
+  },
+  hasSearched: {
     type: Boolean,
     default: false
   },
@@ -21,7 +30,7 @@ const UserSchema = new mongoose.Schema({
 }, { collection: 'users' });
 
 UserSchema.methods.generateHash = function(password) {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
 UserSchema.methods.validPassword = function(password) {

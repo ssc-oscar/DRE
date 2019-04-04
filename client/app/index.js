@@ -15,7 +15,8 @@ import {
 import App from './components/App/App';
 import NotFound from './components/App/NotFound';
 import Home from './components/Home/Home';
-import HelloWorld from './components/HelloWorld/HelloWorld';
+import SignUpPage from './components/SignUp/SignUpPage';
+import AuthorSearchPage from './components/AuthorSearch/AuthorSearchPage';
 import './styles/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from '../rootReducer';
@@ -34,7 +35,8 @@ render((
       <App>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/helloworld" component={HelloWorld} />
+          <Route path="/signup" component={SignUpPage} />
+          <Route path="/search" component={AuthorSearchPage} />
           <Route component={NotFound} />
         </Switch>
       </App>
