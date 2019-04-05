@@ -42,22 +42,16 @@ class SignUpForm extends React.Component {
     if (this.isValid()) {
       this.setState({ errors: {}, isLoading: true });
       this.props.userSignUpRequest(this.state)
-      .then( res => {
-        if (!res.ok) { throw response }
-        return res.json()  //we only get here if there is no error
-      })
-      .then( data => {
-        if (data.success) {
+      .then( () => {
+          // localStorage.setItem('jwtToken', data.token);
           // this.props.addFlashMessage({
           //   type: 'success',
           //   text: 'Successful sign up! Welcome.'
           // })
           this.context.router.history.push('/search');
-        }
-        else {
-          console.log(data);
-          this.setState({ errors: data, isLoading: false });
-        } 
+      },
+      (err) => {
+        this.setState({ errors: err.response.data, isLoading: false })
       })
     }
   }

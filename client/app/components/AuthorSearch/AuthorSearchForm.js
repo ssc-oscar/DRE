@@ -74,13 +74,12 @@ class AuthorSearchForm extends React.Component {
 
     this.setState({ errors: {}, isLoading: true });
     this.props.getAuthors(this.state)
-    .then( res => {
-      if (!res.ok) { throw response }
-      return res.json()  //we only get here if there is no error
-    })
-    .then( data => {
-      console.log(data);
-    })
+    .then( d => {
+      console.log("about to di")
+      console.log(d);
+    },
+    (err) => { console.log(err) }
+    );
   }
   render() {
     const { errors, additionalEmails, usernames } = this.state;

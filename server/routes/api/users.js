@@ -2,20 +2,22 @@ const User = require('../../models/User');
 const Author = require('../../models/Author');
 const validateSignupInput = require('../../shared/validations/SignUp');
 const validateAuthorInput = require('../../shared/validations/AuthorSearch');
+const jwt = require('jsonwebtoken');
+const config = require('../../../config/config');
 // const Validator = require('validator');
 // const isEmpty = require('lodash/isEmpty');
 
 module.exports = (app) => {
-  app.post('/api/account/search', (req, res, next) => {
+  app.post('/api/users/search', (req, res, next) => {
     const { body } = req;
     const { final, isValid } = validateAuthorInput(body);
     if (isValid) {
       const query = final.join(' ');
-      console.log(query)
+      console.log(query);
       Author.find({$text: { $search: query }})
       .exec()
       .then((author) => {
-        res.json(author);
+        res.status(200).json(author);
       })
       .catch((err) => next(err));
     }
@@ -23,11 +25,11 @@ module.exports = (app) => {
   /*
    * Sign up
    */
-  app.post('/api/account/signup', (req, res, next) => {
+  app.post('/api/users/signup', (req, res, next) => {
     const { errors, isValid } = validateSignupInput(req.body);
     if (!isValid) {
       errors.success = false;
-      return res.send(errors);
+      res.status(400).json(errors);
     }
     const { body } = req;
     const { password } = body;
@@ -41,7 +43,7 @@ module.exports = (app) => {
     .exec()
     .then((data) => {
       if (data.length) {
-        return res.send({
+        res.status(400).json({
           success: false,
           email: 'Account already exists.'
         })
@@ -52,14 +54,18 @@ module.exports = (app) => {
         newUser.password = newUser.generateHash(password);
         newUser.save((err, user) => {
           if (err) {
-            return res.send({
+            res.status(500).json({
               success: false,
               message: 'Error: Server error'
             });
           }
-          return res.send({
+          const token = jwt.sign({
+            id: user
+          }, config.jwtSecret);
+          res.json({
             success: true,
-            message: 'Signed up'
+            message: 'Signed up',
+            token: token
           });
         });
       }
