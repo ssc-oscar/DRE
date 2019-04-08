@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import validateInput from '../../../../server/shared/validations/AuthorSearch';
 import TextFieldGroup from '../common/TextFieldGroup';
 import MultiValueGroup from '../common/MultiValueGroup';
+import AuthorCard from '../common/AuthorCard';
 
 class AuthorSearchForm extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class AuthorSearchForm extends React.Component {
       additionalEmails: [],
       usernames: [],
       errors: {},
-      isLoading: false,
+      isLoading: false
     }
 
     this.onChange = this.onChange.bind(this);
@@ -74,13 +75,14 @@ class AuthorSearchForm extends React.Component {
 
     this.setState({ errors: {}, isLoading: true });
     this.props.getAuthors(this.state)
-    .then( d => {
-      console.log("about to di")
-      console.log(d);
+    .then( (res) => {
+      console.log(res.data);
+      this.context.router.history.push('/select', { authors: res.data });
     },
     (err) => { console.log(err) }
     );
   }
+
   render() {
     const { errors, additionalEmails, usernames } = this.state;
     return (
