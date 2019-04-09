@@ -51,6 +51,7 @@ class SignUpForm extends React.Component {
           this.context.router.history.push('/search');
       },
       (err) => {
+        console.log(err);
         this.setState({ errors: err.response.data, isLoading: false })
       })
     }

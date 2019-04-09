@@ -1,8 +1,31 @@
 import axios from 'axios';
+import setAuthToken from '../utils/setAuthToken';
+import jwt from 'jsonwebtoken';
+import { SET_CURRENT_USER } from '../actions/types';
+
+export function setCurrentUser(user) {
+  return {
+    type: SET_CURRENT_USER,
+    user
+  }
+}
+
+export function logout() {
+  return dispatch => {
+    localStorage.removeItem('jwtToken');
+    setAuthToken(false);
+    setCurrentUser({});
+  }
+}
 
 export function userSignUpRequest(userData) {
   return dispatch => {
-    return axios.post('/api/users/signup', userData);
+    return axios.post('/api/users/signup', userData).then(res => {
+      const token = res.data.token;
+      localStorage.setItem('jwtToken', token);
+      setAuthToken(token);
+      dispatch(setCurrentUser(jwt.decode(token)));
+    })
   }
 }
 

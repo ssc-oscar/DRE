@@ -21,6 +21,9 @@ import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
 import './styles/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from '../rootReducer';
+import jwt from 'jsonwebtoken';
+import setAuthToken from '../utils/setAuthToken';
+import { setCurrentUser } from '../actions/signUpActions';
 
 const store = createStore(
   rootReducer,
@@ -29,6 +32,12 @@ const store = createStore(
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )
 );
+
+const token = localStorage.jwtToken;
+if (token) {
+  setAuthToken(token);
+  store.dispatch(setCurrentUser(jwt.decode(token)));
+}
 
 render((
   <Provider store={store}>

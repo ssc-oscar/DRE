@@ -4,11 +4,12 @@ const validateSignupInput = require('../../shared/validations/SignUp');
 const validateAuthorInput = require('../../shared/validations/AuthorSearch');
 const jwt = require('jsonwebtoken');
 const config = require('../../../config/config');
+const authenticate = require('../../middlewares/authenticate');
 // const Validator = require('validator');
 // const isEmpty = require('lodash/isEmpty');
 
 module.exports = (app) => {
-  app.post('/api/users/search', (req, res, next) => {
+  app.post('/api/users/search', authenticate, (req, res, next) => {
     const { body } = req;
     const { final, isValid } = validateAuthorInput(body);
     if (isValid) {
@@ -60,7 +61,9 @@ module.exports = (app) => {
             });
           }
           const token = jwt.sign({
-            id: user
+            id: user._id,
+            email: user.email,
+            hasSearched: user.hasSearched
           }, config.jwtSecret);
           res.json({
             success: true,
