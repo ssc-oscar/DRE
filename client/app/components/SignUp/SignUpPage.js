@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import SignUpForm from './SignUpForm';
-import { userSignUpRequest } from '../../../actions/signUpActions';
-import { getAuthors } from '../../../actions/signUpActions'
+import { userSignUpRequest, getAuthors } from '../../../actions/signUpActions';
 import { connect } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessages';
 import PropTypes from 'prop-types';

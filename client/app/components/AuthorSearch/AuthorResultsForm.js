@@ -27,6 +27,7 @@ class AuthorResultsForm extends React.Component {
 
   onClickAuthor(remove, id) {
     let ids = this.state.selected_authors;
+    let omitted = []
 
     if (remove) {
       ids.splice(ids.indexOf(id), 1);
@@ -35,15 +36,24 @@ class AuthorResultsForm extends React.Component {
       ids.push(id);
     }
 
+    omitted = this.state.all_authors.diff(ids);
     this.setState({
-      selected_authors: ids
+      selected_authors: ids,
+      omitted_authors: omitted
     }, () => { console.log("updated", this.state.selected_authors) })
   }
 
   onSubmit(e) {
     e.preventDefault();
-    let omitted = this.state.all_authors.diff(this.state.selected_authors);
-    console.log("omitted", omitted);
+    this.props.submitAuthors({
+      selected: this.state.selected_authors,
+      omitted: this.state.omitted_authors
+    })
+    .then(d => {
+      this.context.router.history.push('/dashboard');
+    },
+    (err) => { console.log(err) }
+    );
     // this.setState({ errors: {}, isLoading: true });
     // this.props.getAuthors(this.state)
     // .then( d => {

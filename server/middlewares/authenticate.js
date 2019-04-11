@@ -23,6 +23,7 @@ module.exports = function (req, res, next) {
             res.status(404).json({ error: 'No such user' });
           }
           else {
+            req.currentUser = data[0]._id;
             next();
           }
         })

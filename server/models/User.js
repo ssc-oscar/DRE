@@ -23,6 +23,14 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  selectedIds: {
+    type: [String],
+    default: []
+  },
+  omittedIds: {
+    type: [String],
+    default: []
+  },
   signUpDate: {
     type: Date,
     default: Date.now()

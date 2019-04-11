@@ -9,12 +9,31 @@ const authenticate = require('../../middlewares/authenticate');
 // const isEmpty = require('lodash/isEmpty');
 
 module.exports = (app) => {
+  app.post('/api/users/submit', authenticate, (req, res, next) => {
+    const data = req.body;
+    const userId = req.currentUser;
+    User.update({_id: userId}, {
+      selectedIds: data.selected,
+      omittedIds: data.omitted
+    }, function(err, affected, resp) {
+      console.log(affected);
+    })
+    res.status(200).json(data);
+  })
+
   app.post('/api/users/search', authenticate, (req, res, next) => {
     const { body } = req;
-    const { final, isValid } = validateAuthorInput(body);
+    const { final, searchParams, isValid } = validateAuthorInput(body);
     if (isValid) {
       const query = final.join(' ');
-      console.log(query);
+      const userId = req.currentUser;
+
+      User.updateOne({_id: userId}, {
+        searchParams: searchParams
+      }, function(err, affected, resp) {
+        console.log(affected);
+      })
+
       Author.find({$text: { $search: query }})
       .exec()
       .then((author) => {
@@ -22,6 +41,41 @@ module.exports = (app) => {
       })
       .catch((err) => next(err));
     }
+  })
+
+  app.post('/api/users/login', (req, res, next) => {
+    const { body } = req;
+    const { identifier, password } = body;
+
+    User.findOne({email: identifier})
+    .exec()
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          form: 'Wrong email or password.'
+        })
+      }
+      if (user.validPassword(password)) {
+        const token = jwt.sign({
+          id: user._id,
+          email: user.email,
+          hasSearched: user.hasSearched
+        }, config.jwtSecret);
+        res.status(200).json({
+          success: true,
+          message: 'Signed In',
+          token: token
+        });
+      }
+      else {
+        res.status(404).json({
+          success: false,
+          form: 'Wrong email or password.'
+        })
+      }
+    })
+    .catch((err) => next(err));
   })
   /*
    * Sign up
@@ -65,7 +119,7 @@ module.exports = (app) => {
             email: user.email,
             hasSearched: user.hasSearched
           }, config.jwtSecret);
-          res.json({
+          res.status(201).json({
             success: true,
             message: 'Signed up',
             token: token

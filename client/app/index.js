@@ -18,6 +18,7 @@ import Home from './components/Home/Home';
 import SignUpPage from './components/SignUp/SignUpPage';
 import AuthorSearchPage from './components/AuthorSearch/AuthorSearchPage';
 import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
+import DashboardPage from './components/Dashboard/DashboardPage';
 import './styles/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from '../rootReducer';
@@ -48,6 +49,7 @@ render((
           <Route path="/signup" component={SignUpPage} />
           <Route path="/search" component={AuthorSearchPage} />
           <Route path="/select" component={AuthorResultsPage} />
+          <Route path="/dashboard" component={DashboardPage} />
           <Route component={NotFound} />
         </Switch>
       </App>
