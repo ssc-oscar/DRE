@@ -60,7 +60,7 @@ class SignUpForm extends React.Component {
     const { errors, additionalEmails, usernames } = this.state;
     return (
         <form onSubmit={this.onSubmit}>
-          <h1>Create your Developer Profile below!</h1>
+          {/* <h1>Create your Developer Profile below!</h1> */}
           {/* <TextFieldGroup
             error={errors.username}
             label="Username"

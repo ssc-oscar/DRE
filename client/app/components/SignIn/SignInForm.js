@@ -55,7 +55,7 @@ class SignInForm extends React.Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <h1>Sign In Below</h1>
+        {/* <h1>Sign In Below</h1> */}
 
         { errors.form && <div className="alert alert-danger">{errors.form}</div> }
 

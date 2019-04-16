@@ -16,6 +16,7 @@ class AuthorResultsForm extends React.Component {
     let all_ids = this.props.authors.map(a => a.id);
     this.state = {
       authors: this.props.authors,
+      warning: this.props.warning,
       selected_authors: [],
       omitted_authors: [],
       all_authors: all_ids
@@ -40,7 +41,7 @@ class AuthorResultsForm extends React.Component {
     this.setState({
       selected_authors: ids,
       omitted_authors: omitted
-    }, () => { console.log("updated", this.state.selected_authors) })
+    }, () => { })
   }
 
   onSubmit(e) {
@@ -71,6 +72,7 @@ class AuthorResultsForm extends React.Component {
     return (
       <form onSubmit={this.onSubmit}>
         <h1>Select your author identities below!</h1>
+        <p>{this.state.warning}</p>
         <div className="list-group">
           {cards}
         </div>

@@ -16,7 +16,7 @@ module.exports = (app) => {
       selectedIds: data.selected,
       omittedIds: data.omitted
     }, function(err, affected, resp) {
-      console.log(affected);
+      // console.log(affected);
     })
     res.status(200).json(data);
   })
@@ -31,10 +31,11 @@ module.exports = (app) => {
       User.updateOne({_id: userId}, {
         searchParams: searchParams
       }, function(err, affected, resp) {
-        console.log(affected);
+        // console.log(affected);
       })
 
       Author.find({$text: { $search: query }})
+      .limit(100)
       .exec()
       .then((author) => {
         res.status(200).json(author);
@@ -128,21 +129,5 @@ module.exports = (app) => {
       }
     })
     .catch((err) => next(err));
-      // Save the new user
-      // const newUser = new User();
-      // newUser.email = email;
-      // newUser.password = newUser.generateHash(password);
-      // newUser.save((err, user) => {
-      //   if (err) {
-      //     return res.send({
-      //       success: false,
-      //       message: 'Error: Server error'
-      //     });
-      //   }
-      //   return res.send({
-      //     success: true,
-      //     message: 'Signed up'
-      //   });
-      // });
-  }); // end of sign up endpoint
+  });
 };

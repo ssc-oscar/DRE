@@ -9,12 +9,13 @@ import PropTypes from 'prop-types';
 class AuthorResultsPage extends Component {
   render() {
     const { addFlashMessage, submitAuthors } = this.props;
-    const authors = this.props.location.state.authors;
+    const { authors, warning } = this.props.location.state;
     return (
       <div className="row justify-content-center">
         <AuthorResultsForm
           addFlashMessage={addFlashMessage}
           authors={authors}
+          warning={warning}
           submitAuthors={submitAuthors}/>
       </div>
     );

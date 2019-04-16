@@ -76,8 +76,18 @@ class AuthorSearchForm extends React.Component {
     this.setState({ errors: {}, isLoading: true });
     this.props.getAuthors(this.state)
     .then( (res) => {
-      console.log(res.data);
-      this.context.router.history.push('/select', { authors: res.data });
+      let warning;
+      if (res.data.length > 75) {
+        warning = 'Your search criteria returned a large number of matches. To reduce the result set, go back'
+      }
+      else if (res.data.length == 0) {
+        warning = 'Your search returned no results. Please go back and try again.'
+      }
+      else {
+        warning = ''
+      }
+      // this.context.router.history.push('/select', { data: res.data });
+      this.context.router.history.push('/select', { authors: res.data, warning: warning });
     },
     (err) => { console.log(err) }
     );
