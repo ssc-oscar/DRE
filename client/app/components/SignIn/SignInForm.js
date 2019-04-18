@@ -4,6 +4,16 @@ import PropTypes from 'prop-types';
 // import validateInput from '../../../server/shared/validations/login';
 import { connect } from 'react-redux';
 import { login } from '../../../actions/signUpActions';
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  FormGroup,
+  Form,
+  Row,
+  Col
+} from "reactstrap";
 
 class SignInForm extends React.Component {
   constructor(props) {
@@ -55,28 +65,36 @@ class SignInForm extends React.Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        {/* <h1>Sign In Below</h1> */}
-
-        { errors.form && <div className="alert alert-danger">{errors.form}</div> }
-
-        <TextFieldGroup
-          field="identifier"
-          label="Username / Email"
-          value={identifier}
-          error={errors.identifier}
-          onChange={this.onChange}
-        />
-
-        <TextFieldGroup
-          field="password"
-          label="Password"
-          value={password}
-          error={errors.password}
-          onChange={this.onChange}
-          type="password"
-        />
-
-        <div className="form-group"><button className="btn btn-primary btn-lg" disabled={isLoading}>Login</button></div>
+        <Card className="bg-secondary shadow border-0">
+          <CardHeader className="bg-transparent">
+            <div className="text-center mt-2">
+              <h1>Sign in with credentials</h1>
+            </div>
+          </CardHeader>
+          <CardBody className="px-lg-5 py-lg-5">
+            {errors.form && <div className="alert alert-danger">{errors.form}</div>}
+            <TextFieldGroup
+              field="identifier"
+              label="Email *"
+              value={identifier}
+              error={errors.identifier}
+              onChange={this.onChange}
+              icon="ni ni-email-83"
+            />
+            <TextFieldGroup
+              field="password"
+              label="Password *"
+              value={password}
+              error={errors.password}
+              onChange={this.onChange}
+              type="password"
+              icon="fa fa-lock"
+            />
+            <div className="form-group">
+              <button className="btn btn-primary btn-lg" disabled={isLoading}>Sign In</button>
+            </div>
+          </CardBody>
+        </Card>
       </form>
     );
   }

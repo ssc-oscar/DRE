@@ -5,6 +5,16 @@ import validateInput from '../../../../server/shared/validations/AuthorSearch';
 import TextFieldGroup from '../common/TextFieldGroup';
 import MultiValueGroup from '../common/MultiValueGroup';
 import AuthorCard from '../common/AuthorCard';
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  FormGroup,
+  Form,
+  Row,
+  Col
+} from "reactstrap";
 
 class AuthorSearchForm extends React.Component {
   constructor(props) {
@@ -96,44 +106,52 @@ class AuthorSearchForm extends React.Component {
   render() {
     const { errors, additionalEmails, usernames } = this.state;
     return (
-        <form onSubmit={this.onSubmit}>
-          <h1>Search for your Developer Profile below!</h1>
-          <TextFieldGroup
-            error={errors.fname}
-            label="First Name"
-            onChange={this.onChange}
-            value={this.state.fname}
-            field="fname"
-          />
-          <TextFieldGroup
-            error={errors.lname}
-            label="Last Name"
-            onChange={this.onChange}
-            value={this.state.lname}
-            field="lname"
-          />
-          <MultiValueGroup
-            error={errors.additionalEmails}
-            label="Additional Emails"
-            tags={additionalEmails}
-            handleDelete={this.handleEmailDelete}
-            handleAddition={this.handleEmailAddition}
-            placeholder="Add email"
-          />
-          <MultiValueGroup
-            error={errors.usernames}
-            label="Usernames"
-            tags={usernames}
-            handleDelete={this.handleUsernameDelete}
-            handleAddition={this.handleUsernameAddition}
-            placeholder="Add username"
-          />          
-          <div className="form-group">
-            <button disabled={this.state.isLoading} className="btn btn-primary btn-large">
-              Search
+      <form onSubmit={this.onSubmit}>
+        <Card className="bg-secondary shadow border-0">
+          <CardHeader className="bg-transparent">
+            <div className="text-center mt-2">
+              <h1>Additional search paramaters</h1>
+            </div>
+          </CardHeader>
+          <CardBody className="px-lg-5 py-lg-5">
+            <TextFieldGroup
+              error={errors.fname}
+              label="First Name"
+              onChange={this.onChange}
+              value={this.state.fname}
+              field="fname"
+            />
+            <TextFieldGroup
+              error={errors.lname}
+              label="Last Name"
+              onChange={this.onChange}
+              value={this.state.lname}
+              field="lname"
+            />
+            <MultiValueGroup
+              error={errors.additionalEmails}
+              label="Additional Emails"
+              tags={additionalEmails}
+              handleDelete={this.handleEmailDelete}
+              handleAddition={this.handleEmailAddition}
+              placeholder="Add email"
+            />
+            <MultiValueGroup
+              error={errors.usernames}
+              label="Usernames"
+              tags={usernames}
+              handleDelete={this.handleUsernameDelete}
+              handleAddition={this.handleUsernameAddition}
+              placeholder="Add username"
+            />
+            <div className="form-group">
+              <button disabled={this.state.isLoading} className="btn btn-primary btn-large">
+                Search
             </button>
-          </div>
-        </form>
+            </div>
+          </CardBody>
+        </Card>
+      </form>
     );
   }
 }

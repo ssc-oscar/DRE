@@ -3,6 +3,7 @@ import SignInForm from '../SignIn/SignInForm';
 import SignUpForm from '../SignUp/SignUpForm';
 import { userSignUpRequest, getAuthors } from '../../../actions/signUpActions';
 import { connect } from 'react-redux';
+import { Container, Row, Col } from "reactstrap";
 import { addFlashMessage } from '../../../actions/flashMessages';
 import PropTypes from 'prop-types';
 
@@ -30,25 +31,25 @@ class Home extends Component {
   render() {
     const { userSignUpRequest, getAuthors, addFlashMessage } = this.props
     return (
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col col-md-2">
-            <p id="signupButton"
-              onClick={() => this.toggle("signup")}
-              className={this.state.isSignUp ? "bg-primary":"bg-light"}>Sign Up</p>
-          </div>
-          <div className="col col-md-2">
-            <p id="loginButton"
-              onClick={() => this.toggle("login")}
-              className={this.state.isLogin ? "bg-primary":"bg-light"}>Login</p>
-          </div>
-        </div>
-        <div className="row justify-content-md-center">
+      <>
+      <Row className="justify-content-center">
+        <Col xs="4">
+          <p id="signupButton"
+            onClick={() => this.toggle("signup")}
+            className={this.state.isSignUp ? "bg-primary" : "bg-light"}>Sign Up</p>
+        </Col>
+        <Col xs="4">
+          <p id="loginButton"
+            onClick={() => this.toggle("login")}
+            className={this.state.isLogin ? "bg-primary" : "bg-light"}>Login</p>
+        </Col>
+        </Row>
+        <Row>
           <div className="col col-md-6">
-            { this.state.isLogin ? <SignInForm /> : <SignUpForm getAuthors={getAuthors} userSignUpRequest={userSignUpRequest} addFlashMessage={addFlashMessage}/>}
+            {this.state.isLogin ? <SignInForm /> : <SignUpForm getAuthors={getAuthors} userSignUpRequest={userSignUpRequest} addFlashMessage={addFlashMessage} />}
           </div>
-        </div>
-      </div>
+        </Row>
+      </>
     );
   }
 }

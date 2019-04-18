@@ -1,28 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import {
+  FormGroup,
+  FormFeedback,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup
+} from "reactstrap";
 
-const required = ['email', 'password', 'confirmPassword']
-
-function isRequired(field) {
-  if (required.indexOf(field) != -1) {
-    return " *"
-  }
-}
-
-const TextFieldGroup = ({ field, value, label, error, type, onChange }) => {
+const TextFieldGroup = ({ field, value, label, error, type, onChange, icon }) => {
   return (
-    <div className="form-group">
-      <label className="control-label">{label}{isRequired(field)}</label>
-      <input
-        value={value}
-        onChange={onChange}
-        type={type}
-        name={field}
-        className={classnames("form-control", { 'is-invalid': error })}
-      />
-      {error && <div className="invalid-feedback d-block">{error}</div>}
-    </div>
+    <FormGroup>
+      <InputGroup className="input-group-alternative mb-3">
+        <InputGroupAddon addonType="prepend">
+          <InputGroupText>
+            <i className={`${icon}`} />
+          </InputGroupText>
+        </InputGroupAddon>
+        <Input
+          value={value}
+          onChange={onChange}
+          type={type}
+          name={field}
+          placeholder={label}
+          className={classnames("form-control", { 'is-invalid': error })}
+        />
+        {/* <label className="control-label">{label}{isRequired(field)}</label> */}
+        {/* <input
+          value={value}
+          onChange={onChange}
+          type={type}
+          name={field}
+          className={classnames("form-control", { 'is-invalid': error })}
+        /> */}
+        {error && <FormFeedback>{error}</FormFeedback>}
+      </InputGroup>
+    </FormGroup>
   );
 }
 

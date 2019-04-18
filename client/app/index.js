@@ -19,12 +19,16 @@ import SignUpPage from './components/SignUp/SignUpPage';
 import AuthorSearchPage from './components/AuthorSearch/AuthorSearchPage';
 import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
-import './styles/style.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from '../rootReducer';
 import jwt from 'jsonwebtoken';
 import setAuthToken from '../utils/setAuthToken';
 import { setCurrentUser } from '../actions/signUpActions';
+
+import './styles/style.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "../public/assets/vendor/nucleo/css/nucleo.css";
+import "../public/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
+import "../public/assets/css/argon-dashboard-react.css";
 
 const store = createStore(
   rootReducer,

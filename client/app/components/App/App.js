@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container, Row } from "reactstrap";
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -6,12 +7,17 @@ import FlashMessagesList from '../flash/FlashMessagesList';
 
 const App = ({ children }) => (
   <>
-    <Header />
-    <FlashMessagesList />
-    <main>
-      {children}
-    </main>
-
+    <div className="main-content">
+      <Header />
+      <div className="header bg-gradient-default py-7 py-lg-8">
+        {/* Page content */}
+        <Container className="mt-8 pb-5">
+          <main>
+            {children}
+          </main>
+        </Container>
+      </div>
+    </div>
     <Footer />
   </>
 );
