@@ -65,36 +65,30 @@ class SignInForm extends React.Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent">
-            <div className="text-center mt-2">
-              <h1>Sign in with credentials</h1>
-            </div>
-          </CardHeader>
-          <CardBody className="px-lg-5 py-lg-5">
-            {errors.form && <div className="alert alert-danger">{errors.form}</div>}
-            <TextFieldGroup
-              field="identifier"
-              label="Email *"
-              value={identifier}
-              error={errors.identifier}
-              onChange={this.onChange}
-              icon="ni ni-email-83"
-            />
-            <TextFieldGroup
-              field="password"
-              label="Password *"
-              value={password}
-              error={errors.password}
-              onChange={this.onChange}
-              type="password"
-              icon="fa fa-lock"
-            />
-            <div className="form-group">
-              <button className="btn btn-primary btn-lg" disabled={isLoading}>Sign In</button>
-            </div>
-          </CardBody>
-        </Card>
+        <CardBody className="px-lg-5 py-lg-5">
+          {errors.form && <div className="alert alert-danger">{errors.form}</div>}
+          <TextFieldGroup
+            field="identifier"
+            label="Email *"
+            focus={true}
+            value={identifier}
+            error={errors.identifier}
+            onChange={this.onChange}
+            icon="ni ni-email-83"
+          />
+          <TextFieldGroup
+            field="password"
+            label="Password *"
+            value={password}
+            error={errors.password}
+            onChange={this.onChange}
+            type="password"
+            icon="fa fa-lock"
+          />
+          <FormGroup>
+            <Button color="primary" disabled={isLoading}>Sign In</Button>
+          </FormGroup>
+        </CardBody>
       </form>
     );
   }

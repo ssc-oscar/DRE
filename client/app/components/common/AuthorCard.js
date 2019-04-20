@@ -22,6 +22,7 @@ class AuthorCard extends React.Component {
   render() {
     return (
       <ListGroup.Item
+        style={styles.card}
         key={this.state.key}
         active={this.state.active}
         onClick={this.onClick}>
@@ -33,22 +34,15 @@ class AuthorCard extends React.Component {
           <p className="mb-1">Last Name: { this.state.last }</p>
           <p className="mb-1">Email: { this.state.email }</p>
       </ListGroup.Item>
-      // <div ref={this.element}>
-      //   <div
-      //     className="list-group-item list-group-item-action justify-content-center flex-column align-items-start">
-      //     <div className="d-flex w-100 justify-content-between">
-      //       <h5 className="mb-1">{ this.state.id }</h5>
-      //       <small>User: { this.state.user }</small>
-      //     </div>
-      //     <p className="mb-1">First Name: { this.state.first }</p>
-      //     <p className="mb-1">Last Name: { this.state.last }</p>
-      //     <p className="mb-1">Email: { this.state.email }</p>
-      //   </div>
-      // </div>
     );
   }
 }
 
+const styles = {
+  card: {
+    cursor: 'pointer'
+  }
+}
 AuthorCard.propTypes = {
   author: PropTypes.object.isRequired
 }

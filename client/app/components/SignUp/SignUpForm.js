@@ -74,55 +74,47 @@ class SignUpForm extends React.Component {
     const { errors, additionalEmails, usernames } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
-        <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent">
-            <div className="text-center mt-2">
-              <h1>Sign up with credentials</h1>
-            </div>
-          </CardHeader>
-          <CardBody className="px-lg-5 py-lg-5">
-            {/* <h1>Create your Developer Profile below!</h1> */}
-            {/* <TextFieldGroup
-              error={errors.username}
-              label="Username"
-              onChange={this.onChange}
-              value={this.state.username}
-              field="username"
-            /> */}
-            <TextFieldGroup
-              error={errors.email}
-              label="Email *"
-              onChange={this.onChange}
-              value={this.state.email}
-              field="email"
-              type="email"
-              icon="ni ni-email-83"
-            />
-            <TextFieldGroup
-              error={errors.password}
-              label="Password *"
-              onChange={this.onChange}
-              value={this.state.password}
-              field="password"
-              type="password"
-              icon="fa fa-unlock-alt"
-            />
-            <TextFieldGroup
-              error={errors.confirmPassword}
-              label="Confirm Password *"
-              onChange={this.onChange}
-              value={this.state.confirmPassword}
-              field="confirmPassword"
-              type="password"
-              icon="fa fa-lock"
-            />
-            <FormGroup>
-              <button disabled={this.state.isLoading} className="btn btn-primary btn-large">
-                Sign Up
-              </button>
-            </FormGroup>
-          </CardBody>
-        </Card>
+        <CardBody className="px-lg-5 py-lg-5">
+          {/* <h1>Create your Developer Profile below!</h1> */}
+          {/* <TextFieldGroup
+            error={errors.username}
+            label="Username"
+            onChange={this.onChange}
+            value={this.state.username}
+            field="username"
+          /> */}
+          <TextFieldGroup
+            error={errors.email}
+            label="Email *"
+            focus={true}
+            onChange={this.onChange}
+            value={this.state.email}
+            field="email"
+            type="email"
+            icon="ni ni-email-83"
+          />
+          <TextFieldGroup
+            error={errors.password}
+            label="Password *"
+            onChange={this.onChange}
+            value={this.state.password}
+            field="password"
+            type="password"
+            icon="fa fa-unlock-alt"
+          />
+          <TextFieldGroup
+            error={errors.confirmPassword}
+            label="Confirm Password *"
+            onChange={this.onChange}
+            value={this.state.confirmPassword}
+            field="confirmPassword"
+            type="password"
+            icon="fa fa-lock"
+          />
+          <FormGroup>
+            <Button color="primary" disabled={this.state.isLoading}>Sign Up</Button>
+          </FormGroup>
+        </CardBody>
       </form>
     );
   }

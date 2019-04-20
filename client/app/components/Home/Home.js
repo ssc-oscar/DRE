@@ -3,7 +3,7 @@ import SignInForm from '../SignIn/SignInForm';
 import SignUpForm from '../SignUp/SignUpForm';
 import { userSignUpRequest, getAuthors } from '../../../actions/signUpActions';
 import { connect } from 'react-redux';
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Card, CardHeader } from "reactstrap";
 import { addFlashMessage } from '../../../actions/flashMessages';
 import PropTypes from 'prop-types';
 
@@ -32,22 +32,35 @@ class Home extends Component {
     const { userSignUpRequest, getAuthors, addFlashMessage } = this.props
     return (
       <>
-      <Row className="justify-content-center">
-        <Col xs="4">
-          <p id="signupButton"
-            onClick={() => this.toggle("signup")}
-            className={this.state.isSignUp ? "bg-primary" : "bg-light"}>Sign Up</p>
-        </Col>
-        <Col xs="4">
-          <p id="loginButton"
-            onClick={() => this.toggle("login")}
-            className={this.state.isLogin ? "bg-primary" : "bg-light"}>Login</p>
-        </Col>
-        </Row>
-        <Row>
-          <div className="col col-md-6">
-            {this.state.isLogin ? <SignInForm /> : <SignUpForm getAuthors={getAuthors} userSignUpRequest={userSignUpRequest} addFlashMessage={addFlashMessage} />}
-          </div>
+        <Row className="justify-content-center">
+          <Col xs="6">
+            <Card className="bg-secondary shadow border-0">
+              <CardHeader className="bg-transparent">
+                <Row>
+                  <Col xs="6" className="border-right">
+                    <p id="signupButton"
+                      onClick={() => this.toggle("signup")}
+                      style={styles.cardHeader}
+                      className={this.state.isSignUp ? "bg-transparent text-primary" : "bg-transparent text-light"}>
+                      Sign Up
+                    </p>
+                  </Col>
+                  <Col xs="6" className="border-left">
+                    <p id="loginButton"
+                      onClick={() => this.toggle("login")}
+                      style={styles.cardHeader}
+                      className={this.state.isLogin ? "bg-transparent text-primary" : "bg-transparent text-light"}>
+                      Login
+                    </p>
+                  </Col>
+                </Row>
+                {/* <div className="text-center mt-2">
+                  <h1>Sign up with credentials</h1>
+                </div> */}
+              </CardHeader>
+              {this.state.isLogin ? <SignInForm /> : <SignUpForm getAuthors={getAuthors} userSignUpRequest={userSignUpRequest} addFlashMessage={addFlashMessage} />}
+            </Card>
+          </Col>
         </Row>
       </>
     );
@@ -65,7 +78,10 @@ const styles = {
   cardHeader: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: '24px'
+    fontSize: '24px',
+    cursor: 'pointer',
+    padding: 0,
+    margin: 0
   }
 };
 

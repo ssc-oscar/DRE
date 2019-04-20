@@ -4,17 +4,20 @@ import { getAuthors } from '../../../actions/signUpActions'
 import { connect } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessages';
 import PropTypes from 'prop-types';
+import { Row, Col } from 'reactstrap';
 
 
 class AuthorSearchPage extends Component {
   render() {
     const { getAuthors, addFlashMessage } = this.props
     return (
-      <div className="row justify-content-center">
-        <AuthorSearchForm
-          getAuthors={getAuthors}
-          addFlashMessage={addFlashMessage}/>
-      </div>
+      <Row className="justify-content-center">
+        <Col xs="6">
+          <AuthorSearchForm
+            getAuthors={getAuthors}
+            addFlashMessage={addFlashMessage} />
+        </Col>
+      </Row>
     );
   }
 }

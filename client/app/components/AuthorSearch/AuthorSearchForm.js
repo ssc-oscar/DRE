@@ -10,6 +10,7 @@ import {
   Card,
   CardHeader,
   CardBody,
+  Label,
   FormGroup,
   Form,
   Row,
@@ -96,7 +97,6 @@ class AuthorSearchForm extends React.Component {
       else {
         warning = ''
       }
-      // this.context.router.history.push('/select', { data: res.data });
       this.context.router.history.push('/select', { authors: res.data, warning: warning });
     },
     (err) => { console.log(err) }
@@ -110,20 +110,23 @@ class AuthorSearchForm extends React.Component {
         <Card className="bg-secondary shadow border-0">
           <CardHeader className="bg-transparent">
             <div className="text-center mt-2">
-              <h1>Additional search paramaters</h1>
+              <h1>Additional search parameters</h1>
             </div>
           </CardHeader>
-          <CardBody className="px-lg-5 py-lg-5">
+          <CardBody className="px-lg-5 py-lg-3">
+            <Label>First Name</Label>
             <TextFieldGroup
               error={errors.fname}
-              label="First Name"
+              label=""
+              focus={true}
               onChange={this.onChange}
               value={this.state.fname}
               field="fname"
             />
+            <Label>Last Name</Label>
             <TextFieldGroup
               error={errors.lname}
-              label="Last Name"
+              label=""
               onChange={this.onChange}
               value={this.state.lname}
               field="lname"
@@ -144,11 +147,9 @@ class AuthorSearchForm extends React.Component {
               handleAddition={this.handleUsernameAddition}
               placeholder="Add username"
             />
-            <div className="form-group">
-              <button disabled={this.state.isLoading} className="btn btn-primary btn-large">
-                Search
-            </button>
-            </div>
+            <FormGroup>
+              <Button color="primary" disabled={this.state.isLoading}>Search</Button>
+            </FormGroup>
           </CardBody>
         </Card>
       </form>

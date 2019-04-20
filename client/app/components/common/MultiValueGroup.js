@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
 import '../../styles/react-tags.css';
 import PropTypes from 'prop-types';
-import { FormGroup } from 'reactstrap';
+import { FormGroup, Label } from 'reactstrap';
 
 const KeyCodes = {
   comma: 188,
@@ -17,7 +17,7 @@ const MultiValueGroup = ({
   }) => {
   return (
     <FormGroup>
-      {/* <label className="control-label">{label}</label> */}
+      <Label className="control-label">{label}</Label>
       <ReactTags
         inputFieldPosition="top"
         tags={tags}
@@ -25,7 +25,8 @@ const MultiValueGroup = ({
         handleDelete={handleDelete}
         handleAddition={handleAddition}
         delimiters={delimiters}
-        placeholder={label}
+        placeholder={placeholder}
+        autofocus={false}
       />
       {/* {error && <div className="invalid-feedback d-block">{error}</div>} */}
     </FormGroup>

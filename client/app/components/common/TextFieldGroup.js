@@ -10,35 +10,42 @@ import {
   InputGroup
 } from "reactstrap";
 
-const TextFieldGroup = ({ field, value, label, error, type, onChange, icon }) => {
+const TextFieldGroup = ({ field, value, label, error, type, onChange, icon, focus }) => {
   return (
     <FormGroup>
-      <InputGroup className="input-group-alternative mb-3">
-        <InputGroupAddon addonType="prepend">
-          <InputGroupText>
+      <InputGroup className="input-group-alternative mb-3" style={styles.inputGroup}>
+        { icon &&
+        <InputGroupAddon className="shadow-lg" addonType="prepend">
+          <InputGroupText className="border border-right-0">
             <i className={`${icon}`} />
           </InputGroupText>
         </InputGroupAddon>
+        }
         <Input
+          autoFocus={focus}
           value={value}
           onChange={onChange}
           type={type}
           name={field}
           placeholder={label}
-          className={classnames("form-control", { 'is-invalid': error })}
+          className={classnames("form-control border text-default",
+                    { 'is-invalid': error },
+                    { 'border-left-0': icon},
+                    { 'px-3': !icon})}
         />
-        {/* <label className="control-label">{label}{isRequired(field)}</label> */}
-        {/* <input
-          value={value}
-          onChange={onChange}
-          type={type}
-          name={field}
-          className={classnames("form-control", { 'is-invalid': error })}
-        /> */}
-        {error && <FormFeedback>{error}</FormFeedback>}
+        {error && <FormFeedback style={styles.feedback}>{error}</FormFeedback>}
       </InputGroup>
     </FormGroup>
   );
+}
+
+const styles = {
+  feedback: {
+    paddingLeft: 5
+  },
+  inputGroup: {
+    boxShadow: 'none'
+  }
 }
 
 TextFieldGroup.propTypes = {

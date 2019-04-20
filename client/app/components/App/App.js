@@ -9,9 +9,9 @@ const App = ({ children }) => (
   <>
     <div className="main-content">
       <Header />
-      <div className="header bg-gradient-default py-7 py-lg-8">
+      <div className="header bg-gradient-default py-6 py-lg-7">
         {/* Page content */}
-        <Container className="mt-8 pb-5">
+        <Container className="mt-4 mb-8 pb-5">
           <main>
             {children}
           </main>

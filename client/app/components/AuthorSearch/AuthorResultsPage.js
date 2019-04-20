@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessages';
 import { submitAuthors } from '../../../actions/signUpActions';
 import PropTypes from 'prop-types';
+import { Row, Col } from 'reactstrap';
 
 
 class AuthorResultsPage extends Component {
@@ -11,13 +12,15 @@ class AuthorResultsPage extends Component {
     const { addFlashMessage, submitAuthors } = this.props;
     const { authors, warning } = this.props.location.state;
     return (
-      <div className="row justify-content-center">
-        <AuthorResultsForm
-          addFlashMessage={addFlashMessage}
-          authors={authors}
-          warning={warning}
-          submitAuthors={submitAuthors}/>
-      </div>
+      <Row className="justify-content-center">
+        <Col xs="8">
+          <AuthorResultsForm
+            addFlashMessage={addFlashMessage}
+            authors={authors}
+            warning={warning}
+            submitAuthors={submitAuthors}/>
+        </Col>
+      </Row>
     );
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import AuthorCard from '../common/AuthorCard';
+import { ListGroup, FormGroup, Alert, Button } from 'reactstrap';
 
 Array.prototype.diff = function (a) {
   return this.filter(function (i) {
@@ -71,16 +72,16 @@ class AuthorResultsForm extends React.Component {
     <AuthorCard key={a.id} author={a} onClickAuthor={this.onClickAuthor}/>)
     return (
       <form onSubmit={this.onSubmit}>
-        <h1>Select your author identities below!</h1>
-        <p>{this.state.warning}</p>
-        <div className="list-group">
+        <h1 className=" text-center text-secondary">Select your author identities below!</h1>
+        <Alert color="danger">{this.state.warning}</Alert>
+        <ListGroup>
           {cards}
-        </div>
-        <div className="form-group">
-          <button disabled={this.state.isLoading} className="btn btn-primary btn-large">
+        </ListGroup>
+        <FormGroup className="text-center mt-3">
+          <Button disabled={this.state.isLoading} className="btn btn-primary btn-large">
             Submit
-          </button>
-        </div>
+          </Button>
+        </FormGroup>
       </form>
     );
   }
