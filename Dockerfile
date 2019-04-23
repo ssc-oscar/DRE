@@ -4,14 +4,15 @@ FROM node as build-stage
 RUN mkdir -p /opt/mern
 WORKDIR /opt/mern
 COPY package*.json /opt/mern/
-RUN npm install
 COPY ./ /opt/mern/
-RUN npm run start
+
+ENV NODE_ENV development
+WORKDIR /opt/mern
+RUN npm install
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
-FROM nginx
-COPY --from=build-stage /opt/mern/dist/ /usr/share/nginx/html
+#FROM nginx
+#COPY --from=build-stage /opt/mern/dist/ /usr/share/nginx/html
 # Copy the default nginx.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-RUN chown nginx.nginx /usr/share/nginx/html/ -R
+#COPY nginx.conf /etc/nginx/conf.d/default.conf
+#RUN chown nginx.nginx /usr/share/nginx/html/ -R
