@@ -12,6 +12,6 @@ RUN npm run start
 FROM nginx
 COPY --from=build-stage /opt/mern/dist/ /usr/share/nginx/html
 # Copy the default nginx.conf
-COPY --from=build-stage nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 RUN chown nginx.nginx /usr/share/nginx/html/ -R
