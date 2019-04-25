@@ -2,7 +2,7 @@ const Validator = require('validator');
 const isEmpty = require('lodash/isEmpty');
 
 module.exports = function (data) {
-  let final = [];
+  let final, emails, usernames = [];
   let searchParams = {
     fname: '',
     lname: '',
@@ -13,12 +13,14 @@ module.exports = function (data) {
   for (let email of data.additionalEmails) {
     if (Validator.isEmail(email.text)) {
       final.push(email.text);
+      emails.push(email.text);
       searchParams.additionalEmails.push(email.text);
     }
   }
   for (let username of data.usernames) {
     if (!Validator.isEmpty(username.text)) {
       final.push(username.text);
+      usernames.push(username.text);
       searchParams.usernames.push(username.text);
     }
   }
@@ -36,10 +38,20 @@ module.exports = function (data) {
 
   // remove duplicates
   final = [...new Set(final)];
+  emails = [...new Set(emails)];
+  usernames = [...new Set(usernames)];
 
   return {
     final,
+    emails,
+    usernames,
     searchParams,
-    isValid: !isEmpty(final)
+    'isValid': !isEmpty(final)
   }
 }
+  // }
+  // return {
+  //   final,
+  //   searchParams,
+  //   isValid: !isEmpty(final)
+  // }

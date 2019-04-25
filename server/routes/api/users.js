@@ -4,6 +4,7 @@ const validateSignupInput = require('../../shared/validations/SignUp');
 const validateAuthorInput = require('../../shared/validations/AuthorSearch');
 const jwt = require('jsonwebtoken');
 const config = require('../../../config/config');
+const isEmpty = require('lodash/isEmpty');
 const authenticate = require('../../middlewares/authenticate');
 // const Validator = require('validator');
 // const isEmpty = require('lodash/isEmpty');
@@ -23,7 +24,7 @@ module.exports = (app) => {
 
   app.post('/api/users/search', authenticate, (req, res, next) => {
     const { body } = req;
-    const { final, searchParams, isValid } = validateAuthorInput(body);
+    const { final, emails, usernames, searchParams, isValid } = validateAuthorInput(body);
     if (isValid) {
       const query = final.join(' ');
       const userId = req.currentUser;
@@ -33,8 +34,16 @@ module.exports = (app) => {
       }, function(err, affected, resp) {
         // console.log(affected);
       })
-
-      Author.find({$text: { $search: query }})
+      
+      // Author.find({
+      //   $or: [
+      //   { email: { $in: emails } },
+      //   { username: { $in: usernames } }
+      //   ]
+      // })
+      Author.find(
+        {$text: { $search: query }}
+      )
       .limit(100)
       .exec()
       .then((author) => {

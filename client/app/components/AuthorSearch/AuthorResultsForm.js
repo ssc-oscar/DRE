@@ -13,6 +13,7 @@ Array.prototype.diff = function (a) {
 class AuthorResultsForm extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
 
     let all_ids = this.props.authors.map(a => a.id);
     this.state = {
@@ -65,7 +66,7 @@ class AuthorResultsForm extends React.Component {
     // (err) => { console.log(err) }
     // );
   }
-  
+
   render() {
     const { authors } = this.state;
     const cards = authors.map(a =>
