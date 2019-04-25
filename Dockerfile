@@ -33,8 +33,8 @@ RUN apt-get update -q  \
     tmux vim-runtime tmux zsh libpng-dev \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
- && curl -sL https://deb.nodesource.com/setup_10.15.3 | bash - \
- && apt-get install -y nodejs npm
+ && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+ && apt-get install -y nodejs
 
 #RUN mkdir -p /opt/mern
 #WORKDIR /opt/mern
