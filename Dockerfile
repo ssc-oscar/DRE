@@ -1,15 +1,5 @@
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
-FROM node as build-stage
-
-RUN mkdir -p /opt/mern
-WORKDIR /opt/mern
-COPY package*.json /opt/mern/
-COPY ./ /opt/mern/
-
-ENV NODE_ENV development
-WORKDIR /opt/mern
-RUN npm install
-
+# FROM node as build-stage
 
 FROM ubuntu:18.04
 
@@ -17,6 +7,8 @@ RUN apt-get update -q  \
  && apt-get install -yqq \
  curl \
  git \
+ nodejs \
+ npm \
  ssh \
  gcc \
  make \
@@ -44,6 +36,13 @@ RUN apt-get update -q  \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+#RUN mkdir -p /opt/mern
+#WORKDIR /opt/mern
+#COPY package*.json /opt/mern/
+#COPY ./ /opt/mern/
+#ENV NODE_ENV development
+#WORKDIR /opt/mern
+#RUN npm install
 
 # set up to work in a UTK environment
 COPY eecsCA_v3.crt /etc/ssl/ 
