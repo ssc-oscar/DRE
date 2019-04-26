@@ -19,7 +19,7 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAuthenticated: this.props.auth
+      isAuthenticated: this.props.auth.isAuthenticated
     }
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.logout = this.logout.bind(this);
@@ -56,7 +56,7 @@ class Header extends React.Component {
         <NavItem>
           <NavLink
             className="nav-link-icon"
-            to="/signup"
+            to={{pathname: "/", form: "signup"}}
             tag={Link}>
             <i className="ni ni-circle-08" />
             <span className="nav-link-inner--text">Register</span>
@@ -65,7 +65,7 @@ class Header extends React.Component {
         <NavItem>
           <NavLink
             className="nav-link-icon"
-            to="/signup"
+            to={{pathname: "/", form: "login"}}
             tag={Link}>
             <i className="ni ni-key-25" />
             <span className="nav-link-inner--text">Login</span>

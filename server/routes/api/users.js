@@ -9,6 +9,10 @@ const authenticate = require('../../middlewares/authenticate');
 // const Validator = require('validator');
 // const isEmpty = require('lodash/isEmpty');
 
+function execQuery(q) {
+  return q.limit(100).exec()
+}
+
 module.exports = (app) => {
   app.post('/api/users/submit', authenticate, (req, res, next) => {
     const data = req.body;
@@ -23,34 +27,42 @@ module.exports = (app) => {
   })
 
   app.post('/api/users/search', authenticate, (req, res, next) => {
-    const { body } = req;
-    const { final, emails, usernames, searchParams, isValid } = validateAuthorInput(body);
-    if (isValid) {
-      const query = final.join(' ');
-      const userId = req.currentUser;
+    let { body } = req;
+    let results = [];
+    body.email = req.currentUser.email;
+    const { emails, usernames, searchParams, queries } = validateAuthorInput(body);
+    const userId = req.currentUser.id;
 
-      User.updateOne({_id: userId}, {
-        searchParams: searchParams
-      }, function(err, affected, resp) {
-        // console.log(affected);
-      })
-      
-      // Author.find({
-      //   $or: [
-      //   { email: { $in: emails } },
-      //   { username: { $in: usernames } }
-      //   ]
-      // })
-      Author.find(
-        {$text: { $search: query }}
-      )
-      .limit(100)
-      .exec()
-      .then((author) => {
-        res.status(200).json(author);
-      })
-      .catch((err) => next(err));
+    User.updateOne({_id: userId}, {
+      searchParams: searchParams
+    }, function(err, affected, resp) {
+      // console.log(affected);
+    })
+
+    for (let q of queries) {
+      q.cursor().
+      on('data', function(doc) { console.log(doc); }).
+      on('end', function() { console.log('Done!'); });
     }
+
+    // Author.find({
+    //   username: { $in: usernames }
+    // })
+    // .limit(100)
+    // .exec()
+    // .then((author) => {
+    //   res.status(200).json(author);
+    // })
+    // .catch((err) => next(err));
+    // Author.find(
+    //   {$text: { $search: query }}
+    // )
+    // .limit(100)
+    // .exec()
+    // .then((author) => {
+    //   res.status(200).json(author);
+    // })
+    // .catch((err) => next(err));
   })
 
   app.post('/api/users/login', (req, res, next) => {

@@ -2,6 +2,6 @@
 
 module.exports = {
   db: 'mongodb://username:password@url:port/db',
-  db_dev: 'mongodb://localhost:27017/test_db',
+  db_dev: 'mongodb://da1:27017/WoC',
   jwtSecret: 'supersecrettestkeyforsomethingsecret'
 };

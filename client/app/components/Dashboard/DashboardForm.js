@@ -11,7 +11,7 @@ class DashboardForm extends React.Component {
   render() {
     return (
       <form>
-        <h1>Please wait while we populate your dashboard!</h1>
+        <h1 className="text-secondary">Please wait while we populate your dashboard!</h1>
       </form>
     );
   }

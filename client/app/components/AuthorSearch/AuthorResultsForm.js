@@ -13,7 +13,6 @@ Array.prototype.diff = function (a) {
 class AuthorResultsForm extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
 
     let all_ids = this.props.authors.map(a => a.id);
     this.state = {
@@ -21,6 +20,7 @@ class AuthorResultsForm extends React.Component {
       warning: this.props.warning,
       selected_authors: [],
       omitted_authors: [],
+      isError: this.props.warning.includes('no results'),
       all_authors: all_ids
     }
 
@@ -74,20 +74,20 @@ class AuthorResultsForm extends React.Component {
     return (
       <form onSubmit={this.onSubmit}>
         <h1 className="text-center text-secondary">Select your author identities below!</h1>
-        <Alert color="danger">{this.state.warning}</Alert>
-        <Row className="justify-content-center my-4">
+        {this.state.warning && <Alert color="danger">{this.state.warning}</Alert>}
+        {/* <Row className="justify-content-center my-4">
           <Col xs="6" className="text-center">
             <Button color="primary">Select All</Button>
           </Col>
           <Col xs="6" className="text-center">
             <Button color="primary">Unselect All</Button>
           </Col>
-        </Row>
+        </Row> */}
         <ListGroup>
           {cards}
         </ListGroup>
         <FormGroup className="text-center mt-3">
-          <Button color="primary" disabled={this.state.isLoading}>
+          <Button color="primary" disabled={this.state.isError}>
             Submit
           </Button>
         </FormGroup>

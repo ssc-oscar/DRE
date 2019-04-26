@@ -13,6 +13,7 @@ class AuthorSearchPage extends Component {
     return (
       <Row className="justify-content-center">
         <Col xs="6">
+        {/* <h2 className="text-center text-white mb-20">Provde any additional search criteria below to help locate your authorship records.</h2> */}
           <AuthorSearchForm
             getAuthors={getAuthors}
             addFlashMessage={addFlashMessage} />

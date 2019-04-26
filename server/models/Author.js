@@ -31,6 +31,6 @@ const AuthorSchema = new mongoose.Schema({
   },
 }, { collection: 'authors' });
 
-AuthorSchema.index({'$**': 'text'});
+// AuthorSchema.index({'$**': 'text'});
 
 module.exports = mongoose.model('Author', AuthorSchema);

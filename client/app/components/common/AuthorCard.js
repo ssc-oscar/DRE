@@ -27,7 +27,7 @@ class AuthorCard extends React.Component {
         active={this.state.active}
         onClick={this.onClick}>
           <div className="d-flex w-100 justify-content-between">
-            <h5 className="mb-1">{ this.state.id }</h5>
+            <h3 className="mb-1">{ this.state.id }</h3>
             <small>User: { this.state.user }</small>
           </div>
           <p className="mb-1">First Name: { this.state.first }</p>

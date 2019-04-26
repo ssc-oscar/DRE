@@ -10,7 +10,7 @@ import {
   InputGroup
 } from "reactstrap";
 
-const TextFieldGroup = ({ field, value, label, error, type, onChange, icon, focus }) => {
+const TextFieldGroup = ({ field, value, label, error, type, onChange, icon, focus, autocomplete }) => {
   return (
     <FormGroup>
       <InputGroup className="input-group-alternative mb-3" style={styles.inputGroup}>
@@ -28,6 +28,7 @@ const TextFieldGroup = ({ field, value, label, error, type, onChange, icon, focu
           type={type}
           name={field}
           placeholder={label}
+          autoComplete={autocomplete}
           className={classnames("form-control border text-default",
                     { 'is-invalid': error },
                     { 'border-left-0': icon},

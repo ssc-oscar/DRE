@@ -5,17 +5,8 @@ import validateInput from '../../../../server/shared/validations/SignUp';
 import TextFieldGroup from '../common/TextFieldGroup';
 import {
   Button,
-  Card,
-  CardHeader,
   CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Row,
-  Col
+  FormGroup
 } from "reactstrap";
 
 class SignUpForm extends React.Component {
@@ -92,6 +83,7 @@ class SignUpForm extends React.Component {
             field="email"
             type="email"
             icon="ni ni-email-83"
+            autocomplete="username"
           />
           <TextFieldGroup
             error={errors.password}
@@ -101,6 +93,7 @@ class SignUpForm extends React.Component {
             field="password"
             type="password"
             icon="fa fa-unlock-alt"
+            autocomplete="new-password"
           />
           <TextFieldGroup
             error={errors.confirmPassword}
@@ -110,6 +103,7 @@ class SignUpForm extends React.Component {
             field="confirmPassword"
             type="password"
             icon="fa fa-lock"
+            autocomplete="new-password"
           />
           <FormGroup>
             <Button color="primary" disabled={this.state.isLoading}>Sign Up</Button>

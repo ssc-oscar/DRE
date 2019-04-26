@@ -6,13 +6,8 @@ import { connect } from 'react-redux';
 import { login } from '../../../actions/signUpActions';
 import {
   Button,
-  Card,
-  CardHeader,
   CardBody,
-  FormGroup,
-  Form,
-  Row,
-  Col
+  FormGroup
 } from "reactstrap";
 
 class SignInForm extends React.Component {
@@ -75,6 +70,7 @@ class SignInForm extends React.Component {
             error={errors.identifier}
             onChange={this.onChange}
             icon="ni ni-email-83"
+            autocomplete="username"
           />
           <TextFieldGroup
             field="password"
@@ -84,6 +80,7 @@ class SignInForm extends React.Component {
             onChange={this.onChange}
             type="password"
             icon="fa fa-lock"
+            autocomplete="current-password"
           />
           <FormGroup>
             <Button color="primary" disabled={isLoading}>Sign In</Button>

@@ -10,13 +10,21 @@ import PropTypes from 'prop-types';
 class Home extends Component {
   constructor(props) {
     super(props);
-
-    this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false,
       isLogin: false,
+      isLoading: true,
       isSignUp: true
     };
+    this.toggle = this.toggle.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({ isLoading: false });
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.toggle(nextProps.location.form);
   }
 
   toggle(type) {
@@ -32,6 +40,7 @@ class Home extends Component {
     const { userSignUpRequest, getAuthors, addFlashMessage } = this.props
     return (
       <>
+      {!this.state.isLoading &&
         <Row className="justify-content-center">
           <Col xs="6">
             <Card className="bg-secondary shadow border-0">
@@ -62,6 +71,7 @@ class Home extends Component {
             </Card>
           </Col>
         </Row>
+      }
       </>
     );
   }

@@ -89,7 +89,7 @@ class AuthorSearchForm extends React.Component {
     .then( (res) => {
       let warning;
       if (res.data.length > 75) {
-        warning = 'Your search criteria returned a large number of matches. To reduce the result set, go back'
+        warning = 'Your search criteria returned a large number of matches. To try and reduce the result set, go back and refine your search criteria.'
       }
       else if (res.data.length == 0) {
         warning = 'Your search returned no results. Please go back and try again.'
@@ -137,7 +137,7 @@ class AuthorSearchForm extends React.Component {
               tags={additionalEmails}
               handleDelete={this.handleEmailDelete}
               handleAddition={this.handleEmailAddition}
-              placeholder="Add email"
+              placeholder="Use a comma or the return key after each entry"
             />
             <MultiValueGroup
               error={errors.usernames}
@@ -145,10 +145,13 @@ class AuthorSearchForm extends React.Component {
               tags={usernames}
               handleDelete={this.handleUsernameDelete}
               handleAddition={this.handleUsernameAddition}
-              placeholder="Add username"
+              placeholder="Use a comma or the return key after each entry"
             />
             <FormGroup>
-              <Button color="primary" disabled={this.state.isLoading}>Search</Button>
+              <Button color="primary" disabled={this.state.isLoading}>
+                Search
+                {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
+              </Button>
             </FormGroup>
           </CardBody>
         </Card>

@@ -24,8 +24,8 @@ import jwt from 'jsonwebtoken';
 import setAuthToken from '../utils/setAuthToken';
 import { setCurrentUser } from '../actions/signUpActions';
 
-import './styles/style.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import './styles/style.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import "../public/assets/vendor/nucleo/css/nucleo.css";
 import "../public/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../public/assets/css/argon-dashboard-react.css";
@@ -34,7 +34,7 @@ const store = createStore(
   rootReducer,
   compose(
     applyMiddleware(thunk),
-    window.devToolsExtension ? window.devToolsExtension() : f => f
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
 
@@ -50,7 +50,7 @@ render((
       <App>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/signup" component={SignUpPage} />
+          {/* <Route path="/signup" component={SignUpPage} /> */}
           <Route path="/search" component={AuthorSearchPage} />
           <Route path="/select" component={AuthorResultsPage} />
           <Route path="/dashboard" component={DashboardPage} />
