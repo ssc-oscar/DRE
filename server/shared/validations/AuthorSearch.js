@@ -34,16 +34,16 @@ module.exports = function (data) {
     searchParams.fullNames.push(`${data.lname.toLowerCase()}${data.fname.toLowerCase()}`);
     searchParams.fullNames.push(`${data.lname.toLowerCase()} ${data.fname.toLowerCase()}`);
     for (let n of searchParams.fullNames) {
-      queries.push(Author.find({$text: { $search: `\"${n}\"`}}))
+      queries.push(Author.find({$text: { $search: `\"${n}\"`}}).limit(100))
     }
   }
-  else if (!Validator.isEmpty(data.fname)) {
+  if (!Validator.isEmpty(data.fname)) {
     searchParams.fname = data.fname;
-    queries.push(Author.find({ $text: { $search: `\"${data.fname}\"` }}));
+    queries.push(Author.find({ $text: { $search: `\"${data.fname}\"` }}).limit(100));
   }
-  else if (!Validator.isEmpty(data.lname)) {
+  if (!Validator.isEmpty(data.lname)) {
     searchParams.lname = data.lname;
-    queries.push(Author.find({ $text: { $search: `\"${data.lname}\"` }}));
+    queries.push(Author.find({ $text: { $search: `\"${data.lname}\"` }}).limit(100));
   }
 
   // remove duplicates
@@ -51,11 +51,11 @@ module.exports = function (data) {
   usernames = [...new Set(usernames)];
 
   if (!isEmpty(emails)) {
-    queries.push(Author.find({ email: { $in: emails } }))
+    queries.push(Author.find({ email: { $in: emails } }).limit(100))
   }
 
   if (!isEmpty(usernames)) {
-    queries.push(Author.find({username: { $in: usernames }}))
+    queries.push(Author.find({username: { $in: usernames }}).limit(100))
   }
 
   return {

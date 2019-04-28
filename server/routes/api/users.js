@@ -28,7 +28,8 @@ module.exports = (app) => {
 
   app.post('/api/users/search', authenticate, (req, res, next) => {
     let { body } = req;
-    let results = [];
+    let results = final = [];
+    let tmp = new Map();
     body.email = req.currentUser.email;
     const { emails, usernames, searchParams, queries } = validateAuthorInput(body);
     const userId = req.currentUser.id;
@@ -39,11 +40,25 @@ module.exports = (app) => {
       // console.log(affected);
     })
 
-    for (let q of queries) {
-      q.cursor().
-      on('data', function(doc) { console.log(doc); }).
-      on('end', function() { console.log('Done!'); });
-    }
+    Promise.all(queries).then((rv) => {
+      for (let x of rv) {
+        if (x.length < 50) {
+          results = results.concat(x);
+        }
+      }
+
+      for (const x of results) {
+        if (!tmp.has(x._id.toString())) {
+          tmp.set(x._id.toString(), true);
+          final.push(x);
+        }
+      }
+      res.status(200).json(final);
+    });
+
+    // for (let q of queries) {
+    //   console.log(q);
+    // }
 
     // Author.find({
     //   username: { $in: usernames }
