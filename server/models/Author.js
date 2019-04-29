@@ -29,7 +29,7 @@ const AuthorSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-}, { collection: 'authors' });
+}, { collection: 'authorsO' });
 
 // AuthorSchema.index({'$**': 'text'});
 

@@ -1,12 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { Button, Row } from 'reactstrap';
 
-const NotFound = () => (
-  <>
-    <h2>Page not found</h2>
+class NotFound extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-    <Link to="/">Go home</Link>
-  </>
-);
+  render() {
+    return (
+      <Row className="justify-content-center">
+        <Button onClick={() => this.context.router.history.push('/')}>Back to Home</Button>
+      </Row>
+    );
+  }
+}
+
+NotFound.contextTypes = {
+  router: PropTypes.object.isRequired
+}
 
 export default NotFound;

@@ -53,18 +53,10 @@ class AuthorResultsForm extends React.Component {
       omitted: this.state.omitted_authors
     })
     .then(d => {
-      this.context.router.history.push('/dashboard');
+      this.context.router.history.push('/dash');
     },
     (err) => { console.log(err) }
     );
-    // this.setState({ errors: {}, isLoading: true });
-    // this.props.getAuthors(this.state)
-    // .then( d => {
-    //   console.log("about to di")
-    //   console.log(d);
-    // },
-    // (err) => { console.log(err) }
-    // );
   }
 
   render() {
@@ -73,7 +65,6 @@ class AuthorResultsForm extends React.Component {
     <AuthorCard key={a.id} author={a} onClickAuthor={this.onClickAuthor}/>)
     return (
       <form onSubmit={this.onSubmit}>
-        <h1 className="text-center text-secondary">Select your author identities below!</h1>
         {this.state.warning && <Alert color="danger">{this.state.warning}</Alert>}
         {/* <Row className="justify-content-center my-4">
           <Col xs="6" className="text-center">

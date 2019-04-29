@@ -4,14 +4,6 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 import RootReducer from '../rootReducer';
-
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch
-} from 'react-router-dom'
-
 import App from './components/App/App';
 import NotFound from './components/App/NotFound';
 import Home from './components/Home/Home';
@@ -20,12 +12,16 @@ import AuthorSearchPage from './components/AuthorSearch/AuthorSearchPage';
 import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import rootReducer from '../rootReducer';
+import requireAuth from '../utils/requireAuth';
 import jwt from 'jsonwebtoken';
 import setAuthToken from '../utils/setAuthToken';
 import { setCurrentUser } from '../actions/signUpActions';
-
-// import './styles/style.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch
+} from 'react-router-dom'
 import "../public/assets/vendor/nucleo/css/nucleo.css";
 import "../public/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../public/assets/css/argon-dashboard-react.css";
@@ -50,10 +46,10 @@ render((
       <App>
         <Switch>
           <Route exact path="/" component={Home} />
-          {/* <Route path="/signup" component={SignUpPage} /> */}
-          <Route path="/search" component={AuthorSearchPage} />
-          <Route path="/select" component={AuthorResultsPage} />
-          <Route path="/dashboard" component={DashboardPage} />
+          <Route path="/search" component={requireAuth(AuthorSearchPage)} />
+          <Route path="/select" component={requireAuth(AuthorResultsPage)} />
+          <Route path="/dash" component={requireAuth(DashboardPage)} />
+          <Route path="/error" component={NotFound} />
           <Route component={NotFound} />
         </Switch>
       </App>

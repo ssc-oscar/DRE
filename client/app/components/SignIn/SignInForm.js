@@ -41,7 +41,7 @@ class SignInForm extends React.Component {
       this.setState({ errors: {}, isLoading: true });
       this.props.login(this.state)
       .then( () => {
-        // this.context.router.history.push('/');
+        this.context.router.history.push('/dash');
         location.reload();
       },
       (err) => {

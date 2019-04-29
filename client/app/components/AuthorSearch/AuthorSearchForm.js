@@ -108,12 +108,12 @@ class AuthorSearchForm extends React.Component {
     return (
       <form onSubmit={this.onSubmit}>
         <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent">
+          {/* <CardHeader className="bg-transparent">
             <div className="text-center mt-2">
               <h1>Additional search parameters</h1>
             </div>
-          </CardHeader>
-          <CardBody className="px-lg-5 py-lg-3">
+          </CardHeader> */}
+          <CardBody className="px-lg-5 py-lg-5">
             <Label>First Name</Label>
             <TextFieldGroup
               error={errors.fname}
