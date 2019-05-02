@@ -3,6 +3,7 @@ import TextFieldGroup from '../common/TextFieldGroup';
 import PropTypes from 'prop-types';
 // import validateInput from '../../../server/shared/validations/login';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
 import { login } from '../../../actions/signUpActions';
 import {
   Button,
@@ -41,8 +42,8 @@ class SignInForm extends React.Component {
       this.setState({ errors: {}, isLoading: true });
       this.props.login(this.state)
       .then( () => {
-        this.context.router.history.push('/dash');
-        location.reload();
+        this.props.history.push('/dash');
+        // location.reload();
       },
       (err) => {
         console.log(err);
@@ -99,4 +100,4 @@ SignInForm.contextTypes = {
   router: PropTypes.object.isRequired
 }
 
-export default connect(null, { login })(SignInForm);
+export default connect(null, { login })(withRouter(SignInForm));

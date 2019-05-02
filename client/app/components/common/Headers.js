@@ -6,9 +6,8 @@ export default {
     view your open source activity and history!'
   },
   '/search': {
-    title: 'Additional parameters',
-    blurb: 'Provide any additional parameters you would like us to use to \
-    locate potential author identities tied to any commits you have made.'
+    title: 'Additional search parameters',
+    blurb: ''
   },
   '/select': {
     title: 'Results',

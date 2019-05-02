@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 import validateInput from '../../../../server/shared/validations/SignUp';
 import TextFieldGroup from '../common/TextFieldGroup';
@@ -53,7 +54,7 @@ class SignUpForm extends React.Component {
           //   type: 'success',
           //   text: 'Successful sign up! Welcome.'
           // })
-          this.context.router.history.push('/search');
+          this.props.history.push('/search');
       },
       (err) => {
         console.log(err);
@@ -123,4 +124,4 @@ SignUpForm.contextTypes = {
   router: PropTypes.object.isRequired
 }
 
-export default SignUpForm;
+export default withRouter(SignUpForm);

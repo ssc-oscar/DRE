@@ -30,7 +30,7 @@ class AuthorResultsForm extends React.Component {
 
   onClickAuthor(remove, id) {
     let ids = this.state.selected_authors;
-    let omitted = []
+    let omitted = [];
 
     if (remove) {
       ids.splice(ids.indexOf(id), 1);
@@ -47,10 +47,14 @@ class AuthorResultsForm extends React.Component {
   }
 
   onSubmit(e) {
+    let ids = this.state.selected_authors;
+    let omitted = []
+    
     e.preventDefault();
+    omitted = this.state.all_authors.diff(ids);
     this.props.submitAuthors({
-      selected: this.state.selected_authors,
-      omitted: this.state.omitted_authors
+      selected: ids,
+      omitted: omitted
     })
     .then(d => {
       this.context.router.history.push('/dash');

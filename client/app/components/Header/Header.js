@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import {
   UncontrolledCollapse,
   NavbarBrand,
@@ -30,14 +30,16 @@ class Header extends React.Component {
       collapsed: !this.state.collapsed
     });
   }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      isAuthenticated: nextProps.auth.isAuthenticated
+    })
+  }
 
   logout(e) {
     e.preventDefault();
     this.props.logout();
-    this.context.router.history.push('/');
-    this.setState({
-      isAuthenticated: false
-    })
+    this.props.history.push('/');
   }
 
   render() {
@@ -130,4 +132,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { logout })(Header);
+export default connect(mapStateToProps, { logout })(withRouter(Header));

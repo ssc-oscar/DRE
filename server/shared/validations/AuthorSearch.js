@@ -13,6 +13,8 @@ module.exports = function (data) {
     usernames: []
   }
 
+  data.fname = data.fname.toLowerCase().trim();
+  data.lname = data.lname.toLowerCase().trim();
   for (let e of data.additionalEmails) {
     if (Validator.isEmail(e.text)) {
       emails.push(e.text);
@@ -29,10 +31,10 @@ module.exports = function (data) {
     emails.push(data.email);
   }
   if (!Validator.isEmpty(data.fname) && !Validator.isEmpty(data.lname)) {
-    searchParams.fullNames.push(`${data.fname.toLowerCase()} ${data.lname.toLowerCase()}`);
-    searchParams.fullNames.push(`${data.fname.toLowerCase()}${data.lname.toLowerCase()}`);
-    searchParams.fullNames.push(`${data.lname.toLowerCase()}${data.fname.toLowerCase()}`);
-    searchParams.fullNames.push(`${data.lname.toLowerCase()} ${data.fname.toLowerCase()}`);
+    searchParams.fullNames.push(`${data.fname} ${data.lname}`);
+    searchParams.fullNames.push(`${data.fname}${data.lname}`);
+    searchParams.fullNames.push(`${data.lname}${data.fname}`);
+    searchParams.fullNames.push(`${data.lname} ${data.fname}`);
     for (let n of searchParams.fullNames) {
       queries.push(Author.find({$text: { $search: `\"${n}\"`}}).limit(100))
     }

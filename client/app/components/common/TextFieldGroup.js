@@ -27,6 +27,7 @@ const TextFieldGroup = ({ field, value, label, error, type, onChange, icon, focu
           onChange={onChange}
           type={type}
           name={field}
+          id={field}
           placeholder={label}
           autoComplete={autocomplete}
           className={classnames("form-control border text-default",
@@ -35,6 +36,7 @@ const TextFieldGroup = ({ field, value, label, error, type, onChange, icon, focu
                     { 'px-3': !icon})}
         />
         {error && <FormFeedback style={styles.feedback}>{error}</FormFeedback>}
+        {/* {tooltip && <Tooltip trigger="hover" target={field} position="right">{tooltip}</Tooltip>} */}
       </InputGroup>
     </FormGroup>
   );

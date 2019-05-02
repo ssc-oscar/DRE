@@ -17,7 +17,8 @@ module.exports = (app) => {
   app.post('/api/users/submit', authenticate, (req, res, next) => {
     const data = req.body;
     const userId = req.currentUser;
-    User.update({_id: userId}, {
+    console.log(data, userId);
+    User.updateOne({_id: userId.id}, {
       selectedIds: data.selected,
       omittedIds: data.omitted
     }, function(err, affected, resp) {
