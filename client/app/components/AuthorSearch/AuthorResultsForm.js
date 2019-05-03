@@ -20,12 +20,13 @@ class AuthorResultsForm extends React.Component {
       warning: this.props.warning,
       selected_authors: [],
       omitted_authors: [],
-      isError: this.props.warning.includes('no results'),
+      isError: this.props.error,
       all_authors: all_ids
     }
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onClickAuthor = this.onClickAuthor.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   onClickAuthor(remove, id) {
@@ -44,6 +45,15 @@ class AuthorResultsForm extends React.Component {
       selected_authors: ids,
       omitted_authors: omitted
     }, () => { })
+  }
+
+  onClick(e) {
+    if (this.state.isError) {
+      this.context.router.history.push('/search');
+    }
+    else {
+      this.onSubmit(e);
+    }
   }
 
   onSubmit(e) {
@@ -82,8 +92,8 @@ class AuthorResultsForm extends React.Component {
           {cards}
         </ListGroup>
         <FormGroup className="text-center mt-3">
-          <Button color="primary" disabled={this.state.isError}>
-            Submit
+          <Button color="primary" onClick={this.onClick}>
+            {this.state.isError ? "Back" : "Submit"}
           </Button>
         </FormGroup>
       </form>

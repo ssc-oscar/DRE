@@ -35,7 +35,6 @@ class SignUpForm extends React.Component {
     const { errors, isValid } = validateInput(this.state);
 
     if (!isValid) {
-      console.log(errors)
       this.setState({ errors })
     }
 

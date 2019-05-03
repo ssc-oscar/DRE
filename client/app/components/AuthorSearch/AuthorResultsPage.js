@@ -10,7 +10,7 @@ import { Row, Col } from 'reactstrap';
 class AuthorResultsPage extends Component {
   render() {
     const { addFlashMessage, submitAuthors } = this.props;
-    const { authors, warning } = this.props.location.state;
+    const { authors, warning, error } = this.props.location.state;
     return (
       <Row className="justify-content-center">
         <Col xs="8">
@@ -18,6 +18,7 @@ class AuthorResultsPage extends Component {
             addFlashMessage={addFlashMessage}
             authors={authors}
             warning={warning}
+            error={error}
             submitAuthors={submitAuthors}/>
         </Col>
       </Row>

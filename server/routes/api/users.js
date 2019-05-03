@@ -9,10 +9,6 @@ const authenticate = require('../../middlewares/authenticate');
 // const Validator = require('validator');
 // const isEmpty = require('lodash/isEmpty');
 
-function execQuery(q) {
-  return q.limit(100).exec()
-}
-
 module.exports = (app) => {
   app.post('/api/users/submit', authenticate, (req, res, next) => {
     const data = req.body;
@@ -20,7 +16,8 @@ module.exports = (app) => {
     console.log(data, userId);
     User.updateOne({_id: userId.id}, {
       selectedIds: data.selected,
-      omittedIds: data.omitted
+      omittedIds: data.omitted,
+      lastUpdated: Date.now()
     }, function(err, affected, resp) {
       // console.log(affected);
     })
@@ -29,7 +26,8 @@ module.exports = (app) => {
 
   app.post('/api/users/search', authenticate, (req, res, next) => {
     let { body } = req;
-    let results = final = [];
+    let results = [];
+    let final = [];
     let tmp = new Map();
     body.email = req.currentUser.email;
     const { emails, usernames, searchParams, queries } = validateAuthorInput(body);
@@ -42,9 +40,13 @@ module.exports = (app) => {
     })
 
     Promise.all(queries).then((rv) => {
+      let exceeded = false;
       for (let x of rv) {
-        if (x.length < 50) {
+        if (x.length < 99) {
           results = results.concat(x);
+        }
+        else {
+          exceeded = true;
         }
       }
 
@@ -54,31 +56,8 @@ module.exports = (app) => {
           final.push(x);
         }
       }
-      res.status(200).json(final);
+      res.status(200).json({exceeded: exceeded, final: final});
     });
-
-    // for (let q of queries) {
-    //   console.log(q);
-    // }
-
-    // Author.find({
-    //   username: { $in: usernames }
-    // })
-    // .limit(100)
-    // .exec()
-    // .then((author) => {
-    //   res.status(200).json(author);
-    // })
-    // .catch((err) => next(err));
-    // Author.find(
-    //   {$text: { $search: query }}
-    // )
-    // .limit(100)
-    // .exec()
-    // .then((author) => {
-    //   res.status(200).json(author);
-    // })
-    // .catch((err) => next(err));
   })
 
   app.post('/api/users/login', (req, res, next) => {

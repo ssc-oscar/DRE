@@ -3,7 +3,8 @@ const isEmpty = require('lodash/isEmpty');
 const Author = require('../../models/Author');
 
 module.exports = function (data) {
-  let emails = usernames = [];
+  let emails = [];
+  let usernames = [];
   let queries = [];
   let searchParams = {
     fname: '',
@@ -16,19 +17,21 @@ module.exports = function (data) {
   data.fname = data.fname.toLowerCase().trim();
   data.lname = data.lname.toLowerCase().trim();
   for (let e of data.additionalEmails) {
+    e.text = e.text.toLowerCase().trim();
     if (Validator.isEmail(e.text)) {
       emails.push(e.text);
       searchParams.additionalEmails.push(e.text);
     }
   }
   for (let u of data.usernames) {
+    u.text = u.text.toLowerCase().trim();
     if (!Validator.isEmpty(u.text)) {
       usernames.push(u.text);
       searchParams.usernames.push(u.text);
     }
   }
   if (!Validator.isEmpty(data.email) && Validator.isEmail(data.email)) {
-    emails.push(data.email);
+    emails.push(data.email.toLowerCase().trim());
   }
   if (!Validator.isEmpty(data.fname) && !Validator.isEmpty(data.lname)) {
     searchParams.fullNames.push(`${data.fname} ${data.lname}`);
@@ -57,7 +60,8 @@ module.exports = function (data) {
   }
 
   if (!isEmpty(usernames)) {
-    queries.push(Author.find({username: { $in: usernames }}).limit(100))
+    console.log("Pushing", usernames);
+    queries.push(Author.find({ user: { $in: usernames }}).limit(100))
   }
 
   return {

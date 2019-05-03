@@ -28,10 +28,13 @@ class AuthorCard extends React.Component {
         onClick={this.onClick}>
           <div className="d-flex w-100 justify-content-between">
             <h3 className="mb-1">{ this.state.id }</h3>
-            <small>User: { this.state.user }</small>
+            <small>Handle: { this.state.user }</small>
           </div>
           <p className="mb-1">First Name: { this.state.first }</p>
-          <p className="mb-1">Last Name: { this.state.last }</p>
+          <div className="d-flex w-100 justify-content-between">
+            <p className="mb-1">Last Name: { this.state.last }</p>
+            {this.state.active ? <i className="far fa-check-square fa-lg"></i> : <i className="far fa-square fa-lg"></i>}
+          </div>
           <p className="mb-1">Email: { this.state.email }</p>
       </ListGroup.Item>
     );

@@ -72,16 +72,38 @@ class AuthorSearchForm extends React.Component {
     })
   }
 
-  // isValid() {
-  //   const { errors, isValid } = validateInput(this.state);
+  generateWarning(data) {
+    let rv = data.final;
+    let warning = '';
+    let isError = false;
+    const len = rv.length;
+    const exceeded = data.exceeded;
 
-  //   if (!isValid) {
-  //     console.log(errors)
-  //     this.setState({ errors })
-  //   }
+    if (len > 100) {
+      warning = `Your search criteria returned too many results! \
+                Please go back and refine your search criteria.`
+      isError = true;
+      rv = [];
+    }
+    else if (len > 75) {
+      warning = `Warning: Your search criteria returned a large number of matches.\ 
+                To try and reduce the result set, go back and refine your search criteria.`
+    }
+    else if (len == 0) {
+      isError = true;
+      if (exceeded) {
+        warning = 'Your search returned too many results! Please go back and refine your search criteria.'
+      }
+      else {
+        warning = 'Your search returned no results. Please go back and refine your search criteria.'
+      }
+    }
+    else {
+      warning = ''
+    }
 
-  //   return isValid;
-  // }
+    return { rv, warning, isError };
+  }
 
   onSubmit(e) {
     e.preventDefault();
@@ -89,17 +111,8 @@ class AuthorSearchForm extends React.Component {
     this.setState({ errors: {}, isLoading: true });
     this.props.getAuthors(this.state)
     .then( (res) => {
-      let warning;
-      if (res.data.length > 75) {
-        warning = 'Your search criteria returned a large number of matches. To try and reduce the result set, go back and refine your search criteria.'
-      }
-      else if (res.data.length == 0) {
-        warning = 'Your search returned no results. Please go back and try again.'
-      }
-      else {
-        warning = ''
-      }
-      this.context.router.history.push('/select', { authors: res.data, warning: warning });
+      const { rv, warning, isError } = this.generateWarning(res.data);
+      this.context.router.history.push('/select', { authors: rv, warning: warning, error: isError });
     },
     (err) => { console.log(err) }
     );

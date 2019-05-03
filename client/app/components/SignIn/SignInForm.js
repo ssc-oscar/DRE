@@ -1,7 +1,6 @@
 import React from 'react';
 import TextFieldGroup from '../common/TextFieldGroup';
 import PropTypes from 'prop-types';
-// import validateInput from '../../../server/shared/validations/login';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import { login } from '../../../actions/signUpActions';
@@ -26,14 +25,23 @@ class SignInForm extends React.Component {
   }
 
   isValid() {
-    return true;
-    // const { errors, isValid } = validateInput(this.state);
+    let isValid = true;
+    let errors = {form: ''}
 
-    // if (!isValid) {
-    //   this.setState({ errors });
-    // }
+    if (this.state.identifier.trim().length == 0) {
+      isValid = false;
+      errors.form += 'Please enter a valid username. '
+    }
+    if (this.state.password.trim().length == 0) {
+      isValid = false;
+      errors.form += 'Please enter a valid password.'
+    }
 
-    // return isValid;
+    if (!isValid) {
+      this.setState({ errors });
+    }
+
+    return isValid;
   }
 
   onSubmit(e) {
@@ -67,6 +75,7 @@ class SignInForm extends React.Component {
             field="identifier"
             label="Email *"
             focus={true}
+            type="email"
             value={identifier}
             error={errors.identifier}
             onChange={this.onChange}
