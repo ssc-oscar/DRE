@@ -1,55 +1,56 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
 import AuthorCard from '../common/AuthorCard';
 import { ListGroup, FormGroup, Alert, Button, Col, Row } from 'reactstrap';
-
-Array.prototype.diff = function (a) {
-  return this.filter(function (i) {
-      return a.indexOf(i) === -1;
-  })
-}
 
 class AuthorResultsForm extends React.Component {
   constructor(props) {
     super(props);
 
-    let all_ids = this.props.authors.map(a => a.id);
     this.state = {
       authors: this.props.authors,
       warning: this.props.warning,
-      selected_authors: [],
-      omitted_authors: [],
-      isError: this.props.error,
-      all_authors: all_ids
+      isError: this.props.error
     }
 
     this.onSubmit = this.onSubmit.bind(this);
+    this.onSelectButton = this.onSelectButton.bind(this);
     this.onClickAuthor = this.onClickAuthor.bind(this);
     this.onClick = this.onClick.bind(this);
   }
 
   onClickAuthor(remove, id) {
-    let ids = this.state.selected_authors;
-    let omitted = [];
+    let authors = this.state.authors;
+    const i = authors.findIndex((a => a._id == id));
+    authors[i].active = !authors[i].active;
 
-    if (remove) {
-      ids.splice(ids.indexOf(id), 1);
+    this.setState({
+      authors: authors
+    })
+  }
+
+  onSelectButton(type) {
+    let authors = this.state.authors;
+
+    if (type == 'select') {
+      authors = authors.map(a => { a.active = true; return a; });
+      this.setState({
+        authors: authors
+      })
     }
     else {
-      ids.push(id);
+      authors = authors.map(a => { a.active = false; return a; });
+      this.setState({
+        authors: authors
+      })
     }
-
-    omitted = this.state.all_authors.diff(ids);
-    this.setState({
-      selected_authors: ids,
-      omitted_authors: omitted
-    }, () => { })
   }
 
   onClick(e) {
     if (this.state.isError) {
-      this.context.router.history.push('/search');
+      this.props.history.push('/search');
     }
     else {
       this.onSubmit(e);
@@ -57,37 +58,42 @@ class AuthorResultsForm extends React.Component {
   }
 
   onSubmit(e) {
-    let ids = this.state.selected_authors;
-    let omitted = []
-    
     e.preventDefault();
-    omitted = this.state.all_authors.diff(ids);
+    let omitted_objs = []
+    let selected_objs = []
+    const all = this.state.authors
+
+    for (let i = 0; i < all.length; i++) {
+      if (!all[i].active) omitted_objs.push(all[i]);
+      else selected_objs.push(all[i]);
+    }
+
     this.props.submitAuthors({
-      selected: ids,
-      omitted: omitted
+      selected: selected_objs,
+      omitted: omitted_objs
     })
     .then(d => {
-      this.context.router.history.push('/dash');
+      this.props.history.push('/dash');
     },
     (err) => { console.log(err) }
     );
   }
 
   render() {
-    const { authors } = this.state;
-    const cards = authors.map(a =>
-    <AuthorCard key={a.id} author={a} onClickAuthor={this.onClickAuthor}/>)
+    const { authors, omitted_ids, selected_ids } = this.state;
+    
+    const cards = authors.map(a => <AuthorCard key={a.id} author={a} onClickAuthor={this.onClickAuthor}/>);
     return (
       <form onSubmit={this.onSubmit}>
         {this.state.warning && <Alert color="danger">{this.state.warning}</Alert>}
-        {/* <Row className="justify-content-center my-4">
+        <Row className="justify-content-center my-4">
           <Col xs="6" className="text-center">
-            <Button color="primary">Select All</Button>
+            <Button onClick={() => this.onSelectButton('select')} color="primary">Select All</Button>
           </Col>
           <Col xs="6" className="text-center">
-            <Button color="primary">Unselect All</Button>
+            <Button onClick={() => this.onSelectButton('deselect')} color="primary">Deselect All</Button>
           </Col>
-        </Row> */}
+        </Row>
         <ListGroup>
           {cards}
         </ListGroup>
@@ -105,8 +111,4 @@ AuthorResultsForm.propTypes = {
   addFlashMessage: PropTypes.func.isRequired
 }
 
-AuthorResultsForm.contextTypes = {
-  router: PropTypes.object.isRequired
-}
-
-export default AuthorResultsForm;
+export default withRouter(AuthorResultsForm);

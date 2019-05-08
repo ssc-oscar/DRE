@@ -10,20 +10,37 @@ const authenticate = require('../../middlewares/authenticate');
 // const isEmpty = require('lodash/isEmpty');
 
 module.exports = (app) => {
+
+  // Submit author selections
   app.post('/api/users/submit', authenticate, (req, res, next) => {
     const data = req.body;
     const userId = req.currentUser;
-    console.log(data, userId);
+
     User.updateOne({_id: userId.id}, {
       selectedIds: data.selected,
       omittedIds: data.omitted,
+      hasSearched: true,
       lastUpdated: Date.now()
     }, function(err, affected, resp) {
-      // console.log(affected);
+      // console.log(err);
+      // next(err);
     })
-    res.status(200).json(data);
+
+    const token = jwt.sign({
+      id: userId.id,
+      email: userId.email,
+      hasSearched: true,
+      selectedIds: data.selected,
+      omittedIds: data.omitted,
+      suggestedIds: []
+    }, config.jwtSecret);
+    res.status(200).json({
+      success: true,
+      token: token
+    });
   })
 
+  // Search for authorship records
   app.post('/api/users/search', authenticate, (req, res, next) => {
     let { body } = req;
     let results = [];
@@ -36,7 +53,8 @@ module.exports = (app) => {
     User.updateOne({_id: userId}, {
       searchParams: searchParams
     }, function(err, affected, resp) {
-      // console.log(affected);
+      // console.log(err);
+      // next(err);
     })
 
     Promise.all(queries).then((rv) => {
@@ -60,6 +78,7 @@ module.exports = (app) => {
     });
   })
 
+  // Login
   app.post('/api/users/login', (req, res, next) => {
     const { body } = req;
     const { identifier, password } = body;
@@ -77,7 +96,10 @@ module.exports = (app) => {
         const token = jwt.sign({
           id: user._id,
           email: user.email,
-          hasSearched: user.hasSearched
+          hasSearched: user.hasSearched,
+          selectedIds: user.selectedIds,
+          omittedIds: user.omittedIds,
+          suggestedIds: user.suggestedIds
         }, config.jwtSecret);
         res.status(200).json({
           success: true,
@@ -94,9 +116,8 @@ module.exports = (app) => {
     })
     .catch((err) => next(err));
   })
-  /*
-   * Sign up
-   */
+
+  // Signup
   app.post('/api/users/signup', (req, res, next) => {
     const { errors, isValid } = validateSignupInput(req.body);
     if (!isValid) {

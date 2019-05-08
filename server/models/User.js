@@ -24,11 +24,15 @@ const UserSchema = new mongoose.Schema({
     default: false
   },
   selectedIds: {
-    type: [String],
+    type: [Object],
+    default: []
+  },
+  suggestedIds: {
+    type: [Object],
     default: []
   },
   omittedIds: {
-    type: [String],
+    type: [Object],
     default: []
   },
   signUpDate: {

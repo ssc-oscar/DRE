@@ -112,9 +112,12 @@ class AuthorSearchForm extends React.Component {
     this.props.getAuthors(this.state)
     .then( (res) => {
       const { rv, warning, isError } = this.generateWarning(res.data);
-      this.context.router.history.push('/select', { authors: rv, warning: warning, error: isError });
+      this.props.history.push('/select', {
+        authors: rv.map(a => { a.active = false; return a;}),
+        warning: warning,
+        error: isError });
     },
-    (err) => { console.log(err) }
+    (err) => { console.log('error', err) }
     );
   }
 
@@ -196,8 +199,4 @@ AuthorSearchForm.propTypes = {
   getAuthors: PropTypes.func.isRequired
 }
 
-AuthorSearchForm.contextTypes = {
-  router: PropTypes.object.isRequired
-}
-
-export default AuthorSearchForm;
+export default withRouter(AuthorSearchForm);

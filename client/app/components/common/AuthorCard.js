@@ -7,8 +7,7 @@ class AuthorCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...props.author,
-      active: false
+      ...props.author
     }
     this.onClick = this.onClick.bind(this);
   }
@@ -16,7 +15,13 @@ class AuthorCard extends React.Component {
   onClick(e) {
     this.setState({
       active: !this.state.active
-    }, () => { this.props.onClickAuthor(!this.state.active, this.state.id) })
+    }, () => { this.props.onClickAuthor(!this.state.active, this.state._id) })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props != nextProps) {
+      this.setState({ ...nextProps.author });
+    }
   }
 
   render() {
