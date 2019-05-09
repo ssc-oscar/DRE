@@ -22,7 +22,7 @@ module.exports = (app) => {
       hasSearched: true,
       lastUpdated: Date.now()
     }, function(err, affected, resp) {
-      // console.log(err);
+      console.log(err);
       // next(err);
     })
 
@@ -93,10 +93,12 @@ module.exports = (app) => {
         })
       }
       if (user.validPassword(password)) {
-        const token = jwt.sign({
+        const userToken = jwt.sign({
           id: user._id,
           email: user.email,
-          hasSearched: user.hasSearched,
+          hasSearched: user.hasSearched
+        }, config.jwtSecret);
+        const dataToken = jwt.sign({
           selectedIds: user.selectedIds,
           omittedIds: user.omittedIds,
           suggestedIds: user.suggestedIds
@@ -104,7 +106,8 @@ module.exports = (app) => {
         res.status(200).json({
           success: true,
           message: 'Signed In',
-          token: token
+          userToken: userToken,
+          dataToken: dataToken
         });
       }
       else {

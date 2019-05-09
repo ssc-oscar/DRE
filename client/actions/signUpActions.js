@@ -13,10 +13,13 @@ export function setCurrentUser(user) {
 export function login(data) {
   return dispatch => {
     return axios.post('/api/users/login', data).then(res => {
-      const token = res.data.token;
-      localStorage.setItem('jwtToken', token);
-      setAuthToken(token);
-      dispatch(setCurrentUser(jwt.decode(token)));
+      const userToken = res.data.userToken;
+      const dataToken = res.data.dataToken;
+      const user = {...jwt.decode(userToken), ...jwt.decode(dataToken)};
+
+      localStorage.setItem('jwtToken', userToken);
+      setAuthToken(userToken);
+      dispatch(setCurrentUser(user));
     });
   }
 }
@@ -44,8 +47,6 @@ export function submitAuthors(authors) {
   return dispatch => {
     return axios.post('/api/users/submit', authors).then(res => {
       const token = res.data.token;
-      localStorage.setItem('jwtToken', token);
-      setAuthToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
     })
   }

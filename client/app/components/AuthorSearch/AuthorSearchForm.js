@@ -117,7 +117,7 @@ class AuthorSearchForm extends React.Component {
         warning: warning,
         error: isError });
     },
-    (err) => { console.log('error', err) }
+    (err) => { console.log('error', err.response) }
     );
   }
 
