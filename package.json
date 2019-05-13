@@ -11,7 +11,8 @@
   "private": true,
   "scripts": {
     "start": "webpack -p --progress --profile --colors",
-    "start:dev": "node server"
+    "start:dev": "node server",
+    "start:prod": "PORT=80 NODE_ENV=production node server"
   },
   "engines": {
     "node": ">=6"
@@ -49,6 +50,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-tag-input": "^6.4.0",
+    "react-vis": "^1.11.7",
     "reactstrap": "^7.1.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",

@@ -1,5 +1,6 @@
 const User = require('../../models/User');
 const Author = require('../../models/Author');
+const Profile = require('../../models/Profile');
 const validateSignupInput = require('../../shared/validations/SignUp');
 const validateAuthorInput = require('../../shared/validations/AuthorSearch');
 const jwt = require('jsonwebtoken');
@@ -25,20 +26,47 @@ module.exports = (app) => {
       console.log(err);
       // next(err);
     })
-
-    const token = jwt.sign({
-      id: userId.id,
-      email: userId.email,
-      hasSearched: true,
-      selectedIds: data.selected,
-      omittedIds: data.omitted,
-      suggestedIds: []
-    }, config.jwtSecret);
     res.status(200).json({
-      success: true,
-      token: token
+      success: true
     });
   })
+
+  // Get user information
+  app.get('/api/users/user/:id', authenticate, (req, res, next) => {
+    const id = req.params.id;
+    console.log('here with para', id);
+
+    User.findOne({ _id: id })
+    .exec()
+    .then((user) => {
+      console.log(user);
+      const token = jwt.sign({
+        id: user._id,
+        email: user.email,
+        hasSearched: user.hasSearched,
+        selectedIds: user.selectedIds,
+        omittedIds: user.omittedIds,
+        suggestedIds: user.suggestedIds
+      }, config.jwtSecret);
+      res.status(200).json({
+        success: true,
+        token: token
+      });
+    })
+    .catch((err) => console.log(err));
+  });
+
+  // Get profile information
+  app.get('/api/users/profile/:id', authenticate, (req, res, next) => {
+    const id = req.params.id;
+
+    Profile.findOne({ user: id })
+    .exec()
+    .then((rv) => {
+      res.status(200).json(rv);
+    })
+    .catch((err) => console.log(err));
+  });
 
   // Search for authorship records
   app.post('/api/users/search', authenticate, (req, res, next) => {

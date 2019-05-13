@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SignInForm from '../SignIn/SignInForm';
 import SignUpForm from '../SignUp/SignUpForm';
+import { withRouter } from "react-router-dom";
 import { userSignUpRequest, getAuthors } from '../../../actions/signUpActions';
 import { connect } from 'react-redux';
 import { Container, Row, Col, Card, CardHeader } from "reactstrap";
@@ -17,6 +18,13 @@ class Home extends Component {
       isSignUp: true
     };
     this.toggle = this.toggle.bind(this);
+  }
+
+  componentDidMount() {
+    const token = localStorage.jwtToken;
+    if (token) {
+      this.props.history.push('/dash');
+    }
   }
 
   componentWillMount() {
@@ -101,4 +109,4 @@ Home.propTypes = {
   getAuthors: PropTypes.func.isRequired
 }
 
-export default connect(null, { userSignUpRequest, addFlashMessage, getAuthors }) (Home);
+export default connect(null, { userSignUpRequest, addFlashMessage, getAuthors })(withRouter(Home));

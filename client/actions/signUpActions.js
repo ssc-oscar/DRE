@@ -46,8 +46,8 @@ export function userSignUpRequest(userData) {
 export function submitAuthors(authors) {
   return dispatch => {
     return axios.post('/api/users/submit', authors).then(res => {
-      const token = res.data.token;
-      dispatch(setCurrentUser(jwt.decode(token)));
+      // const token = res.data.token;
+      // dispatch(setCurrentUser(jwt.decode(token)));
     })
   }
 }

@@ -20,6 +20,7 @@ class App extends React.Component {
   componentWillUnmount() {
     document.body.classList.remove("bg-default");
   }
+
   render() {
     return (
       <>
@@ -38,6 +39,7 @@ class App extends React.Component {
                 </Row>
               </div>
             </Container>
+            {this.props.location.pathname != '/dash' &&
             <div className="separator separator-bottom separator-skew zindex-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -53,6 +55,7 @@ class App extends React.Component {
                 />
               </svg>
             </div>
+            }
             </div>
             <Container className="mt--8 pb-5">
               {this.state.children}

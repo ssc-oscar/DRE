@@ -14,9 +14,8 @@ export default {
     blurb: 'Please select the authorship records below that you believe belong to you.'
   },
   '/dash': {
-    title: 'Please wait while we populate your dashboard!',
-    blurb: 'You will receive an email at the email account you signed up with once your developer \
-    profile is ready! Please make sure to check your spam folder as well.'
+    title: 'Dashboard',
+    blurb: ''
   },
   '/error': {
     title: 'Page not found or an error occurred.',

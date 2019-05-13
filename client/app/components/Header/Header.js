@@ -92,20 +92,6 @@ class Header extends React.Component {
               <span className="navbar-toggler-icon" />
             </button>
             <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
-              {/* <div className="navbar-collapse-header d-md-none">
-                <Row>
-                  <Col className="collapse-brand" xs="6">
-                    <NavLink
-                      to={isAuthenticated ? "/" : "/dash"}
-                      tag={Link}>
-                      <img
-                        alt="logo"
-                        src={require("../../../public/assets/img/header.png")}
-                      />
-                    </NavLink>
-                  </Col>
-                </Row>
-              </div> */}
               <Nav className="ml-auto" navbar>
                 { isAuthenticated ? userLinks : guestLinks }
               </Nav>

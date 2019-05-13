@@ -19,6 +19,7 @@ class AuthorResultsForm extends React.Component {
     this.onSelectButton = this.onSelectButton.bind(this);
     this.onClickAuthor = this.onClickAuthor.bind(this);
     this.onClick = this.onClick.bind(this);
+    console.log(this.state);
   }
 
   onClickAuthor(remove, id) {
