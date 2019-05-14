@@ -12,7 +12,7 @@
   "scripts": {
     "start": "webpack -p --progress --profile --colors",
     "start:dev": "node server",
-    "start:prod": "PORT=80 NODE_ENV=production node server"
+    "start:prod": "PORT=8080 node server"
   },
   "engines": {
     "node": ">=6"
@@ -21,6 +21,7 @@
     "@babel/core": "^7.0.0-beta.42",
     "@babel/preset-env": "^7.0.0-beta.42",
     "@babel/preset-react": "^7.0.0-beta.42",
+    "@nivo/pie": "^0.57.0",
     "autoprefixer": "^8.2.0",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.0-beta.2",

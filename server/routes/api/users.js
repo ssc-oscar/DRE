@@ -34,12 +34,10 @@ module.exports = (app) => {
   // Get user information
   app.get('/api/users/user/:id', authenticate, (req, res, next) => {
     const id = req.params.id;
-    console.log('here with para', id);
 
     User.findOne({ _id: id })
     .exec()
     .then((user) => {
-      console.log(user);
       const token = jwt.sign({
         id: user._id,
         email: user.email,

@@ -13,7 +13,6 @@ class DashboardHeader extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('nextprops', nextProps);
     if (this.props != nextProps) {
       this.setState({ ...nextProps.stats });
     }

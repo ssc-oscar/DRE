@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DashboardHeader from './DashboardHeader';
-import DashboardLanguage from './DashboardLanguage';
+import StatTable from '../common/StatTable';
+import LanguageChart from './LanguageChart';
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -64,7 +65,24 @@ class DashboardForm extends React.Component {
     return (
       <>
         <Container className="mt-4" fluid>
-        <DashboardHeader stats={this.state.profile.stats}/>
+          <DashboardHeader stats={this.state.profile.stats}/>
+          <Row>
+            <Col md="6">
+              <StatTable
+              stats={this.state.profile.projects}
+              headers={['Project Name', 'Your Commits', 'Total Commits']}
+              title="Your Projects"/>
+            </Col>
+            <Col md="6">
+              <LanguageChart stats={this.state.profile.files}/>
+            </Col>
+          </Row>
+          <Row>
+            {/* <Col md="6">
+              <StatTable stats={this.state.profile.friends}/>
+            </Col> */}
+          </Row>
+          
           {/* <Row>
             <Col className="mb-5 mb-xl-0" xl="8">
               <Card className="bg-gradient-default shadow">
