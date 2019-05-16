@@ -2,8 +2,9 @@ import React from "react";
 
 // reactstrap components
 import { Container, Row, Col, Card, CardHeader, Button, Table } from "reactstrap";
+import { styles } from './styles';
 
-class StatTable extends React.Component {
+class ProjStatTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +23,7 @@ class StatTable extends React.Component {
         stats: nextProps.stats,
         title: nextProps.title,
         headers: nextProps.headers
-      }, () => console.log(this.state));
+      }, () => {});
     }
   }
 
@@ -40,16 +41,31 @@ class StatTable extends React.Component {
   renderBody() {
     let { stats } = this.state;
     if (stats) {
-      stats.sort((a,b) => b.nMyC - a.nMyC);
+      if (this.state.title == 'Your Projects')
+        stats.sort((a,b) => b.nMyC - a.nMyC);
+      else
+        stats.sort((a,b) => b.nc - a.nc);
       return stats.map((proj, index) => {
-        const { nC, url, name, nMyC } = proj //destructuring
-        return (
-            <tr key={index}>
-              <th scope="row"><a href={`${url}`} target="_blank">{name}</a></th>
-              <td>{nMyC}</td>
-              <td>{nC}</td>
-            </tr>
-        )
+        if (this.state.title == 'Your Projects') {
+          const { nC, url, name, nMyC } = proj
+          return (
+              <tr key={index}>
+                <th scope="row"><a href={`${url}`} target="_blank">{name}</a></th>
+                <td>{nMyC}</td>
+                <td>{nC}</td>
+              </tr>
+          )
+        }
+        else {
+          const { nc, name, nAuth } = proj
+          return (
+              <tr key={index}>
+                <th scope="row">{name}</th>
+                <td>{nc}</td>
+                <td>{nAuth}</td>
+              </tr>
+          )
+        }
       })
     }
   }
@@ -62,7 +78,7 @@ class StatTable extends React.Component {
             <div className="col">
               <h3 className="mb-0">{this.state.title}</h3>
             </div>
-            <div className="col text-right">
+            {/* <div className="col text-right">
               <Button
                 color="primary"
                 href="#pablo"
@@ -71,10 +87,10 @@ class StatTable extends React.Component {
               >
                 See all
               </Button>
-            </div>
+            </div> */}
           </Row>
         </CardHeader>
-        <Table className="align-items-center table-flush" responsive>
+        <Table style={styles.table} className="align-items-center table-flush" responsive>
           <thead className="thead-light">
             <tr>
               {this.renderHeaders()}
@@ -98,4 +114,4 @@ class StatTable extends React.Component {
   }
 }
 
-export default StatTable;
+export default ProjStatTable;

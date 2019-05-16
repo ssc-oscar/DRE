@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DashboardHeader from './DashboardHeader';
-import StatTable from '../common/StatTable';
+import ProjStatTable from '../common/ProjStatTable';
+import FriendStatTable from '../common/FriendStatTable';
 import LanguageChart from './LanguageChart';
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import {
   Button,
   Card,
@@ -19,7 +21,11 @@ import {
   Table,
   Container,
   Row,
-  Col
+  Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter
 } from "reactstrap";
 
 class DashboardForm extends React.Component {
@@ -27,9 +33,16 @@ class DashboardForm extends React.Component {
     super(props);
     this.state = {
       user: this.props.auth.user,
-      profile: {}
+      profile: {},
+      showFriend: false,
+      friend: {
+        id: '',
+        projects: []
+      }
     }
     this.listAuthors = this.listAuthors.bind(this);
+    this.toggleFriend = this.toggleFriend.bind(this);
+    this.onClickFriend = this.onClickFriend.bind(this);
   }
 
   componentDidMount() {
@@ -41,15 +54,23 @@ class DashboardForm extends React.Component {
         this.setState({
           user: this.props.auth.user,
           profile: rv.data
-        }, () => {})
+        })
       });
     })
+  }
+
+  onClickFriend(friend) {
+    this.toggleFriend();
+    this.setState({ friend: friend }, () => {});
+  }
+
+  toggleFriend() {
+    this.setState({ showFriend: !this.state.showFriend });
   }
 
   listAuthors() {
     let { omittedIds, selectedIds, suggestedIds } = this.state.user
 
-    // console.log(omittedIds, selectedIds, suggestedIds);
     selectedIds = selectedIds.map(a => { a.active = true; return a; });
     omittedIds = omittedIds.map(a => { a.active = false; return a; });
     suggestedIds = suggestedIds.map(a => { a.active = false; return a; });
@@ -65,10 +86,42 @@ class DashboardForm extends React.Component {
     return (
       <>
         <Container className="mt-4" fluid>
+          <Modal centered={true} isOpen={this.state.showFriend} size="lg" fade={false} toggle={this.toggleFriend}>
+            <ModalHeader className="pb-0 mb-0" toggle={this.toggleFriend}>
+              {<p style={{'fontSize': '24px'}}>{this.state.friend.id}</p>}
+            </ModalHeader>
+            <ModalBody>
+            <Table className="align-items-center table-flush" responsive>
+              <thead className="thead-light">
+                <tr>
+                  <th scope="col">Project Name</th>
+                  <th scope="col">Their Commits</th>
+                  <th scope="col">Total Project Collaborators</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.friend.projects.sort((a,b) => b.nc - a.nc)
+                .map((proj, index) => {
+                  const { name, nAuth, nc } = proj
+                  return (
+                      <tr key={index}>
+                        <th scope="row">{name}</th>
+                        <td>{nc}</td>
+                        <td>{nAuth}</td>
+                      </tr>
+                  )
+                })}
+              </tbody>
+            </Table>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={this.toggleFriend}>Close</Button>
+            </ModalFooter>
+          </Modal>
           <DashboardHeader stats={this.state.profile.stats}/>
           <Row>
             <Col md="6">
-              <StatTable
+              <ProjStatTable
               stats={this.state.profile.projects}
               headers={['Project Name', 'Your Commits', 'Total Commits']}
               title="Your Projects"/>
@@ -78,9 +131,14 @@ class DashboardForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            {/* <Col md="6">
-              <StatTable stats={this.state.profile.friends}/>
-            </Col> */}
+            <Col md="6" className="mt-4 mb-4">
+              <FriendStatTable
+              onClickFriend={this.onClickFriend}
+              stats={this.state.profile.friends}
+              headers={['Friend']}
+              title="Your Collaborators"
+              />
+            </Col>
           </Row>
           
           {/* <Row>
@@ -289,7 +347,9 @@ class DashboardForm extends React.Component {
               </Card>
             </Col>
           </Row>*/}
-          <Button onClick={this.listAuthors}>Back to Search</Button>
+          <div className="text-center">
+            <Button onClick={this.listAuthors}>Back to Search</Button>
+          </div>
         </Container>
       </>
     );

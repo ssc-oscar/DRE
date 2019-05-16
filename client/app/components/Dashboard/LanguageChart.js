@@ -11,8 +11,6 @@ class LanguageChart extends React.Component {
       stats: [],
       value: false
     }
-
-    // this.renderBody = this.renderBody.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,29 +23,10 @@ class LanguageChart extends React.Component {
         for (const k of keys) {
           transformed.push({ value: stats[k], id: k, label: k})
         }
-        this.setState({ stats: transformed }, () => console.log(this.state));
+        this.setState({ stats: transformed }, () => {});
       }
     }
   }
-
-  // renderBody() {
-  //   let { stats } = this.state;
-  //   console.log('got stats', stats);
-  //   if (stats) {
-  //     console.log('about to sort', stats);
-  //     stats.sort((a,b) => b.nMyC - a.nMyC);
-  //     return stats.map((proj, index) => {
-  //       const { nC, url, name, nMyC } = proj //destructuring
-  //       return (
-  //           <tr key={index}>
-  //             <th scope="row"><a href={`${url}`} target="_blank">{name}</a></th>
-  //             <td>{nMyC}</td>
-  //             <td>{nC}</td>
-  //           </tr>
-  //       )
-  //     })
-  //   }
-  // }
 
   render() {
     const { value } = this.state;
@@ -58,16 +37,6 @@ class LanguageChart extends React.Component {
             <div className="col">
               <h3 className="mb-0">Your Coding Languages</h3>
             </div>
-            {/* <div className="col text-right">
-              <Button
-                color="primary"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-                size="sm"
-              >
-                See all
-              </Button>
-            </div> */}
           </Row>
         </CardHeader>
         <CardBody style={styles.body} className="text-center">
