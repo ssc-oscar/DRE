@@ -7,10 +7,20 @@ import { ResponsivePie } from '@nivo/pie';
 class LanguageChart extends React.Component {
   constructor(props) {
     super(props);
+    let transformed = this.transformStats(props.stats);
     this.state = {
-      stats: [],
+      stats: transformed,
       value: false
     }
+  }
+
+  transformStats(stats) {
+    const keys = Object.keys(stats);
+    let transformed = []
+    for (const k of keys) {
+      transformed.push({ value: stats[k], id: k, label: k})
+    }
+    return transformed;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -18,11 +28,7 @@ class LanguageChart extends React.Component {
       const stats = nextProps.stats;
       
       if (stats) {
-        const keys = Object.keys(stats);
-        let transformed = []
-        for (const k of keys) {
-          transformed.push({ value: stats[k], id: k, label: k})
-        }
+        let transformed = this.transformStats(stats);
         this.setState({ stats: transformed }, () => {});
       }
     }

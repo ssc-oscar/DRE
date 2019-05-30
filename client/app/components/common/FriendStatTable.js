@@ -21,9 +21,9 @@ class ProjStatTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      stats: [],
-      title: '',
-      headers: []
+      stats: props.stats,
+      title: props.title,
+      headers: props.headers
     }
 
     this.renderBody = this.renderBody.bind(this);

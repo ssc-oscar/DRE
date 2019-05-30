@@ -8,22 +8,24 @@ class ProjStatTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      stats: [],
-      title: '',
-      headers: []
+      stats: props.stats,
+      title: props.title,
+      headers: props.headers
     }
+    console.log('just set', this.state)
 
     this.renderBody = this.renderBody.bind(this);
     this.renderHeaders = this.renderHeaders.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('here waiting for props');
     if (this.props != nextProps) {
       this.setState({
         stats: nextProps.stats,
         title: nextProps.title,
         headers: nextProps.headers
-      }, () => {});
+      }, () => { console.log('just set', this.state)});
     }
   }
 
