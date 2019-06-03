@@ -4,12 +4,12 @@ import DashboardHeader from './DashboardHeader';
 import ProjStatTable from '../common/ProjStatTable';
 import FriendStatTable from '../common/FriendStatTable';
 import LanguageChart from './LanguageChart';
+import TorvaldsGraph from './TorvaldsGraph';
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import { Graph } from 'react-d3-graph';
 
 import {
   Button,
@@ -46,6 +46,7 @@ class DashboardForm extends React.Component {
     this.listAuthors = this.listAuthors.bind(this);
     this.toggleFriend = this.toggleFriend.bind(this);
     this.onClickFriend = this.onClickFriend.bind(this);
+    this.setupTorvalds = this.setupTorvalds.bind(this);
   }
 
   componentDidMount() {
@@ -70,6 +71,10 @@ class DashboardForm extends React.Component {
         }
       });
     })
+  }
+
+  setupTorvalds(tridx) {
+
   }
 
   onClickFriend(friend) {
@@ -98,109 +103,6 @@ class DashboardForm extends React.Component {
   render() {
     if (!this.state.ready) {
       return <div />
-    }
-    let data = {
-      nodes: [
-        {
-          id: 'Andrey <akarnauc@vols.utk.edu>',
-          x: 25,
-          y: 25,
-          color: "rgb(244, 117, 96)"
-        },
-        {
-          id: 'Paul Preston Provins <34664319+3PIV@users.noreply.github.com>',
-          x: 25,
-          y: 100,
-          color: "rgb(97, 205, 187)"
-        },
-        {
-          id: 'Florian Larysch <fl@n621.de>',
-          x: 25,
-          y: 200,
-          color: "rgb(97, 205, 187)"
-        },
-        {
-          id: 'Linus Torvalds <torvalds@athlon.transmeta.com>',
-          x: 50,
-          y: 300,
-          color: "rgb(244, 117, 96)"
-        }
-      ],
-      links: [
-        {
-          source: 'Andrey <akarnauc@vols.utk.edu>',
-          target: 'Paul Preston Provins <34664319+3PIV@users.noreply.github.com>',
-          label: 'fdac18_Miniproject3'
-        },
-        {
-          source: 'Paul Preston Provins <34664319+3PIV@users.noreply.github.com>',
-          target: 'Florian Larysch <fl@n621.de>',
-          label: 'neovim_neovim'
-        },
-        {
-          source: 'Florian Larysch <fl@n621.de>',
-          target: 'Linus Torvalds <torvalds@athlon.transmeta.com>',
-          label: 'Tomoms_kernel_laptop'
-        }
-      ]
-    }
-    const myConfig = {
-      "automaticRearrangeAfterDropNode": false,
-      "collapsible": false,
-      "directed": false,
-      "focusAnimationDuration": 0.75,
-      "focusZoom": 1,
-      "height": 500,
-      "highlightDegree": 1,
-      "highlightOpacity": 0.2,
-      "linkHighlightBehavior": true,
-      "maxZoom": 1.2,
-      "minZoom": 1,
-      "nodeHighlightBehavior": true,
-      "panAndZoom": false,
-      "staticGraph": true,
-      "width": "",
-      "d3": {
-        "alphaTarget": 0.05,
-        "gravity": -100,
-        "linkLength": 100,
-        "linkStrength": 1
-      },
-      "node": {
-        "color": "#d3d3d3",
-        "fontColor": "black",
-        "fontSize": 12,
-        "fontWeight": "normal",
-        "highlightColor": "SAME",
-        "highlightFontSize": 12,
-        "highlightFontWeight": "bold",
-        "highlightStrokeColor": "SAME",
-        "highlightStrokeWidth": 1.5,
-        "labelProperty": "name",
-        "mouseCursor": "pointer",
-        "opacity": 1,
-        "renderLabel": true,
-        "size": 450,
-        "strokeColor": "none",
-        "strokeWidth": 1.5,
-        "svg": "",
-        "symbolType": "circle"
-      },
-      "link": {
-        "color": "#d3d3d3",
-        "fontColor": "black",
-        "fontSize": 8,
-        "fontWeight": "normal",
-        "highlightColor": "rgb(232, 193, 160)",
-        "highlightFontSize": 8,
-        "highlightFontWeight": "normal",
-        "labelProperty": "label",
-        "mouseCursor": "pointer",
-        "opacity": 1,
-        "renderLabel": false,
-        "semanticStrokeWidth": false,
-        "strokeWidth": 4
-      }
     }
     return (
       <>
@@ -270,24 +172,11 @@ class DashboardForm extends React.Component {
               title="Your Collaborators"
               />
             </Col>
+            {!isEmpty(this.state.profile.tridx) &&
             <Col md="6" className="mt-4 mb-4">
-              <Card className="shadow pr-0">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Torvald's Index</h3>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody style={styles.body} className="text-center">
-                  <Graph
-                    id="tridx"
-                    data={data}
-                    config={myConfig}
-                  />
-                </CardBody>
-              </Card>
+              <TorvaldsGraph stats={this.state.profile.tridx} />
             </Col>
+            }
           </Row>
           <div className="text-center">
             <Button onClick={this.listAuthors}>Back to Search</Button>

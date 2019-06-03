@@ -38,7 +38,7 @@ class LanguageChart extends React.Component {
     const { value } = this.state;
     return (
       <Card className="shadow pr-0">
-        <CardHeader className="border-0">
+        <CardHeader className="border-1">
           <Row className="align-items-center">
             <div className="col">
               <h3 className="mb-0">Your Coding Languages</h3>
