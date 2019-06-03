@@ -172,11 +172,9 @@ class DashboardForm extends React.Component {
               title="Your Collaborators"
               />
             </Col>
-            {!isEmpty(this.state.profile.tridx) &&
             <Col md="6" className="mt-4 mb-4">
               <TorvaldsGraph stats={this.state.profile.tridx} />
             </Col>
-            }
           </Row>
           <div className="text-center">
             <Button onClick={this.listAuthors}>Back to Search</Button>
