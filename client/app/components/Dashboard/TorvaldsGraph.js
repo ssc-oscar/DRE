@@ -20,18 +20,18 @@ class TorvaldsGraph extends React.Component {
     let { nodes, links } = this.transformStats(props.stats);
     this.state = {
       stats: props.stats,
-      data: { nodes: nodes, links: links }
+      data: { nodes: nodes, links: links },
+      ready: false
     }
 
-    this.showTooltip = this.showTooltip.bind(this);
-    this.hideTooltip = this.hideTooltip.bind(this);
+    this.onMouseOverLink = this.onMouseOverLink.bind(this);
+    this.onMouseOutLink = this.onMouseOutLink.bind(this);
     this.handleLoad = this.handleLoad.bind(this);
   }
 
   transformStats(stats) {
     const { path, idx } = stats;
     const gap = 450/Math.ceil(path.length/2);
-    console.log(gap);
     const x = 25;
     let currY = 25;
     let i;
@@ -79,23 +79,41 @@ class TorvaldsGraph extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('load', this.handleLoad);
+    this.handleLoad();
   }
 
   handleLoad() {
-    let tt = document.createElementNS("http://www.w3.org/2000/svg","text")
-    tt.setAttribute('id', 'tooltip');
-    tt.setAttribute('font-size', '12px');
-    tt.textContent = 'Tooltip';
-    tt.setAttribute('visibility', 'hidden');
-    const svg = document.getElementsByTagName('svg')[1];
-    svg.appendChild(tt);
+    const gap = 450/Math.ceil(this.state.stats.path.length/2);
+    const x = 25;
+    let currY = 25;
+    const links = this.state.data.links;
 
-    const triggers = document.getElementsByClassName('link');
-    for (let i = 0; i < triggers.length; i++) {
-      triggers[i].addEventListener('mousemove', this.showTooltip);
-      triggers[i].addEventListener('mouseout', this.hideTooltip);
-    }
+    window.requestAnimationFrame(function() {
+      const svg = document.getElementById('tridx-graph-container-zoomable');
+      const triggers = document.getElementsByClassName('link');
+      if (triggers !== undefined) {
+        for (let i = 0; i < triggers.length; i++) {
+          let tt = document.createElementNS("http://www.w3.org/2000/svg","text")
+          const source = triggers[i].id.split(',')[0]
+          const target = triggers[i].id.split(',')[1]
+          const label = links.find(x => x.source == source && x.target == target).label
+          tt.setAttribute('id', 'tt-' + triggers[i].id);
+          tt.setAttribute('x', x+15);
+          tt.setAttribute('y', currY + gap/2);
+          tt.setAttribute('font-size', '12px');
+          tt.textContent = 'Worked on: ' + label;
+          tt.setAttribute('visibility', 'hidden');
+        
+          svg.appendChild(tt)
+          currY += gap
+        }
+      }
+    });
+    // this.setState({ ready: true }, () => {});
+
+    // let el = document.getElementById('tridx-graph-wrapper'),
+    // elClone = el.cloneNode(true);
+    // el.parentNode.replaceChild(elClone, el);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -109,24 +127,14 @@ class TorvaldsGraph extends React.Component {
     }
   }
 
-  showTooltip(e) {
-    const tooltip = document.getElementById('tooltip');
-    const source = e.target.id.split(',')[0]
-    const target = e.target.id.split(',')[1]
-    const label = this.state.data.links.find(x => x.source == source && x.target == target).label
-    const svg = document.getElementsByTagName('svg')[1];
-    const CTM = svg.getScreenCTM();
-    const mouseX = (e.clientX - CTM.e) / CTM.a;
-    const mouseY = (e.clientY - CTM.f) / CTM.d;
-    tooltip.setAttributeNS(null, "x", mouseX + 20 / CTM.a);
-    tooltip.setAttributeNS(null, "y", mouseY + 15 / CTM.d);
-    tooltip.textContent = 'Worked on: ' + label;
-    tooltip.setAttributeNS(null, "visibility", "visible");
+  onMouseOverLink(source, target) {
+    let tt = document.getElementById(`tt-${source},${target}`);
+    tt.setAttribute('visibility', 'visible');
   }
 
-  hideTooltip(e) {
-    const tooltip = document.getElementById('tooltip');
-    tooltip.setAttributeNS(null, "visibility", "hidden");
+  onMouseOutLink(source, target) {
+    let tt = document.getElementById(`tt-${source},${target}`);
+    tt.setAttribute('visibility', 'hidden');
   }
 
   render() {
@@ -140,7 +148,7 @@ class TorvaldsGraph extends React.Component {
       "highlightDegree": 1,
       "highlightOpacity": 0.2,
       "linkHighlightBehavior": true,
-      "maxZoom": 2,
+      "maxZoom": 1,
       "minZoom": 1,
       "nodeHighlightBehavior": true,
       "panAndZoom": true,
@@ -206,7 +214,8 @@ class TorvaldsGraph extends React.Component {
             id="tridx"
             data={this.state.data}
             config={myConfig}
-            // onMouseOverLink={() => this.onMouseOverLink(e)}
+            onMouseOverLink={this.onMouseOverLink}
+            onMouseOutLink={this.onMouseOutLink}
             onClickGraph={this.onClickGraph}
           />
         </CardBody>
