@@ -37,6 +37,7 @@ class DashboardForm extends React.Component {
       user: this.props.auth.user,
       profile: {},
       ready: false,
+      complete: false,
       showFriend: false,
       friend: {
         id: '',
@@ -56,16 +57,27 @@ class DashboardForm extends React.Component {
       this.props.getProfile(this.state.user.id)
       .then((rv) => {
         if (rv.data) {
+          let complete = true;
+
+          for (let key in rv.data) {
+            if (isEmpty(rv.data[key])) {
+              complete = false;
+              break;
+            }
+          }
+
           this.setState({
             user: this.props.auth.user,
             profile: rv.data,
-            ready: true
+            ready: true,
+            complete: complete
           })
         }
         else {
           this.setState({
             user: this.props.auth.user,
             profile: {},
+            complete: false,
             ready: true
           })
         }
@@ -106,19 +118,27 @@ class DashboardForm extends React.Component {
     }
     return (
       <>
-      {isEmpty(this.state.profile) ?
+      {isEmpty(this.state.profile) &&
         <Container className="mt-4" fluid>
           <Row>
             <Col className="mb-2">
-              <h2 className="text-center">Please wait while we populate your dashboard...</h2>
+              <h2 className="text-center">Please wait while we populate the rest of your dashboard...</h2>
             </Col>
           </Row>
           <div className="text-center">
             <Button onClick={this.listAuthors}>Back to Search</Button>
           </div>
         </Container>
-      :
+      }
         <Container className="mt-4" fluid>
+          {!this.state.complete &&
+            <Row>
+              <Col className="mb-2">
+                <h2 className="text-center">Please wait while we populate the rest of your dashboard...</h2>
+              </Col>
+            </Row>
+          }
+          {!isEmpty(this.state.friend) &&
           <Modal centered={true} isOpen={this.state.showFriend} size="lg" fade={false} toggle={this.toggleFriend}>
             <ModalHeader className="pb-0 mb-0" toggle={this.toggleFriend}>
               {<p style={{'fontSize': '24px'}}>{this.state.friend.id}</p>}
@@ -151,36 +171,44 @@ class DashboardForm extends React.Component {
               <Button color="primary" onClick={this.toggleFriend}>Close</Button>
             </ModalFooter>
           </Modal>
-          <DashboardHeader stats={this.state.profile.stats}/>
+          }
+          {!isEmpty(this.state.profile.stats) && <DashboardHeader stats={this.state.profile.stats}/>}
           <Row>
             <Col md="6">
-              <ProjStatTable
-              stats={this.state.profile.projects}
-              headers={['Project Name', 'Your Commits', 'Total Commits']}
-              title="Your Projects"/>
+              {!isEmpty(this.state.profile.projects) &&
+                <ProjStatTable
+                stats={this.state.profile.projects}
+                headers={['Project Name', 'Your Commits', 'Total Commits']}
+                title="Your Projects"/>
+              }
             </Col>
             <Col md="6">
-              <LanguageChart stats={this.state.profile.files}/>
+              {!isEmpty(this.state.profile.files) &&
+                <LanguageChart stats={this.state.profile.files}/>
+              }
             </Col>
           </Row>
           <Row>
             <Col md="6" className="mt-4 mb-4">
-              <FriendStatTable
-              onClickFriend={this.onClickFriend}
-              stats={this.state.profile.friends}
-              headers={['Friend']}
-              title="Your Collaborators"
-              />
+              {!isEmpty(this.state.profile.friends) &&
+                <FriendStatTable
+                onClickFriend={this.onClickFriend}
+                stats={this.state.profile.friends}
+                headers={['Friend']}
+                title="Your Collaborators"
+                />
+              }
             </Col>
             <Col md="6" className="mt-4 mb-4">
-              <TorvaldsGraph stats={this.state.profile.tridx} />
+              {!isEmpty(this.state.profile.tridx) &&
+                <TorvaldsGraph stats={this.state.profile.tridx} />
+              }  
             </Col>
           </Row>
           <div className="text-center">
             <Button onClick={this.listAuthors}>Back to Search</Button>
           </div>
         </Container>
-      }
       </>
     );
   }
