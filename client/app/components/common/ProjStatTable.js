@@ -1,7 +1,7 @@
 import React from "react";
 
 // reactstrap components
-import { Container, Row, Col, Card, CardHeader, Button, Table } from "reactstrap";
+import { Container, Row, Col, Card, CardHeader, Button, Table, UncontrolledTooltip } from "reactstrap";
 import { styles } from './styles';
 
 class ProjStatTable extends React.Component {
@@ -32,7 +32,7 @@ class ProjStatTable extends React.Component {
     if (headers.length) {
       return headers.map((header, index) => {
         return (
-          <th key={index} scope="col">{header}</th>
+          <th id={header} key={index} scope="col">{header}</th>
         )
       })
     }
@@ -43,7 +43,7 @@ class ProjStatTable extends React.Component {
     if (stats) {
       if (this.state.title == 'Your Projects')
         stats.sort((a,b) => b.nMyC - a.nMyC);
-      else
+      else if (this.state.title == 'Your Blobs')
         stats.sort((a,b) => b.nc - a.nc);
       return stats.map((proj, index) => {
         if (this.state.title == 'Your Projects') {
@@ -56,14 +56,14 @@ class ProjStatTable extends React.Component {
               </tr>
           )
         }
-        else {
-          const { nc, name, nAuth } = proj
+        else if (this.state.title == 'Your Blobs') {
+          const { nc, depth, users, blob } = proj;
           return (
-              <tr key={index}>
-                <th scope="row">{name}</th>
-                <td>{nc}</td>
-                <td>{nAuth}</td>
-              </tr>
+            <tr key={blob.substr(1,4)}>
+              <th scope="row">{blob}</th>
+              <td>{nc}</td>
+              <td>{depth}</td>
+            </tr>
           )
         }
       })
@@ -75,6 +75,9 @@ class ProjStatTable extends React.Component {
       <Card className="shadow">
         <CardHeader className="border-0">
           <Row className="align-items-center">
+            <UncontrolledTooltip placement="bottom" target="Duplications">
+            The number of times your blob has appeared in commits by other users.
+            </UncontrolledTooltip>
             <div className="col">
               <h3 className="mb-0">{this.state.title}</h3>
             </div>
@@ -91,12 +94,12 @@ class ProjStatTable extends React.Component {
           </Row>
         </CardHeader>
         <Table style={styles.table} className="align-items-center table-flush" responsive>
-          <thead className="thead-light">
+          <thead style={styles.thead} className="thead-light">
             <tr>
               {this.renderHeaders()}
             </tr>
           </thead>
-          <tbody>
+          <tbody style={styles.tbody}>
             {this.renderBody()}
             {/* <tr>
               <th scope="row">entry</th>

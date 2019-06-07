@@ -4,4 +4,12 @@ export const styles = {
     'overflow':'scroll',
     'display': 'block'
   }
+  // ,
+  // thead: {
+  //   'display': 'block'
+  // },
+  // tbody: {
+  //   'overflow':'scroll',
+  //   'display': 'block'
+  // }
 }

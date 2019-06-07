@@ -205,9 +205,22 @@ class DashboardForm extends React.Component {
               }  
             </Col>
           </Row>
-          <div className="text-center">
-            <Button onClick={this.listAuthors}>Back to Search</Button>
-          </div>
+          <Row className="justify-content-center align-items-center">
+            <Col md="8">
+              <ProjStatTable
+                  stats={this.state.profile.blobs}
+                  headers={['Blob SHA', 'Duplications', 'Child Commits']}
+                  title="Your Blobs"/>
+            </Col>
+          </Row>
+          <Row>
+            <Col md="6" className="text-center mt-5">
+              <Button onClick={this.listAuthors}>Back to Search</Button>
+            </Col>
+            <Col md="6" className="text-center mt-5">
+              <Button onClick={() => this.props.history.push('/upload')}>Upload Author IDs</Button>
+            </Col>
+          </Row>
         </Container>
       </>
     );

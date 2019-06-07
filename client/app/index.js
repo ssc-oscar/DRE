@@ -10,6 +10,7 @@ import Home from './components/Home/Home';
 import SignUpPage from './components/SignUp/SignUpPage';
 import AuthorSearchPage from './components/AuthorSearch/AuthorSearchPage';
 import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
+import UploadAuthorsPage from './components/Upload/UploadAuthorsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import rootReducer from '../rootReducer';
 import requireAuth from '../utils/requireAuth';
@@ -49,6 +50,7 @@ render((
           <Route path="/search" component={requireAuth(AuthorSearchPage)} />
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
           <Route path="/dash" component={requireAuth(DashboardPage)} />
+          <Route path="/upload" component={requireAuth(UploadAuthorsPage)} />
           <Route path="/error" component={NotFound} />
           <Route component={NotFound} />
         </Switch>

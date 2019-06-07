@@ -17,6 +17,10 @@ export default {
     title: 'Dashboard',
     blurb: ''
   },
+  '/upload': {
+    title: '',
+    blurb: ''
+  },
   '/error': {
     title: 'Page not found or an error occurred.',
     blurb: ''
