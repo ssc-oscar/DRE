@@ -207,10 +207,12 @@ class DashboardForm extends React.Component {
           </Row>
           <Row className="justify-content-center align-items-center">
             <Col md="8">
+              {!isEmpty(this.state.profile.blobs) &&
               <ProjStatTable
                   stats={this.state.profile.blobs}
                   headers={['Blob SHA', 'Duplications', 'Child Commits']}
                   title="Your Blobs"/>
+              }
             </Col>
           </Row>
           <Row>
