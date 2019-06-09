@@ -82,7 +82,7 @@ class ProjStatTable extends React.Component {
 	    <UncontrolledTooltip placement="bottom" target="Users">
             Commits and authors who reused this blob later
             </UncontrolledTooltip>
-	    <UncontrolledTooltip placement="bottom" target="Child Commits">
+	    <UncontrolledTooltip placement="bottom" target="ChildCommits">
             The number of child commits for the blob-introducing commit
             </UncontrolledTooltip>
             <div className="col">

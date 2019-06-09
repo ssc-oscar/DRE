@@ -211,7 +211,7 @@ class DashboardForm extends React.Component {
               {!isEmpty(this.state.profile.blobs) &&
                <ProjStatTable
                   stats={this.state.profile.blobs}
-                  headers={['Blob SHA', 'Duplications', 'Child Commits', 'Users' ]}
+                  headers={['Blob SHA', 'Duplications', 'ChildCommits', 'Users' ]}
                   title="Your Blobs"/>
               }
             </Col>
