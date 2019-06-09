@@ -93,10 +93,11 @@ class DashboardForm extends React.Component {
     this.toggleFriend();
     this.setState({ friend: friend }, () => {});
   }
-
+    
   toggleFriend() {
     this.setState({ showFriend: !this.state.showFriend });
   }
+
 
   listAuthors() {
     let { omittedIds, selectedIds, suggestedIds } = this.state.user
@@ -142,7 +143,7 @@ class DashboardForm extends React.Component {
           <Modal centered={true} isOpen={this.state.showFriend} size="lg" fade={false} toggle={this.toggleFriend}>
             <ModalHeader className="pb-0 mb-0" toggle={this.toggleFriend}>
               {<p style={{'fontSize': '24px'}}>{this.state.friend.id}</p>}
-            </ModalHeader>
+          </ModalHeader>
             <ModalBody>
             <Table className="align-items-center table-flush" responsive>
               <thead className="thead-light">
@@ -208,9 +209,9 @@ class DashboardForm extends React.Component {
           <Row className="justify-content-center align-items-center">
             <Col md="8">
               {!isEmpty(this.state.profile.blobs) &&
-              <ProjStatTable
+               <ProjStatTable
                   stats={this.state.profile.blobs}
-                  headers={['Blob SHA', 'Duplications', 'Child Commits']}
+                  headers={['Blob SHA', 'Duplications', 'Child Commits', 'Users' ]}
                   title="Your Blobs"/>
               }
             </Col>
