@@ -63,7 +63,7 @@ class ProjStatTable extends React.Component {
               <th scope="row">{blob}</th>
               <td>{nc}</td>
               <td>{depth}</td>
-		  <td>{JSON.stringify(users)}</td>
+              <td>{JSON.stringify(users)}</td>
             </tr>
           )
         }
@@ -77,10 +77,13 @@ class ProjStatTable extends React.Component {
         <CardHeader className="border-0">
           <Row className="align-items-center">
             <UncontrolledTooltip placement="bottom" target="Duplications">
-            The number of times blob created by you has appeared in commits by other users.
+            The number of times a blob created by you has appeared in commits by other developers.
             </UncontrolledTooltip>
 	    <UncontrolledTooltip placement="bottom" target="Users">
             Commits and authors who reused this blob later
+            </UncontrolledTooltip>
+	    <UncontrolledTooltip placement="bottom" target="Child Commits">
+            The number of child commits for the blob-introducing commit
             </UncontrolledTooltip>
             <div className="col">
               <h3 className="mb-0">{this.state.title}</h3>
