@@ -15,6 +15,12 @@ export function getProfile(id) {
   }
 }
 
+export function getAllUsers() {
+  return dispatch => {
+    return axios.post(`/api/users/locate`);
+  }
+}
+
 export function getUser(id) {
   return dispatch => {
     return axios.get(`/api/users/user/${id}`).then(res => {

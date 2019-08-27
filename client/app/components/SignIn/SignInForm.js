@@ -95,6 +95,7 @@ class SignInForm extends React.Component {
           <FormGroup>
             <Button color="primary" disabled={isLoading}>Sign In</Button>
           </FormGroup>
+          <a href="#"><p>Forgot Password?</p></a>
         </CardBody>
       </form>
     );

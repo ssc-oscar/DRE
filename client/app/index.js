@@ -11,6 +11,7 @@ import SignUpPage from './components/SignUp/SignUpPage';
 import AuthorSearchPage from './components/AuthorSearch/AuthorSearchPage';
 import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
 import UploadAuthorsPage from './components/Upload/UploadAuthorsPage';
+import LocateProfilesPage from './components/Locate/LocateProfilesPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import rootReducer from '../rootReducer';
 import requireAuth from '../utils/requireAuth';
@@ -29,8 +30,8 @@ import "../public/assets/css/argon-dashboard-react.css";
 
 const store = createStore(
   rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   compose(
-    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     applyMiddleware(thunk)
   )
 );
@@ -50,6 +51,7 @@ render((
           <Route path="/search" component={requireAuth(AuthorSearchPage)} />
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
           <Route path="/dash" component={requireAuth(DashboardPage)} />
+          <Route path="/locate" component={requireAuth(LocateProfilesPage)} />
           <Route path="/upload" component={requireAuth(UploadAuthorsPage)} />
           <Route path="/error" component={NotFound} />
           <Route component={NotFound} />

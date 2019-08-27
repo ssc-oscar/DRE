@@ -57,7 +57,7 @@ module.exports = (app) => {
   // Get profile information
   app.get('/api/users/profile/:id', authenticate, (req, res, next) => {
     const id = req.params.id;
-
+    
     Profile.findOne({ user: id })
     .exec()
     .then((rv) => {
@@ -65,6 +65,16 @@ module.exports = (app) => {
     })
     .catch((err) => console.log(err));
   });
+
+  // Get all users currently registered
+  app.post('/api/users/locate', authenticate, (req, res, next) => {
+    User.find({}, { _id: 1, email: 1, searchParams: 1})
+    .exec()
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => console.log(err));
+  })
 
   // Search for authorship records
   app.post('/api/users/search', authenticate, (req, res, next) => {

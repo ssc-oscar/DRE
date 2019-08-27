@@ -48,6 +48,15 @@ class Header extends React.Component {
     const userLinks = (
       <>
         <NavItem>
+          <NavLink
+            className="nav-link-icon"
+            to={"/locate"}
+            tag={Link}>
+            <i className="ni ni-planet" />
+            <span className="nav-link-inner--text">Search Profiles</span>
+          </NavLink>
+        </NavItem>
+        <NavItem>
           <NavLink href="#" onClick={this.logout}>Logout</NavLink>
         </NavItem>
       </>

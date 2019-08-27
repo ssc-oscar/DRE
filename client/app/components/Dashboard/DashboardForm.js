@@ -39,6 +39,7 @@ class DashboardForm extends React.Component {
       ready: false,
       complete: false,
       showFriend: false,
+      publicView: false,
       friend: {
         id: '',
         projects: []
@@ -51,38 +52,51 @@ class DashboardForm extends React.Component {
   }
 
   componentDidMount() {
-    // this.props.getProfile(this.state.user.id)
-    this.props.getUser(this.state.user.id)
-    .then(() => {
-      this.props.getProfile(this.state.user.id)
-      .then((rv) => {
-        if (rv.data) {
-          let complete = true;
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let publicUser = params.get('user');
+    let userId = '';
+    
+    // determine if we are showing a public dashboard or private
+    if (!publicUser) {
+      userId = this.state.user.id;      
+    }
+    else if (publicUser == this.state.user.id) {
+      userId = this.state.user.id;
+    }
+    else {
+      userId = publicUser;
+      this.setState({ publicView: true });
+    }
 
-          for (let key in rv.data) {
-            if (isEmpty(rv.data[key])) {
-              complete = false;
-              break;
-            }
+    this.props.getProfile(userId)
+    .then((rv) => {
+      if (rv.data) {
+        let complete = true;
+
+        for (let key in rv.data) {
+          if (isEmpty(rv.data[key])) {
+            complete = false;
+            break;
           }
+        }
 
-          this.setState({
-            user: this.props.auth.user,
-            profile: rv.data,
-            ready: true,
-            complete: complete
-          })
-        }
-        else {
-          this.setState({
-            user: this.props.auth.user,
-            profile: {},
-            complete: false,
-            ready: true
-          })
-        }
-      });
-    })
+        this.setState({
+          user: this.props.auth.user,
+          profile: rv.data,
+          ready: true,
+          complete: complete
+        })
+      }
+      else {
+        this.setState({
+          user: this.props.auth.user,
+          profile: {},
+          complete: false,
+          ready: true
+        })
+      }
+    });
   }
 
   setupTorvalds(tridx) {
@@ -119,7 +133,7 @@ class DashboardForm extends React.Component {
     }
     return (
       <>
-      {isEmpty(this.state.profile) &&
+      {/* {isEmpty(this.state.profile) &&
         <Container className="mt-4" fluid>
           <Row>
             <Col className="mb-2">
@@ -130,7 +144,7 @@ class DashboardForm extends React.Component {
             <Button onClick={this.listAuthors}>Back to Search</Button>
           </div>
         </Container>
-      }
+      } */}
         <Container className="mt-4" fluid>
           {!this.state.complete &&
             <Row>
@@ -216,14 +230,16 @@ class DashboardForm extends React.Component {
               }
             </Col>
           </Row>
-          <Row>
-            <Col md="6" className="text-center mt-5">
-              <Button onClick={this.listAuthors}>Back to Search</Button>
-            </Col>
-            <Col md="6" className="text-center mt-5">
-              <Button onClick={() => this.props.history.push('/upload')}>Upload Author IDs</Button>
-            </Col>
-          </Row>
+          {!this.state.publicView &&
+            <Row>
+              <Col md="6" className="text-center mt-5">
+                <Button onClick={this.listAuthors}>Back to Search</Button>
+              </Col>
+              <Col md="6" className="text-center mt-5">
+                <Button onClick={() => this.props.history.push('/upload')}>Upload Author IDs</Button>
+              </Col>
+            </Row>
+          }
         </Container>
       </>
     );
