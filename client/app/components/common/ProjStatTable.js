@@ -76,18 +76,24 @@ class ProjStatTable extends React.Component {
       <Card className="shadow">
         <CardHeader className="border-0">
           <Row className="align-items-center">
-            <UncontrolledTooltip placement="bottom" target="Duplications">
-            The number of times a blob created by you has appeared in commits by other developers.
-            </UncontrolledTooltip>
-	    <UncontrolledTooltip placement="bottom" target="Users">
-            Commits and authors who reused this blob later
-            </UncontrolledTooltip>
-	    <UncontrolledTooltip placement="bottom" target="ChildCommits">
-            The number of child commits for the blob-introducing commit
-            </UncontrolledTooltip>
+            {this.state.title == 'Your Blobs' &&
+            <>
+              <UncontrolledTooltip placement="bottom" target="Duplications">
+              The number of times a blob created by you has appeared in commits by other developers.
+              </UncontrolledTooltip>
+              <UncontrolledTooltip placement="bottom" target="Users">
+                    Commits and authors who reused this blob later
+                    </UncontrolledTooltip>
+              <UncontrolledTooltip placement="bottom" target="ChildCommits">
+                    The number of child commits for the blob-introducing commit
+              </UncontrolledTooltip>
+            </>
+            }
+            {this.state.title &&
             <div className="col">
               <h3 className="mb-0">{this.state.title}</h3>
             </div>
+            }
             {/* <div className="col text-right">
               <Button
                 color="primary"

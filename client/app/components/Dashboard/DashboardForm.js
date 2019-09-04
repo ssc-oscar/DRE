@@ -128,6 +128,7 @@ class DashboardForm extends React.Component {
   
 
   render() {
+    console.log(this.state.profile.projects);
     if (!this.state.ready) {
       return <div />
     }
@@ -215,7 +216,7 @@ class DashboardForm extends React.Component {
               }
             </Col>
             <Col md="6" className="mt-4 mb-4">
-              {!isEmpty(this.state.profile.tridx) &&
+              {!isEmpty(this.state.profile.tridx) && !isEmpty(this.state.profile.tridx.path) &&
                 <TorvaldsGraph stats={this.state.profile.tridx} />
               }  
             </Col>
