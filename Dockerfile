@@ -31,6 +31,7 @@ RUN apt-get update -q  \
     git \
     curl lsb-release \
     tmux vim-runtime tmux zsh libpng-dev \
+    certbot \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
  && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
