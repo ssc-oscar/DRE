@@ -4,6 +4,7 @@ const historyApiFallback = require('connect-history-api-fallback');
 const mongoose = require('mongoose');
 const path = require('path');
 const webpack = require('webpack');
+const https = require('https');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
@@ -58,12 +59,25 @@ if (isDev) {
   });
 }
 
-app.listen(port, '0.0.0.0', (err) => {
-  if (err) {
-    console.log(err);
-  }
-
-  console.info('>>> 🌎 Open http://0.0.0.0:%s/ in your browser.', port);
-});
+if (port == 3000) {
+  app.listen(port, '0.0.0.0', (err) => {
+    if (err) {
+      console.log(err);
+    }
+    console.info('>>> 🌎 Open http://0.0.0.0:%s/ in your browser.', port);
+  });
+}
+else {
+  https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/da2.eecs.utk.edu/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/da2.eecs.utk.edu/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/da2.eecs.utk.edu/chain.pem')
+  }, app).listen(443, (err) => {
+    if (err) {
+      console.log(err);
+    }
+    console.info('>>> 🌎 Open https://0.0.0.0:%s/ in your browser.', port);
+  })
+}
 
 module.exports = app;

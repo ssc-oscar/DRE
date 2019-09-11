@@ -12,7 +12,7 @@
   "scripts": {
     "start": "webpack -p --progress --profile --colors",
     "start:dev": "node server",
-    "start:prod": "PORT=8080 node server"
+    "start:prod": "PORT=80 node server"
   },
   "engines": {
     "node": ">=6"
