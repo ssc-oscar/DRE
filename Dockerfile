@@ -2,9 +2,11 @@
 # FROM node as build-stage
 
 FROM ubuntu:18.04
+                                                                                                      
+ENV TZ=America/New_York
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update -q  \
- && DEBIAN_FRONTEND=noninteractive \
+RUN apt-get update -q \
  && apt-get install -yqq \
  curl \
  git \
