@@ -10,10 +10,10 @@ class Footer extends React.Component {
             <Row className="align-items-center justify-content-xl-between">
               <Col xl="6">
                 <div className="copyright text-center text-xl-left text-muted">
-                  © 2019{" "}
+                  © 2020{" "}
                   <a
                     className="font-weight-bold ml-1"
-                    href="http://mockus.us/papers/WoC.pdf"
+                    href="/"
                     target="_blank"
                   >
                     World of Code
@@ -31,14 +31,14 @@ class Footer extends React.Component {
                       <span className="font-weight-bold ml-1">Github</span>
                     </NavLink>
                   </NavItem>
-                  <NavItem>
+	    {/*<NavItem>
                     <NavLink
                       href="https://logomakr.com/9enqqM"
                       target="_blank"
                     >
                       <span>Logo Credit</span>
                     </NavLink>
-                  </NavItem>
+                  </NavItem>*/}
                 </Nav>
               </Col>
             </Row>

@@ -7,6 +7,7 @@ import RootReducer from '../rootReducer';
 import App from './components/App/App';
 import NotFound from './components/App/NotFound';
 import Home from './components/Home/Home';
+import HomeWOC from './components/Home/HomeWOC';
 import SignUpPage from './components/SignUp/SignUpPage';
 import AuthorSearchPage from './components/AuthorSearch/AuthorSearchPage';
 import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
@@ -48,6 +49,7 @@ render((
       <App>
         <Switch>
           <Route exact path="/" component={Home} />
+	  <Route exact path="/overview" component={HomeWOC} />
           <Route path="/search" component={requireAuth(AuthorSearchPage)} />
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
           <Route path="/dash" component={requireAuth(DashboardPage)} />

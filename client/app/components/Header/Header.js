@@ -95,7 +95,7 @@ class Header extends React.Component {
             <NavbarBrand
               to={isAuthenticated ? "/dash" : "/"}
               tag={Link}>
-              <img alt="..." src={require("../../../public/assets/img/logo.png")} />
+              <img alt="..." src={require("../../../public/assets/img/woc.png")} />
             </NavbarBrand>
             <button className="navbar-toggler" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />
