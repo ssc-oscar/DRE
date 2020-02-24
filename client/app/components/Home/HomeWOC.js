@@ -25,9 +25,9 @@ class HomeWOC extends Component {
     this.setState({ isLoading: false });
   }
 
-  componentWillReceiveProps(nextProps){
+/*  componentWillReceiveProps(nextProps){
     this.toggle(nextProps.location.form);
-  }
+  }*/
 
   render() {
     return (

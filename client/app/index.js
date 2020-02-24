@@ -48,8 +48,8 @@ render((
     <Router>
       <App>
         <Switch>
-          <Route exact path="/" component={Home} />
-	  <Route exact path="/overview" component={HomeWOC} />
+          <Route exact path="/" component={HomeWOC} />
+	  <Route exact path="/DRE" component={Home} />
           <Route path="/search" component={requireAuth(AuthorSearchPage)} />
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
           <Route path="/dash" component={requireAuth(DashboardPage)} />

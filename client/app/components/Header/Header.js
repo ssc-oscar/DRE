@@ -67,7 +67,7 @@ class Header extends React.Component {
         <NavItem>
           <NavLink
             className="nav-link-icon"
-            to={{pathname: "/", form: "signup"}}
+            to={{pathname: "/DRE", form: "signup"}}
             tag={Link}>
             <i className="ni ni-circle-08" />
             <span className="nav-link-inner--text">Register</span>
@@ -76,7 +76,7 @@ class Header extends React.Component {
         <NavItem>
           <NavLink
             className="nav-link-icon"
-            to={{pathname: "/", form: "login"}}
+            to={{pathname: "/DRE", form: "login"}}
             tag={Link}>
             <i className="ni ni-key-25" />
             <span className="nav-link-inner--text">Login</span>
