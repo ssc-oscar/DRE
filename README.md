@@ -15,6 +15,7 @@ This is a boilerplate project using the following technologies:
 npm install
 ```
 
+## [Recording of the walkthrough](https://tennessee.zoom.us/rec/share/ytFbE43s505IHIX0xV_nRfMDTovdT6a80CJM_aBcy07DlzlHV2C0ftC4HLjSSYD3)
 
 ## Setup Instructions
 1. Clone the repo and checkout a new branch
