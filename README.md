@@ -19,9 +19,9 @@ npm install
 
 ## Setup Instructions
 1. Clone the repo and checkout a new branch
-2. Run `npm install`
-3. Build the docker container using `docker build --tag {YOUR_TAG} .` NOTE, the `master` branch of the repo is linked to `https://hub.docker.com/repository/docker/swsc/mern`. This means any commit to the `master` branch will auto-build the Docker image on DockerHub and either pass/fail.
-4. Run the docker container (e.g. `docker run -d --name mern -v /home/akarnauc:/home/akarnauc -p9002:22 -p3000:3000 -p80:80 p443:443 -w /home/akarnauc swsc/mern /bin/startsvc.sh akarnauc`). From here, you can access the container externally (sshing on port 9002) or through da2 servers (e.g. `docker exec -it --user root mern bash`) where `mern` is the name of my container and I am accessing it as `root`.
+2. Build the docker container using `docker build --tag {YOUR_TAG} .` NOTE, the `master` branch of the repo is linked to `https://hub.docker.com/repository/docker/swsc/mern`. This means any commit to the `master` branch will auto-build the Docker image on DockerHub and either pass/fail.
+3. Run the docker container (e.g. `docker run -d --name mern -v /home/akarnauc:/home/akarnauc -p9002:22 -p3000:3000 -p80:80 p443:443 -w /home/akarnauc swsc/mern /bin/startsvc.sh akarnauc`). From here, you can access the container externally (sshing on port 9002) or through da2 servers (e.g. `docker exec -it --user root mern bash`) where `mern` is the name of my container and I am accessing it as `root`.
+4. Run `npm install`
 5. Run the web server (`npm run start:dev` for development, `npm run start:prod` for production). NOTE: What these commands do is defined in `package.json`. You can (and should) modify this file to fit your needs. For example, only use port 80 on the live site, modify `package.json` to a different port for development (e.g. port 3000 which we exposed in prev docker command).
 
 `config/config.js` contains database connections and jwtSecret for cookies (the latter should eventually be moved to a config file that is **excluded** from this repo).
