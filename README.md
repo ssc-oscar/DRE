@@ -17,7 +17,35 @@ npm install
 
 ## [Recording of the walkthrough](https://tennessee.zoom.us/rec/share/ytFbE43s505IHIX0xV_nRfMDTovdT6a80CJM_aBcy07DlzlHV2C0ftC4HLjSSYD3)
 
-## Setup Instructions
+
+## Setup Instructions Option A
+1. Clone the repo and checkout a new branch
+2. ssh to one of the da servers
+3. run docker ps -a to make sure the port 9290 is not taken (use other port otherwise)
+4. run:
+
+```
+docker pull swsc/mern
+NID=atutko #change to your own netid
+docker run -d --name mern$NID -v /home/$NID:/home/NID -p9290:22 -w /home/$NID swsc/mern /bin/startsvc.sh $NID
+```
+5. From your own laptop (make sure port netid and da server matches)
+```
+ssh -p9290 -L3001:localhost:443 -L3000:localhost:3000 -L3002:localhost:80 atutko@da2
+```
+6. run tmux (tmux a if you are connected the second time)
+7. in the terminal run
+```
+cd $HOME/DRE # where you cloned swsc/DRE
+npm install #do it only the first time
+#in  package.json change line: "start:dev": "PORT=3000 node server",
+npm run start:dev
+```
+8. Go to your browser for interactive experience
+9. go to terminal and create anothe tmux window with ctrl-b c
+10. edit code there and your other tmux window will show if there are errors
+
+## Setup Instructions Option B
 1. Clone the repo and checkout a new branch
 2. Build the docker container using `docker build --tag {YOUR_TAG} .` NOTE, the `master` branch of the repo is linked to `https://hub.docker.com/repository/docker/swsc/mern`. This means any commit to the `master` branch will auto-build the Docker image on DockerHub and either pass/fail.
 3. Run the docker container (e.g. `docker run -d --name mern -v /home/akarnauc:/home/akarnauc -p9002:22 -p3000:3000 -p80:80 p443:443 -w /home/akarnauc swsc/mern /bin/startsvc.sh akarnauc`). From here, you can access the container externally (sshing on port 9002) or through da2 servers (e.g. `docker exec -it --user root mern bash`) where `mern` is the name of my container and I am accessing it as `root`.
