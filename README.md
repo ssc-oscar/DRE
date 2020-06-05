@@ -19,6 +19,9 @@ npm install
 
 
 ## Setup Instructions Option A
+
+[Video of the tutorial](https://tennessee.zoom.us/rec/share/_fx2D53or2hLW4nfz2PCBZ4PAKjCX6a8gCJNr_sOyh3nX9rSLHLV6w3sB_Ht4JLS) 
+
 1. Clone the repo and checkout a new branch
 2. ssh to one of the da servers
 3. run docker ps -a to make sure the port 9290 is not taken (use other port otherwise)
