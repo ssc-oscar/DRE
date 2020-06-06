@@ -22,31 +22,49 @@ npm install
 
 [Video of the tutorial](https://tennessee.zoom.us/rec/share/_fx2D53or2hLW4nfz2PCBZ4PAKjCX6a8gCJNr_sOyh3nX9rSLHLV6w3sB_Ht4JLS) 
 
-1. Clone the repo and checkout a new branch
-2. ssh to one of the da servers
-3. run docker ps -a to make sure the port 9290 is not taken (use other port otherwise)
-4. run:
+1. ssh to da2, clone the repo in the home folder, and checkout a new branch: the examples are given for netid  atutko
+```
+ssh da2
+git clone https://github.com/ssc-oscar/DRE DRE
+cd DRE
+git checkout -b atutko
+```
+2. still on da2 run docker ps -a to make sure the port 9290 is not taken (use other port otherwise as shown in this output)
+```
+docker ps -a
+
+CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                                                                                    NAMES
+348b6b9ddf82        swsc/mern                 "/bin/startsvc.sh"       6 hours ago         Up 6 hours          0.0.0.0:9290->22/tcp                                                                     mernAdam
+```
+4. still on da2 run:
 
 ```
 docker pull swsc/mern
 NID=atutko #change to your own netid
+PORT=9290 #change to your own port
 docker run -d --name mern$NID -v /home/$NID:/home/NID -p9290:22 -w /home/$NID swsc/mern /bin/startsvc.sh $NID
 ```
-5. From your own laptop (make sure port netid and da server matches)
+5. From your own laptop open terminal and run (make sure port netid and da server matches)
 ```
 ssh -p9290 -L3001:localhost:443 -L3000:localhost:3000 -L3002:localhost:80 atutko@da2
 ```
-6. run tmux (tmux a if you are connected the second time)
-7. in the terminal run
+6. in the same terminal run tmux (tmux a if you are connected the second time)
+7. in the same terminal run
 ```
 cd $HOME/DRE # where you cloned swsc/DRE
 npm install #do it only the first time
 #in  package.json change line: "start:dev": "PORT=3000 node server",
 npm run start:dev
 ```
-8. Go to your browser for interactive experience
-9. go to terminal and create anothe tmux window with ctrl-b c
+8. Go to your laptop browser for interactive experience (enter http://localhost:3000)
+9. go to the ame terminal and create anothe tmux window vi ctrl-b c
 10. edit code there and your other tmux window will show if there are errors
+11. move between tmux windows via ctrl-b n
+12. if you need root access within container do it on the da2 terminal (see item 4)
+```
+docker exec -it mern$NID bash
+```
+This will give you root propmpt within the container
 
 ## Setup Instructions Option B
 1. Clone the repo and checkout a new branch
