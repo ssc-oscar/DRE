@@ -65,6 +65,10 @@ npm run start:dev
 docker exec -it mern$NID bash
 ```
 This will give you root propmpt within the container
+13. Once you get your application do what you need and ready to deploy
+      a) commit your changes to the branch (second tmux window: see item 9 above)
+      b) merge changes from master into your branch and make sure app still works
+      c) create a PR via GH interface either from your fork (if you created one) or your branch to master branch on ssc-oscar/DRE
 
 ## Setup Instructions Option B
 1. Clone the repo and checkout a new branch
