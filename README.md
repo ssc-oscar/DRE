@@ -83,6 +83,9 @@ This will give you root propmpt within the container
 - I followed [this](https://www.youtube.com/watch?v=5oiXG9f6GO0&list=PLuNEz8XtB51K-x3bwCC9uNM_cxXaiCcRY) playlist when building the site. I recommend you refer back to it or following from the beginning if struggling with anything.
 - Front-end (ReactJS) under `client/`
   - Split separate pages/re-usable pieces of code into React **components**, found under `client/app/components`
+    For example, the component to upload data for ID resolution is in client/app/components/Upload. The component for showing content of git objects and maps should be client/app/components/lookup. The video on the identity resolution scripts is at https://tennessee.zoom.us/rec/share/os0vcb6vyn1ITY3E4UHwfqswOqn_T6a8hiUc_aAFmkflfPJOnGRl33OBmLN1gDXN
+
+
   - Communication between the front-end and back-end is handled by actions (functions) located in `client/actions`.
   - Routing between pages is handled in `client/app/index.js`.
   - Assets (images, css, etc) stored in `client/public/assets`.
