@@ -29,6 +29,10 @@ export default {
     title: 'Search Profiles',
     blurb: 'Search below to view profiles of other developers.'
   },
+  '/lookup': {
+    title: 'Lookup',
+    blurb: 'Get the content of a SHA1 commit.'
+  },
   '/error': {
     title: 'Page not found or an error occurred.',
     blurb: ''
