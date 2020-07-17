@@ -11,7 +11,7 @@
   "private": true,
   "scripts": {
     "start": "webpack -p --progress --profile --colors",
-    "start:dev": "node server",
+    "start:dev": "PORT=3000 node server",
     "start:prod": "PORT=80 node server"
   },
   "engines": {

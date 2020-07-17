@@ -31,7 +31,11 @@ export default {
   },
   '/lookup': {
     title: 'Lookup',
-    blurb: 'Get the content of a SHA1 commit.'
+    blurb: 'Get the content of a SHA1.'
+  },
+  '/lookupresult': {
+    title: 'Lookup Results',
+    blurb: ''
   },
   '/error': {
     title: 'Page not found or an error occurred.',
