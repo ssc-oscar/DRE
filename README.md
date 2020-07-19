@@ -173,7 +173,7 @@ This will give you root propmpt within the container
       ```javascript
       // require express-validator
       const { check, param, query, validationResult } = require('express-validator');
-      
+
       ...
 
         app.get( '/api/foo/bar/:id/:name',[
@@ -198,6 +198,38 @@ This will give you root propmpt within the container
             });
         });
       ```
+
+### Querying The Clickhouse Database
+- See [this](https://www.npmjs.com/package/clickhouse) for reference
+- Example to query the Clickhouse database:
+
+    ```javascript
+    // use clickhouse module
+    const { ClickHouse } = require('clickhouse');
+
+    ...
+    
+      app.get('/api/clickhouse', (req, res, next) => {
+        // config to connect to the database
+        const db = 'foo'
+        const query = 'SHOW tables';
+        const clickhouse = new ClickHouse({
+          url: 'http://da1.eecs.utk.edu',
+          format: 'json',
+          config: {
+            database : db,
+          }
+        });
+
+        console.log(`Execute query: ${query}`);
+        clickhouse.query(query).exec((err, rows) => {
+          res.status(200).json(rows);
+        });
+      });
+    ```
+
+### Querying The MongoDB Datase
+- Coming soon
 ## External Scripts
 - `check_updates.py` - checks for any updates to a user (including new users) and generates their profile by calling `sdpg.perl`
 - `sdpg.perl` (single developer profile generator) - generates the user profile (main driver for everything)
