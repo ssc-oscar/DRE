@@ -127,7 +127,7 @@ This will give you root propmpt within the container
 			...
 			
 			// add new route to handle POST request sent to /api/foo/foobar
-			app.get('/api/foo/bar', (req, res, next)=>{
+			app.post('/api/foo/bar', (req, res, next)=>{
 				// Do stuff
 				DoStuff();
 				// send respond in json format, and status code 200
