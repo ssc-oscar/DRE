@@ -80,6 +80,7 @@ This will give you root propmpt within the container
 `config/config.js` contains database connections and jwtSecret for cookies (the latter should eventually be moved to a config file that is **excluded** from this repo).
 
 ## Project Structure
+### Overview
 - I followed [this](https://www.youtube.com/watch?v=5oiXG9f6GO0&list=PLuNEz8XtB51K-x3bwCC9uNM_cxXaiCcRY) playlist when building the site. I recommend you refer back to it or following from the beginning if struggling with anything.
 - Front-end (ReactJS) under `client/`
   - Split separate pages/re-usable pieces of code into React **components**, found under `client/app/components`
@@ -94,7 +95,104 @@ This will give you root propmpt within the container
   - Database schema (models) stored in `server/models`. These enforce a schema on our NoSQL Mongo database to validate all data.
   - Actual calls to the database, back-end logic, etc. is in `server/routes/api/users.js`.
   - `server/server.js` is like the "main()" of our back-end. Modify this file to control how the server gets deployed (e.g. dev environment vs. prod environment)
+### Adding Backend Routes
+- The api routes are located under the `server/routes/api/` folder.
+- The api routes are grouped by files, routes related to users should be placed in the `users.js` file, and perl lookup script related routes should be placed in the `lookup.js` file and so on.
+- Example to create a new set of routes:
+	1. Create a file named `foo.js`
+	2. In `foo.js`:
 
+		```javascript
+		// export module
+		module.exports = (app) => {
+			// route to handle GET request sent to /api/foo/bar
+			app.get('/api/foo/bar', (req, res, next)=>{
+				// send respond in json format, and status code 200
+				res.status(200).json({
+					message: 'HelloWorld!'
+				});
+			});
+		}
+		```
+
+	3. Add `foo.js` file to the `server/routes/api/` folder.
+- Example to add a new route to an existing folder:
+	1. Navigate to an existing file `foo.js` in the `server/routes/api/` folder
+	2. In `foo.js`, add new routes within `module.exports`:
+
+		```javascript
+		// export module
+		module.exports = (app) => {
+
+			...
+			
+			// add new route to handle POST request sent to /api/foo/foobar
+			app.get('/api/foo/bar', (req, res, next)=>{
+				// Do stuff
+				DoStuff();
+				// send respond in json format, and status code 200
+				res.status(200).json({
+					message: 'Complete!'
+				});
+			});
+		}
+		```
+	3. Save changes.
+- Request Params and Query params
+	1. Request Params:
+
+		```javascript
+			// Add a request param named 'id'
+			app.get( '/api/foo/bar/:id',(req, res, next) => {
+				// Access the request param via 'req.params.id'
+				res.status(200).json({
+					// If a GET request is sent to /api/foo/bar/1
+					// The message will be 'id is 1'
+					message: `id is ${req.params.id}`
+				});
+			});
+		```
+
+	2. Query Params:
+
+		```javascript
+			app.get( '/api/foo/bar',(req, res, next) => {
+				// Access the query via 'req.query.id'
+				res.status(200).json({
+					// If a GET request is sent to /api/foo/bar?id=1
+					// The message will be 'query id is 1'
+					message: `query id is ${req.query.id}`
+				});
+			});
+		```
+- Sanitize Input Using express-validator
+	1. Always check request params and query params
+
+		```javascript
+		// require express-validator
+		const { check, param, query, validationResult } = require('express-validator');
+			app.get( '/api/foo/bar/:id/:name',[
+					// check() will check for 'id' param in ALL objects
+					check('id').isHash('sha1').escape(),
+					// query() will check for 'type' param only in req.query
+					query('type').isAlphanumeric().escape(),
+					// param() will check for 'name' param only in req.params
+					param('name').isAlph().escape()
+				],
+				(req, res, next) => {
+					// Check validation results
+					const errors = validationResult(req);
+					if (!errors.isEmpty()) {
+						return res.status(422).json({ errors: errors.array() });
+					}
+					// Access the query via 'req.query.id'
+					res.status(200).json({
+						id: `${req.params.id}`,
+						name: `${req.params.name}`,
+						type: `${req.query.type}`
+					});
+			});
+		```
 ## External Scripts
 - `check_updates.py` - checks for any updates to a user (including new users) and generates their profile by calling `sdpg.perl`
 - `sdpg.perl` (single developer profile generator) - generates the user profile (main driver for everything)
