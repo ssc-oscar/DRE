@@ -116,7 +116,7 @@ This will give you root propmpt within the container
 		```
 
 	3. Add `foo.js` file to the `server/routes/api/` folder.
-- Example to add a new route to an existing folder:
+- Example to add a new route to an existing file:
 	1. Navigate to an existing file `foo.js` in the `server/routes/api/` folder
 	2. In `foo.js`, add new routes within `module.exports`:
 
