@@ -5,5 +5,6 @@ module.exports = {
   db_dev: 'mongodb://da1:27017/WoC',
   jwtSecret: 'supersecrettestkeyforsomethingsecret',
   clickhouse: 'http://da1.eecs.utk.edu',
-  showCnt: '/da3_data/lookup/showCnt'
+  showCnt: '/da3_data/lookup/showCnt',
+  getValues: '/da3_data/lookup/getValues'
 };
