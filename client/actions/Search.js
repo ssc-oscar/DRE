@@ -5,7 +5,8 @@ export function lookupSha(sha, type) {
 		return axios.get('/api/lookup', {
 			params: {
 				sha1: sha,
-				type: type
+				type: type,
+				command: 'showCnt'
 			}
 		})
 	}

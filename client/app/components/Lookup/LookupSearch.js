@@ -56,8 +56,10 @@ class LookupSearch extends Component {
 		if(!isError) {
 			this.props.lookupSha(sha, type)
 			.then( (response) => {
-				let result = response.data;
-				let data = result.split(';'); 
+				let result = response.data.stdout;
+				let stderr = response.data.stderr;
+				console.log(stderr);
+				let data = result.split(/;|\r|\n/); 
 				this.props.history.push('/lookupresult', {
 					sha: sha,
 					type: type,
