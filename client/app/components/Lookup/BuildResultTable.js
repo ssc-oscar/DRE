@@ -9,6 +9,7 @@ import {
 	Row,
 	Col,
 	Card,
+	CardBody,
 	Table,
 	FilterableContent,
 	ListGroup
@@ -38,7 +39,7 @@ class BuildResultTable extends Component{
 			let committer = data[4];
 			let c_time = data[6];	
 			return (
-				  <>
+				   <>
 				    <tr>
 				      <td>Commit:</td>
 				      <td>{c}</td>
@@ -67,7 +68,7 @@ class BuildResultTable extends Component{
 				      <td>Commit Time:</td>
 				      <td>{c_time}</td>
 				    </tr>
-				  </>
+				   </>
 			)
 		}
 		else if(type == 'tree'){
@@ -84,16 +85,18 @@ class BuildResultTable extends Component{
 			return table_rows.map((result, index) => {
 				const { id, mode, blob, filename } = result
 				return (
-					<tr key={id}>
-					  <td>{mode}</td>
-					  <td>{blob}</td>
-					  <td>{filename}</td>
-					</tr>
+						<tr key={id}>
+						  <td>{mode}</td>
+						  <td>{blob}</td>
+						  <td>{filename}</td>
+						</tr>
 				)
 			})
 		}
 		else if(type == 'blob'){
-			console.log("This is a blob, just like me")
+			return data.split("\n").map((i,key) => {
+				return <tr key={key}>{i}</tr>;
+			})
 		}
 	}
 
@@ -101,20 +104,19 @@ class BuildResultTable extends Component{
 		const { data } = this.state;
 		const { type } = this.state;
 		console.log(data, type);
+		console.log(typeof(data));
 		return (
-				<div>
-				  <Card className="bg-secondary shadow border-0">
-				    <Row>
-				      <Col className="mb-2">
-				        <Table style={styles.table} className="align-items-center table-flush" responsive>
-					  <tbody>
-				        	{this.generateTable(type,data)}
-			  		  </tbody>
-					</Table>
-				      </Col>
-				    </Row>
-				  </Card>
-				</div>
+			<div>
+			  <Card className="bg-secondary shadow border-0">
+			    <CardBody>
+			      <Table style={styles.table} className="align-items-center table-flush" responsive>
+			        <tbody>
+			      {this.generateTable(type,data)}
+			        </tbody>
+		              </Table>
+			    </CardBody>
+			  </Card>
+			</div>
 		)
 	}
 }

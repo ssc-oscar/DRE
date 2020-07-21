@@ -13,7 +13,7 @@ class LookupResultsPage extends Component {
 
 		return (
 			<Row className="justify-content-center">
-			  <Col xs="8">
+			  <Col xs="10">
 			    <BuildResultTable
 			      data={data}
 			      type={type}

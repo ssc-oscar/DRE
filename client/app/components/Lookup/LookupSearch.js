@@ -47,28 +47,50 @@ class LookupSearch extends Component {
 		return { warning, isError };
 	}
 
+	displayWarning(warning) {
+		window.alert(warning);
+			this.setState({
+				sha: '',
+				isLoading: false
+			});
+	}
+
 	onSubmit(e) {
 		e.preventDefault();
 		const { sha, type } = this.state;
 
 		this.setState({isLoading: true});
-		const { warning, isError } = this.generateWarning();
+		let { warning, isError } = this.generateWarning();
 		if(!isError) {
 			this.props.lookupSha(sha, type)
 			.then( (response) => {
 				let result = response.data.stdout;
-				let stderr = response.data.stderr;
-				console.log(stderr);
-				let data = result.split(/;|\r|\n/); 
-				this.props.history.push('/lookupresult', {
-					sha: sha,
-					type: type,
-					data: data
-				});
+				if(!result) {
+					warning = "Search returned nothing.";
+					this.displayWarning(warning);
+					isError = true;
+				}
+				if(!isError) {
+					let stderr = response.data.stderr;
+					let data = [];
+					console.log(stderr);
+					if (type == "blob") {
+						data = result;
+						console.log(data);
+					}
+					else { 
+						data = result.split(/;|\r|\n/);
+						console.log(data);
+					}
+					this.props.history.push('/lookupresult', {
+						sha: sha,
+						type: type,
+						data: data
+					});
+				}
 			});
 		} else { 
-			console.log(warning);
-			window.alert(warning);
+			this.displayWarning(warning);
 		}
 	}
 
@@ -82,7 +104,7 @@ class LookupSearch extends Component {
 	render() {
 		return (
 			<form onSubmit={this.onSubmit}>
-			  <Card className="bg-secondary shadow border-0">
+			  <Card className="bg-secondary shadow border-0" style={{ width: '30rem'}}>
 			    <CardHeader className="bg-transparent">
 			      <div className="text-center mt-2">
 			        <p>
