@@ -82,7 +82,7 @@ class LookupSearch extends Component {
 						data = result.split(/;|\r|\n/);
 						console.log(data);
 					}
-					this.props.history.push('/lookupresult', {
+					this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`, {
 						sha: sha,
 						type: type,
 						data: data

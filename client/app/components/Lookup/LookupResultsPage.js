@@ -5,16 +5,19 @@ import BuildResultTable from './BuildResultTable';
 import { Row, Col, Container, Card } from 'reactstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { lookupSha } from '../../../actions/Search';
 
 class LookupResultsPage extends Component {
 	
 	render() {
-		const { sha, type, data } = this.props.location.state;
+		const { type, data } = this.props.location.state;
+		const { lookupSha } = this.props;
 
 		return (
 			<Row className="justify-content-center">
 			  <Col xs="10">
 			    <BuildResultTable
+			      lookupSha={lookupSha}
 			      data={data}
 			      type={type}
 			    />
@@ -28,4 +31,4 @@ class LookupResultsPage extends Component {
 LookupResultsPage.propTypes = {
 }
 
-export default connect(null, {}) (LookupResultsPage);
+export default connect(null, { lookupSha }) (LookupResultsPage);

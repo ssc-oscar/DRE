@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Component } from 'react';
-import { withRouter } from "react-router-dom";
+import { withRouter, Router } from "react-router-dom";
+import { connect } from 'react-redux';
 import { styles } from '../common/styles';
+import queryString from 'query-string';
 import {
 	Container,
 	Row,
@@ -12,8 +14,10 @@ import {
 	CardBody,
 	Table,
 	FilterableContent,
-	ListGroup
+	ListGroup,
+	ListGroupItem
 } from "reactstrap";
+
 
 class BuildResultTable extends Component{
 	constructor(props){
@@ -21,17 +25,60 @@ class BuildResultTable extends Component{
 
 		this.state = {
 			data: [],
-			type: ''
+			type: '',
+			sha: ''
 		}
+
+		this.onClick = this.onClick.bind(this);
 	}
 
 	componentDidMount(){
-		this.setState({data: this.props.data, type: this.props.type})
+		this.setState({
+			data: this.props.data,
+			type: this.props.type,
+			sha: this.props.sha
+		})
 	}
-	
+
+	onClick(e,type,sha){
+		e.preventDefault();
+		let search = window.location.search;
+		let params = new URLSearchParams(search);
+		let sha1 = params.get('sha1');
+		let type2 = params.get('type');
+		console.log(sha1, type2);
+
+		this.props.lookupSha(sha, type)
+			.then( (response) => {
+				let result = response.data.stdout;
+				let stderr = response.data.stderr;
+				let data = [];
+				console.log(stderr);
+				if (type == "blob") {
+					data = result;
+					console.log(data);
+				}
+				else {
+					data = result.split(/;|\r|\n/);
+					console.log(data);
+				}
+				this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}` , {
+					data: this.state.data,
+					type: this.state.type,
+					sha: this.state.sha
+				})
+				this.setState({
+					data: data,
+					type: type,
+					sha: sha
+				});		
+			});
+	}
+
 	generateTable(type, data) {
 		if(type == 'commit'){
 			let c = data[0];
+			let key = c._id;
 			let tree = data[1];
 			let p = data[2];
 			let author = data[3];
@@ -42,15 +89,15 @@ class BuildResultTable extends Component{
 				   <>
 				    <tr>
 				      <td>Commit:</td>
-				      <td>{c}</td>
+				      <td><a href="#" onClick={(e) => this.onClick(e,"commit",c)}>{c}</a></td>
 				    </tr>
 				    <tr>
 				      <td>Tree:</td>
-				      <td>{tree}</td>
+				      <td><a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></td>
 				    </tr>
 				    <tr>
 				      <td>Parent:</td>
-				      <td>{p}</td>
+				      <td><a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></td>
 				    </tr>
 				    <tr>
 				      <td>Author:</td>
@@ -85,11 +132,13 @@ class BuildResultTable extends Component{
 			return table_rows.map((result, index) => {
 				const { id, mode, blob, filename } = result
 				return (
-						<tr key={id}>
-						  <td>{mode}</td>
-						  <td>{blob}</td>
-						  <td>{filename}</td>
-						</tr>
+					<tr key={id}>
+					  <td>{mode}</td>
+					  <td><a href="#" 
+						onClick={(e) => this.onClick(e,"blob",blob)}>
+					      {blob}</a></td>
+					  <td>{filename}</td>
+					</tr>
 				)
 			})
 		}
@@ -124,4 +173,10 @@ class BuildResultTable extends Component{
 BuildResultTable.propTypes = {
 }
 
-export default withRouter(BuildResultTable);
+function mapStateToProps(state) {
+	return {
+
+	};
+}
+
+export default connect(mapStateToProps, {})(withRouter(BuildResultTable));
