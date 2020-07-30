@@ -19,12 +19,12 @@ module.exports = (app) => {
 				return res.status(422).json({ errors: errors.array() });
 			}
 			exec('ssh -T da4 << EOF\n' +
-					`  echo "${req.query.sha1}" | ${cmds[req.query.command]} ${req.query.type}\n` +
-					'EOF',
-					(err, stdout, stderr) => {
-					res.status(200).send({stdout: stdout,
-								ettyer             stderr: stderr});
-			});
+				`  echo "${req.query.sha1}" | ${cmds[req.query.command]} ${req.query.type}\n` +
+				'EOF',
+				(err, stdout, stderr) => {
+					res.status(200).send({stdout: stdout, stderr: stderr});
+				}
+			);
 		}
 	);
 }
