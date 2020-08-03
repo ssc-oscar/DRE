@@ -13,6 +13,8 @@ import AuthorSearchPage from './components/AuthorSearch/AuthorSearchPage';
 import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
 import UploadAuthorsPage from './components/Upload/UploadAuthorsPage';
 import LocateProfilesPage from './components/Locate/LocateProfilesPage';
+import LookupSearchPage from './components/Lookup/LookupSearchPage';
+import LookupResultsPage from './components/Lookup/LookupResultsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import rootReducer from '../rootReducer';
 import requireAuth from '../utils/requireAuth';
@@ -54,6 +56,8 @@ render((
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
           <Route path="/dash" component={requireAuth(DashboardPage)} />
           <Route path="/locate" component={requireAuth(LocateProfilesPage)} />
+	  <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
+	  <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
           <Route path="/upload" component={requireAuth(UploadAuthorsPage)} />
           <Route path="/error" component={NotFound} />
           <Route component={NotFound} />
