@@ -50,6 +50,15 @@ class Header extends React.Component {
         <NavItem>
           <NavLink
             className="nav-link-icon"
+            to={"/lookup"}
+            tag={Link}>
+            <i className="fa fa-database" />
+            <span className="nav-link-inner--text">Lookup Search</span>
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className="nav-link-icon"
             to={"/locate"}
             tag={Link}>
             <i className="ni ni-planet" />

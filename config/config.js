@@ -5,6 +5,7 @@ module.exports = {
   db_dev: 'mongodb://da1:27017/WoC',
   jwtSecret: 'supersecrettestkeyforsomethingsecret',
   clickhouse: 'http://da1.eecs.utk.edu',
-  showCnt: '/da3_data/lookup/showCnt',
-  getValues: '/da3_data/lookup/getValues'
+  showCnt: '$HOME/lookup/showCnt',
+  getValues: '$HOME/lookup/getValues',
+  remoteCmd: 'ssh -T akarnauc@da4'
 };

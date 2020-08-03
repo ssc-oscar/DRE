@@ -29,6 +29,14 @@ export default {
     title: 'Search Profiles',
     blurb: 'Search below to view profiles of other developers.'
   },
+  '/lookup': {
+    title: 'Lookup Search',
+    blurb: ''
+  },
+  '/lookupresult': {
+    title: 'Lookup Results',
+    blurb: ''
+  },
   '/error': {
     title: 'Page not found or an error occurred.',
     blurb: ''
