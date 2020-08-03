@@ -199,7 +199,7 @@ This will give you root propmpt within the container
         });
       ```
 
-### Querying The Clickhouse Database
+### How to Add Routes to Query The Clickhouse Database
 - See [this](https://www.npmjs.com/package/clickhouse) for reference
 - Example to query the Clickhouse database:
 
@@ -228,8 +228,33 @@ This will give you root propmpt within the container
       });
     ```
 
-### Querying The MongoDB Datase
+### How to Add Routes to Query The MongoDB Database
 - Coming soon
+
+## Available REST APIs
+### Lookup
+These APIs are equivalent to calling the `lookup` perl scripts which can be found [here](https://bitbucket.org/swsc/lookup).
+- GET `/api/lookup`
+  - Query params:
+    - `sha1` - sha1 hash of blob, tree, or commit
+    - `command` - perl script to run (showCnt or getValues)
+    - `type` - type of sha1 (blob, tree, or commit) or name of the map (b2c, c2b, etc.)
+  - For example, to show commit content: `sha1={sha1 of commit}&type=commit&command=showCnt`
+  - To query for `b2c` map: `sha1={sha1 of blob}&type=b2c&command=getValues`
+  - Note that because only `sha1` inputs are accepted right now, only mappings from commit, blob, and tree to other objects are supported currently
+
+### Clickhouse
+These APIs are used to query the Clickhouse database. The details of the database can be found [here](https://github.com/woc-hack/tutorial) under the `Python Clickhouse API` section.
+- GET `/api/clickhouse/commits`
+- GET `/api/clickhouse/b2cPtaPkgR`
+  - Query params (apply to routes above):
+    - `start` - start time
+    - `end` - end time
+    - `count` - whether to count the rows
+  - To query for `commits` from time 0 to 1: `/api/clickhouse/commits?start=0&end=1`
+  - To query for `b2cPtaPkgR` map at time 42: `/api/clickhouse/b2cPtaPkgR?start=42`
+  - To get the number of `commits` from time 0 to 1: `/api/clickhouse/commits?start=0&end=1&count=true`
+
 ## External Scripts
 - `check_updates.py` - checks for any updates to a user (including new users) and generates their profile by calling `sdpg.perl`
 - `sdpg.perl` (single developer profile generator) - generates the user profile (main driver for everything)
