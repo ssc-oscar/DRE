@@ -234,7 +234,7 @@ This will give you root propmpt within the container
 ## Available REST APIs
 ### Lookup
 These APIs are equivalent to calling the `lookup` perl scripts which can be found [here](https://bitbucket.org/swsc/lookup).
-- `/api/lookup`
+- GET `/api/lookup`
   - Query params:
     - `sha1` - sha1 hash of blob, tree, or commit
     - `command` - perl script to run (showCnt or getValues)
@@ -245,8 +245,8 @@ These APIs are equivalent to calling the `lookup` perl scripts which can be foun
 
 ### Clickhouse
 These APIs are used to query the Clickhouse database. The details of the database can be found [here](https://github.com/woc-hack/tutorial) under the `Python Clickhouse API` section.
-- `/api/clickhouse/commits`
-- `/api/clickhouse/b2cPtaPkgR`
+- GET `/api/clickhouse/commits`
+- GET `/api/clickhouse/b2cPtaPkgR`
   - Query params (apply to routes above):
     - `start` - start time
     - `end` - end time
