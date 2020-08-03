@@ -7,5 +7,5 @@ module.exports = {
   clickhouse: 'http://da1.eecs.utk.edu',
   showCnt: '$HOME/lookup/showCnt',
   getValues: '$HOME/lookup/getValues',
-  remoteCmd: 'ssh -T akarnauc@da4'
+  remoteCmd: (process.env.DRE_REMOTE_CMD || 'ssh -T akarnauc@da4')
 };
