@@ -5,8 +5,7 @@ const { query, validationResult } = require('express-validator');
 module.exports = (app) => {
   const cmds = {
     showCnt: config.showCnt,
-    getValues: config.getValues,
-    remoteCmd: config.remoteCmd
+    getValues: config.getValues
   }
   
   app.get('/api/lookup', [
@@ -19,7 +18,7 @@ module.exports = (app) => {
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
       }
-      exec(remoteCmd + ' << EOF\n' +
+      exec(config.remoteCmd + ' << EOF\n' +
         `  echo "${req.query.sha1}" | ${cmds[req.query.command]} ${req.query.type}\n` +
         'EOF',
         (err, stdout, stderr) => {
