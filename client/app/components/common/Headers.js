@@ -30,8 +30,8 @@ export default {
     blurb: 'Search below to view profiles of other developers.'
   },
   '/lookup': {
-    title: 'Lookup',
-    blurb: 'Get the content of a SHA1.'
+    title: 'Lookup Search',
+    blurb: ''
   },
   '/lookupresult': {
     title: 'Lookup Results',

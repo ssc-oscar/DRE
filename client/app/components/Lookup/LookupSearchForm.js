@@ -16,84 +16,27 @@ import {
 	UncontrolledTooltip
 } from "reactstrap";
 
-class LookupSearch extends Component {
+class LookupSearchForm extends Component {
 
 	constructor(props){
 		super(props);
 		this.state = { 
 			sha: '',
 			type: 'commit',
+			command: 'showCnt',
 			isLoading: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
-	generateWarning() {
-		let sha = this.state.sha;
-		let warning = '';
-		let isError = false;
-		let len = sha.length;
-		
-		if(len != 40) {
-			warning = 'Warning: A SHA1 must be 40 characters long.'
-			isError = true;
-		}
-		else if(len == 0) {
-			warning = 'Warning: No SHA1 specified.'
-			isError = true;
-		}
-
-		return { warning, isError };
-	}
-
-	displayWarning(warning) {
-		window.alert(warning);
-			this.setState({
-				sha: '',
-				isLoading: false
-			});
-	}
-
 	onSubmit(e) {
 		e.preventDefault();
-		const { sha, type } = this.state;
-
+		const { sha, type, command} = this.state;
 		this.setState({isLoading: true});
-		let { warning, isError } = this.generateWarning();
-		if(!isError) {
-			this.props.lookupSha(sha, type)
-			.then( (response) => {
-				let result = response.data.stdout;
-				if(!result) {
-					warning = "Search returned nothing.";
-					this.displayWarning(warning);
-					isError = true;
-				}
-				if(!isError) {
-					let stderr = response.data.stderr;
-					let data = [];
-					console.log(stderr);
-					if (type == "blob") {
-						data = result;
-						console.log(data);
-					}
-					else { 
-						data = result.split(/;|\r|\n/);
-						console.log(data);
-					}
-					this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`, {
-						sha: sha,
-						type: type,
-						data: data
-					});
-				}
-			});
-		} else { 
-			this.displayWarning(warning);
-		}
+		this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
+		console.log(command);
 	}
-
 
 	onChange(e) {
 		this.setState({
@@ -142,7 +85,7 @@ class LookupSearch extends Component {
 	}
 }
 
-LookupSearch.propTypes = {
+LookupSearchForm.propTypes = {
 }
 
 function mapStateToProps(state) {
@@ -151,4 +94,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, {})(withRouter(LookupSearch));
+export default connect(mapStateToProps, {})(withRouter(LookupSearchForm));

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState, Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Component } from 'react';
 import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
@@ -18,12 +17,13 @@ import {
 	ListGroupItem
 } from "reactstrap";
 
-
-class BuildResultTable extends Component{
+class LookupResultsForm extends Component{
 	constructor(props){
 		super(props);
 
 		this.state = {
+			isError: false,
+			back: false,
 			data: [],
 			type: '',
 			sha: ''
@@ -32,50 +32,89 @@ class BuildResultTable extends Component{
 		this.onClick = this.onClick.bind(this);
 	}
 
-	componentDidMount(){
-		this.setState({
-			data: this.props.data,
-			type: this.props.type,
-			sha: this.props.sha
+	generateWarning(sha) {
+		let warning = '';
+		let isError = false;
+		let len = sha.length;
+
+		if(len != 40) {
+			warning = 'Warning: A SHA1 must be 40 characters long.'
+			isError = true;
+		}
+		else if(len == 0) {
+			warning = 'Warning: No SHA1 specified.'
+			isError = true;
+		}
+
+		return { warning, isError };
+	}
+
+	displayWarning(warning) {
+		
+		this.props.history.push('./error');
+	}
+	
+	componentDidMount() {
+		let search = window.location.search;
+		let params = new URLSearchParams(search);
+		let sha = params.get('sha1');
+		let type = params.get('type');
+		this.Search(sha, type);
+	}
+
+	UNSAFE_componentWillMount() {
+		window.addEventListener('popstate', e => {
+			this.setState({ back: true });
+			this.Search(window.history.state.sha, window.history.state.type);
 		})
+	}
+
+	Search(sha, type) {
+		let { warning, isError } = this.generateWarning(sha);
+		if(!isError) {
+			this.props.lookupSha(sha, type)
+			.then( (response) => {
+				let result = response.data.stdout;
+				if(!result) {
+					warning = "Search returned nothing.";
+					this.displayWarning(warning);
+					isError = true;
+				}
+				if(!isError) {
+					let stderr = response.data.stderr;
+					let data = [];
+					if (type == "blob") {
+						data = result;
+						
+					}
+					else { 
+						data = result.split(/;|\r|\n/);
+						
+					}
+					if(!this.state.back) {
+						window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
+					}
+					this.setState({
+						data: data,
+						type: type,
+						sha: sha,
+						back: false
+					});
+				}
+			});
+		} else { 
+			this.displayWarning(warning);
+		}
+
 	}
 
 	onClick(e,type,sha){
 		e.preventDefault();
-		let search = window.location.search;
-		let params = new URLSearchParams(search);
-		let sha1 = params.get('sha1');
-		let type2 = params.get('type');
-		console.log(sha1, type2);
-
-		this.props.lookupSha(sha, type)
-			.then( (response) => {
-				let result = response.data.stdout;
-				let stderr = response.data.stderr;
-				let data = [];
-				console.log(stderr);
-				if (type == "blob") {
-					data = result;
-					console.log(data);
-				}
-				else {
-					data = result.split(/;|\r|\n/);
-					console.log(data);
-				}
-				this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}` , {
-					data: this.state.data,
-					type: this.state.type,
-					sha: this.state.sha
-				})
-				this.setState({
-					data: data,
-					type: type,
-					sha: sha
-				});		
-			});
+		this.Search(sha,type);
 	}
 
-	generateTable(type, data) {
+	generateTable() {
+		let { data, type, sha } = this.state;
 		if(type == 'commit'){
 			let c = data[0];
 			let key = c._id;
@@ -89,7 +128,7 @@ class BuildResultTable extends Component{
 				   <>
 				    <tr>
 				      <td>Commit:</td>
-				      <td><a href="#" onClick={(e) => this.onClick(e,"commit",c)}>{c}</a></td>
+				      <td>{c}</td>
 				    </tr>
 				    <tr>
 				      <td>Tree:</td>
@@ -150,17 +189,14 @@ class BuildResultTable extends Component{
 	}
 
 	render() {
-		const { data } = this.state;
-		const { type } = this.state;
-		console.log(data, type);
-		console.log(typeof(data));
-		return (
-			<div>
-			  <Card className="bg-secondary shadow border-0">
+		const { sha, type } = this.state;
+			return (
+			<div>	
+		          <Card className="bg-secondary shadow border-0">
 			    <CardBody>
 			      <Table style={styles.table} className="align-items-center table-flush" responsive>
 			        <tbody>
-			      {this.generateTable(type,data)}
+			          {this.generateTable()}
 			        </tbody>
 		              </Table>
 			    </CardBody>
@@ -170,7 +206,7 @@ class BuildResultTable extends Component{
 	}
 }
 
-BuildResultTable.propTypes = {
+LookupResultsForm.propTypes = {
 }
 
 function mapStateToProps(state) {
@@ -179,4 +215,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, {})(withRouter(BuildResultTable));
+export default connect(mapStateToProps, {})(withRouter(LookupResultsForm));
