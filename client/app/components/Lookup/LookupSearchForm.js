@@ -3,7 +3,6 @@ import { FilterableContent } from 'react-filterable-content';
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
-import HamburgerMenu from 'react-hamburger-menu';
 import {
 	Button,
 	Card,
