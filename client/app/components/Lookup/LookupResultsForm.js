@@ -164,18 +164,18 @@ class LookupResultsForm extends Component{
 				let row = [];
 				row['id'] = j;
 				row['mode'] = data[i];
-				row['blob'] = data[i+1];
+				row['sha'] = data[i+1];
 				row['filename'] = data[i+2];
 				table_rows.push(row);
 			}
 			return table_rows.map((result, index) => {
-				const { id, mode, blob, filename } = result
+				const { id, mode, sha, filename } = result
 				return (
 					<tr key={id}>
 					  <td>{mode}</td>
 					  <td><a href="#" 
-						onClick={(e) => this.onClick(e,"blob",blob)}>
-					      {blob}</a></td>
+						onClick={(e) => this.onClick(e,(mode === "040000") ? "tree" : "blob",sha)}>
+					      {sha}</a></td>
 					  <td>{filename}</td>
 					</tr>
 				)
