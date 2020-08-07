@@ -17,7 +17,7 @@ import {
 	ListGroupItem
 } from "reactstrap";
 
-class LookupResultsForm extends Component{
+class MapResultsForm extends Component{
 	constructor(props){
 		super(props);
 
@@ -50,7 +50,6 @@ class LookupResultsForm extends Component{
 	}
 
 	displayWarning(warning) {
-		
 		this.props.history.push('./error');
 	}
 	
@@ -71,7 +70,7 @@ class LookupResultsForm extends Component{
 
 	Search(sha, type) {
 		let { warning, isError } = this.generateWarning(sha);
-		let command = "showCnt";
+		let command = "getValues";
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
@@ -84,16 +83,10 @@ class LookupResultsForm extends Component{
 				if(!isError) {
 					let stderr = response.data.stderr;
 					let data = [];
-					if (type == "blob") {
-						data = result;
-						
-					}
-					else { 
-						data = result.split(/;|\r|\n/);
-						
-					}
+					data = result.split(/;|\r|\n/);
+					console.log(data);				
 					if(!this.state.back) {
-						window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
+						window.history.pushState({sha: sha, type: type}, '', `./mapresult?sha1=${sha}&type=${type}`);
 					}
 					this.setState({
 						data: data,
@@ -114,81 +107,6 @@ class LookupResultsForm extends Component{
 		this.Search(sha,type);
 	}
 
-	generateTable() {
-		let { data, type, sha } = this.state;
-		if(type == 'commit'){
-			let c = data[0];
-			let key = c._id;
-			let tree = data[1];
-			let p = data[2];
-			let author = data[3];
-			let a_time = data[5];
-			let committer = data[4];
-			let c_time = data[6];	
-			return (
-				   <>
-				    <tr>
-				      <td>Commit:</td>
-				      <td>{c}</td>
-				    </tr>
-				    <tr>
-				      <td>Tree:</td>
-				      <td><a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></td>
-				    </tr>
-				    <tr>
-				      <td>Parent:</td>
-				      <td><a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></td>
-				    </tr>
-				    <tr>
-				      <td>Author:</td>
-				      <td>{author}</td>
-				    </tr>
-				    <tr>
-				      <td>Author Time:</td>
-				      <td>{a_time}</td>
-				    </tr>
-				    <tr>
-				      <td>Committer:</td>
-				      <td>{committer}</td>
-				    </tr>
-				    <tr>
-				      <td>Commit Time:</td>
-				      <td>{c_time}</td>
-				    </tr>
-				   </>
-			)
-		}
-		else if(type == 'tree'){
-			var i, j;
-			let table_rows = []
-			for (i = 0, j=0; i < data.length; i+=3, j++) {
-				let row = [];
-				row['id'] = j;
-				row['mode'] = data[i];
-				row['sha'] = data[i+1];
-				row['filename'] = data[i+2];
-				table_rows.push(row);
-			}
-			return table_rows.map((result, index) => {
-				const { id, mode, sha, filename } = result
-				return (
-					<tr key={id}>
-					  <td>{mode}</td>
-					  <td><a href="#" 
-						onClick={(e) => this.onClick(e,(mode === "040000") ? "tree" : "blob",sha)}>
-					      {sha}</a></td>
-					  <td>{filename}</td>
-					</tr>
-				)
-			})
-		}
-		else if(type == 'blob'){
-			return data.split("\n").map((i,key) => {
-				return <tr key={key}>{i}</tr>;
-			})
-		}
-	}
-
 	render() {
 		const { sha, type } = this.state;
 			return (
@@ -197,7 +115,7 @@ class LookupResultsForm extends Component{
 			    <CardBody>
 			      <Table style={styles.table} className="align-items-center table-flush" responsive>
 			        <tbody>
-			          {this.generateTable()}
+					{this.state.data}
 			        </tbody>
 		              </Table>
 			    </CardBody>
@@ -207,7 +125,7 @@ class LookupResultsForm extends Component{
 	}
 }
 
-LookupResultsForm.propTypes = {
+MapResultsForm.propTypes = {
 }
 
 function mapStateToProps(state) {
@@ -216,4 +134,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, {})(withRouter(LookupResultsForm));
+export default connect(mapStateToProps, {})(withRouter(MapResultsForm));

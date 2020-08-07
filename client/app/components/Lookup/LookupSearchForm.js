@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { FilterableContent } from 'react-filterable-content';
-import { withRouter, NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
+import LookupSearchHeader from './LookupSearchHeader';
 import HamburgerMenu from 'react-hamburger-menu';
 import {
 	Button,
@@ -17,14 +18,16 @@ import {
 	UncontrolledTooltip
 } from "reactstrap";
 
-class LookupSearchForm extends Component {
-
+class LookupSearchForm extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = { 
 			sha: '',
 			type: 'commit',
 			command: 'showCnt',
+			from: 'commit',
+			to: 'commit',
+			menuOpen: false,
 			isLoading: false
 		}
 		this.onChange = this.onChange.bind(this);
@@ -33,10 +36,16 @@ class LookupSearchForm extends Component {
 
 	onSubmit(e) {
 		e.preventDefault();
-		const { sha, type, command} = this.state;
+		let { sha, type, command, from, to } = this.state;
 		this.setState({isLoading: true});
-		this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
-		console.log(command);
+		if (command === "showCnt"){
+			this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
+		}
+		else if (command === "getValues"){
+			type = from[0] + "2" + to[0];
+			console.log(type);
+			this.props.history.push(`/mapresult?sha1=${sha}&type=${type}`);
+		}
 	}
 
 	onChange(e) {
@@ -45,53 +54,88 @@ class LookupSearchForm extends Component {
 		})
 	}
 
+	generatecard() {
+		if(this.state.command == "showCnt") {
+			return(	
+				<CardBody className="px-lg-5 py-lg-5">
+			  	  <Label>SHA</Label>
+					<TextFieldGroup
+					  label=""
+					  focus={true}
+					  onChange={this.onChange}
+					  value={this.state.sha}
+					  field="sha"
+					/>
+				 <div>
+				   <select value={this.state.type} name="type" onChange={this.onChange}>
+				     <option field="commit">commit</option>
+					 <option field="tree">tree</option>
+					 <option field="blob">blob</option>
+				   </select>
+				   <p></p>
+				 </div>
+				  <FormGroup>
+					<Button color="primary" disabled={this.state.isLoading}>
+					  Search
+					  {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
+			        </Button>
+				  </FormGroup>
+				</CardBody>
+			)
+		} else {
+			return (
+				<CardBody className="px-lg-5 py-lg-5">
+				  <Label>SHA</Label>
+				    <TextFieldGroup
+				      label=""
+				      focus={true}
+			          onChange={this.onChange}
+			          value={this.state.sha}
+		          	  field="sha"
+				    />
+				  <div>
+				    <select value={this.state.from} name="from" onChange={this.onChange}>
+				      <option field="b">blob</option>
+				      <option field="c">commit</option>
+				    </select>
+				    <div> To </div>
+				    <select value={this.state.to} name="to" onChange={this.onChange}>
+				      <option field="a">author</option>
+				      <option field="c">commit</option>
+				    </select>
+				    <p></p>
+				  </div>
+				  <FormGroup>
+				    <Button color="primary" disabled={this.state.isLoading}>
+				      Search
+				      {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
+				    </Button>
+				  </FormGroup>
+				  </CardBody>
+			)
 
-	generateLookupCard() {
+		}
+	}
+
+
+	render() {
 		return (
 			<form onSubmit={this.onSubmit}>
 			  <Card className="bg-secondary shadow border-0" style={{ width: '30rem'}}>
 			    <CardHeader className="bg-transparent">
-
-			      <div className="text-center mt-2">
-				<p>
-				  Lookup the contents of a SHA1
-				</p>
+				  <div>
+				    <select value={this.state.command} name="command" onChange={this.onChange}>
+				      <option field="showCnt">showCnt</option>
+				      <option field="getValues">getValues</option>
+				    </select>
+				    <p></p>
 			      </div>
+				 <LookupSearchHeader option={this.state.command}/> 
 			    </CardHeader>
-			    <CardBody className="px-lg-5 py-lg-5">
-			      <Label>SHA</Label>
-				<TextFieldGroup
-				  label=""
-				  focus={true}
-				  onChange={this.onChange}
-				  value={this.state.sha}
-				  field="sha"
-				/>
-			      <div>
-				<select value={this.state.type} name="type" onChange={this.onChange}>
-				  <option field="commit">commit</option>
-				  <option field="tree">tree</option>
-				  <option field="blob">blob</option>
-				</select>
-				<p></p>
-			      </div>
-				<FormGroup>
-				<Button color="primary" disabled={this.state.isLoading}>
-				  Search
-				  {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
-				</Button>
-				</FormGroup>
-			      </CardBody>
+			
+				{this.generatecard()}
 			  </Card>
 			</form>
-		);
-	}
-
-	render() {
-		return (
-			<>
-			{this.generateLookupCard()}
-			</>
 		);
 	}
 }

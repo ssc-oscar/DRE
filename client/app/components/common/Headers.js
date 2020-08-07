@@ -37,6 +37,10 @@ export default {
     title: 'Lookup Results',
     blurb: ''
   },
+  '/mapresult': {
+    title: 'Mapping Results',
+    blurb: ''
+  },
   '/error': {
     title: 'Page not found or an error occurred.',
     blurb: ''
