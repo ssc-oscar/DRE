@@ -5,6 +5,7 @@ import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import queryString from 'query-string';
+import { BlobMap } from './Blob';
 import {
 	Container,
 	Row,
@@ -109,7 +110,19 @@ class MapResultsForm extends Component{
 
 	render() {
 		const { sha, type } = this.state;
+		console.log(this.state);
+		if (type[0] === "b") {
 			return (
+				<BlobMap state={this.state}/>
+			)
+		}
+		else {
+			return (
+				<div />
+			)
+		}
+		/*
+		return (
 			<div>	
 		          <Card className="bg-secondary shadow border-0">
 			    <CardBody>
@@ -122,6 +135,7 @@ class MapResultsForm extends Component{
 			  </Card>
 			</div>
 		)
+		*/
 	}
 }
 

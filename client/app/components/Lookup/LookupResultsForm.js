@@ -86,11 +86,9 @@ class LookupResultsForm extends Component{
 					let data = [];
 					if (type == "blob") {
 						data = result;
-						
 					}
 					else { 
 						data = result.split(/;|\r|\n/);
-						
 					}
 					if(!this.state.back) {
 						window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
