@@ -16,12 +16,23 @@ import {
 		ListGroupItem
 } from "reactstrap";
 
-function format_b2a_Table(data){
+function pick_a_map(props){
+	let type = props.state.type;
+	let data = props.state.data;
+
+	if (type === "b2a") return format_b2a_table(data);
+	else if (type === "b2c") return format_b2c_table(data);
+}
+
+function format_b2a_table(data){
+	let blob_link = "./lookupresult?sha1=" + data[0] + "&type=blob";
+	let commit_link = "./lookupresult?sha1=" + data[3] + "&type=commit";
+
 	return (
 		<>
 		  <tr>
 		    <td>Blob:</td>
-		    <td>{data[0]}</td>
+		    <td><a href={blob_link}>{data[0]}</a></td>
 		  </tr>
 		  <tr>
 		    <td>Author Time:</td>
@@ -33,9 +44,21 @@ function format_b2a_Table(data){
 		  </tr>
 		  <tr>
 		    <td>Commit:</td>
-		    <td>{data[3]}</td>
+		    <td><a href={commit_link}>{data[3]}</a></td>
 		  </tr>
 		</>
+	)
+}
+
+function format_b2c_table(data) {
+	// remove first element, leave the commits to print
+	data.shift();
+
+	return data.map((commit) => 
+			<tr key={commit}> 
+			  <td>Commit:</td>
+			  <td><a href={"./lookupresult?sha1="+commit+"&type=commit"}>{commit}</a></td>
+			</tr>
 	)
 }
 
@@ -47,7 +70,7 @@ export function BlobMap(props) {
 			<CardBody>
 			  <Table style={styles.table} className="align-items-center table-flush" responsive>
 				<tbody>
-				  {format_b2a_Table(props.state.data)}
+				  {pick_a_map(props)}
 				</tbody>
 			  </Table>
 			</CardBody>

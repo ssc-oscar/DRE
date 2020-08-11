@@ -50,7 +50,6 @@ class LookupResultsForm extends Component{
 	}
 
 	displayWarning(warning) {
-		
 		this.props.history.push('./error');
 	}
 	

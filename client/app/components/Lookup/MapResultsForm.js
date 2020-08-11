@@ -85,6 +85,7 @@ class MapResultsForm extends Component{
 					let stderr = response.data.stderr;
 					let data = [];
 					data = result.split(/;|\r|\n/);
+					data.pop();
 					console.log(data);				
 					if(!this.state.back) {
 						window.history.pushState({sha: sha, type: type}, '', `./mapresult?sha1=${sha}&type=${type}`);
@@ -121,21 +122,6 @@ class MapResultsForm extends Component{
 				<div />
 			)
 		}
-		/*
-		return (
-			<div>	
-		          <Card className="bg-secondary shadow border-0">
-			    <CardBody>
-			      <Table style={styles.table} className="align-items-center table-flush" responsive>
-			        <tbody>
-					{this.state.data}
-			        </tbody>
-		              </Table>
-			    </CardBody>
-			  </Card>
-			</div>
-		)
-		*/
 	}
 }
 
