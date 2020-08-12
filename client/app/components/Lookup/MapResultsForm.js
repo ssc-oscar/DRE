@@ -5,7 +5,7 @@ import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import queryString from 'query-string';
-import { BlobMap } from './Blob';
+import { BlobMap } from './Mappings/BlobMap';
 import {
 	Container,
 	Row,
