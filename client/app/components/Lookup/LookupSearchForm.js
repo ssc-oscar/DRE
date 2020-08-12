@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
 import LookupSearchHeader from './LookupSearchHeader';
-import HamburgerMenu from 'react-hamburger-menu';
 import {
 	Button,
 	Card,
@@ -102,6 +101,8 @@ class LookupSearchForm extends React.Component {
 				    <select value={this.state.to} name="to" onChange={this.onChange}>
 				      <option field="a">author</option>
 				      <option field="c">commit</option>
+				      <option field="p">project</option>
+				      <option field="P">Project</option>
 				    </select>
 				    <p></p>
 				  </div>

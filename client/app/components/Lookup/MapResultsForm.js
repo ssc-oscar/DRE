@@ -5,7 +5,8 @@ import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import queryString from 'query-string';
-import { BlobMap } from './Blob';
+import { BlobMap } from './Mappings/BlobMap';
+import { CommitMap } from './Mappings/CommitMap';
 import {
 	Container,
 	Row,
@@ -85,6 +86,7 @@ class MapResultsForm extends Component{
 					let stderr = response.data.stderr;
 					let data = [];
 					data = result.split(/;|\r|\n/);
+					data.pop();
 					console.log(data);				
 					if(!this.state.back) {
 						window.history.pushState({sha: sha, type: type}, '', `./mapresult?sha1=${sha}&type=${type}`);
@@ -115,10 +117,21 @@ class MapResultsForm extends Component{
 			return (
 				<BlobMap state={this.state}/>
 			)
+
+		}
+		else if (type[0] === 'c') {
+			return (
+				<CommitMap state={this.state}/>
+			)
 		}
 		else {
 			return (
-				<div />
+				<div>
+				  <Card className='bg-secondary shadow border-0'>
+				    <CardBody>
+				    </CardBody>
+				  </Card>
+				</div>
 			)
 		}
 		/*
