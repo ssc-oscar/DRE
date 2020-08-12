@@ -243,6 +243,15 @@ These APIs are equivalent to calling the `lookup` perl scripts which can be foun
   - To query for `b2c` map: `sha1={sha1 of blob}&type=b2c&command=getValues`
   - Note that because only `sha1` inputs are accepted right now, only mappings from commit, blob, and tree to other objects are supported currently
 
+The GET request can also be utilized from a Jupyter Notebook (ipynb file) from any machine, local or remote:
+```
+In [1]: import requests, json
+In [2]: url='http://worldofcode.org/api/lookup?command=showCnt&type=blob&sha1=8bfa9b6cde7b8d89abab622035c9fb002d10f157'
+In [3]: r = requests.get(url)
+In [4]: print(json.loads(r.content)['stdout'])
+        Removed at request of NucleusHealth;mblaha@nucleushealth.io;858-251-3369
+```
+
 ### Clickhouse
 These APIs are used to query the Clickhouse database. The details of the database can be found [here](https://github.com/woc-hack/tutorial) under the `Python Clickhouse API` section.
 - GET `/api/clickhouse/commits`

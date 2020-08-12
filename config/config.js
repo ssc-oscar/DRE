@@ -5,7 +5,7 @@ module.exports = {
   db_dev: 'mongodb://da1:27017/WoC',
   jwtSecret: 'supersecrettestkeyforsomethingsecret',
   clickhouse: 'http://da1.eecs.utk.edu',
-  showCnt: '$HOME/lookup/showCnt',
-  getValues: '$HOME/lookup/getValues',
-  remoteCmd: (process.env.DRE_REMOTE_CMD || 'ssh -T akarnauc@da4')
+  showCnt: ((process.env.DRE_LOOKUP_PATH + '/showCnt') || '$HOME/lookup/showCnt'),
+  getValues: ((process.env.DRE_LOOKUP_PATH + '/getValues') ||'$HOME/lookup/getValues'),
+  remoteCmd: (process.env.DRE_REMOTE_CMD || 'ssh -T da4')
 };
