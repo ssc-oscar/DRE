@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import queryString from 'query-string';
 import { BlobMap } from './Mappings/BlobMap';
+import { CommitMap } from './Mappings/CommitMap';
 import {
 	Container,
 	Row,
