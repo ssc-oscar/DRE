@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import queryString from 'query-string';
 import { BlobMap } from './Mappings/BlobMap';
-import { CommitMap } from './Mappings/CommitMap';
 import {
 	Container,
 	Row,
@@ -134,21 +133,6 @@ class MapResultsForm extends Component{
 				</div>
 			)
 		}
-		/*
-		return (
-			<div>	
-		          <Card className="bg-secondary shadow border-0">
-			    <CardBody>
-			      <Table style={styles.table} className="align-items-center table-flush" responsive>
-			        <tbody>
-					{this.state.data}
-			        </tbody>
-		              </Table>
-			    </CardBody>
-			  </Card>
-			</div>
-		)
-		*/
 	}
 }
 
