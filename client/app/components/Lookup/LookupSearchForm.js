@@ -12,9 +12,10 @@ import {
 	Label,
 	FormGroup,
 	Form,
-	Row,
-	Col,
-	UncontrolledTooltip
+	Dropdown,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem
 } from "reactstrap";
 
 class LookupSearchForm extends React.Component {
@@ -22,11 +23,10 @@ class LookupSearchForm extends React.Component {
 		super(props);
 		this.state = { 
 			sha: '',
-			type: 'commit',
+			type: '',
 			command: 'showCnt',
-			from: 'commit',
-			to: 'commit',
-			menuOpen: false,
+			from: '',
+			to: '',
 			isLoading: false
 		}
 		this.onChange = this.onChange.bind(this);
@@ -37,6 +37,7 @@ class LookupSearchForm extends React.Component {
 		e.preventDefault();
 		let { sha, type, command, from, to } = this.state;
 		this.setState({isLoading: true});
+
 		if (command === "showCnt"){
 			this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
 		}
@@ -48,36 +49,70 @@ class LookupSearchForm extends React.Component {
 	}
 
 	onChange(e) {
+		console.log(e);
 		this.setState({
 			[e.target.name]: e.target.value
 		})
 	}
+	
+	Mappings() {
+		console.log(this.state.from);
+		if(this.state.from === 'commit') {
+			const maps = ( 
+				<>
+				  {" to "}
+				  <select value={this.state.to} name="to" onChange={this.onChange}>
+				    <option selected value="">Select</option>
+				    <option field="p">project</option>
+				    <option field="P">Project</option>
+				  </select>
+				</>
+			);
+			return maps;
+		}
+		else if (this.state.from === 'blob') {
+			const maps = ( 
+				<>
+				  {" to "}
+				  <select value={this.state.to} name="to" onChange={this.onChange}>
+				    <option selected value="">Select</option>
+				    <option field="a">author</option>
+				    <option field="c">commit</option>
+				  </select>
+				</>
+			);
+			return maps;
+		}
+		else return (<div />)
+	}
+
 
 	generatecard() {
 		if(this.state.command == "showCnt") {
 			return(	
 				<CardBody className="px-lg-5 py-lg-5">
-			  	  <Label>SHA</Label>
-					<TextFieldGroup
-					  label=""
-					  focus={true}
-					  onChange={this.onChange}
-					  value={this.state.sha}
-					  field="sha"
-					/>
-				 <div>
-				   <select value={this.state.type} name="type" onChange={this.onChange}>
-				     <option field="commit">commit</option>
-					 <option field="tree">tree</option>
-					 <option field="blob">blob</option>
-				   </select>
-				   <p></p>
-				 </div>
+				  <Label>SHA</Label>
+				  <TextFieldGroup
+				    label=""
+				    focus={true}
+				    onChange={this.onChange}
+				    value={this.state.sha}
+				    field="sha"
+				  />
+				  <div>
+				    <select value={this.state.type} name="type" onChange={this.onChange}>
+				      <option selected value="">Select</option>
+				      <option field="commit">commit</option>
+				      <option field="tree">tree</option>
+				      <option field="blob">blob</option>
+				    </select>
+				    <p></p>
+				  </div>
 				  <FormGroup>
-					<Button color="primary" disabled={this.state.isLoading}>
-					  Search
-					  {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
-			        </Button>
+				    <Button color="primary" disabled={this.state.isLoading}>
+				      Search
+				      {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
+				    </Button>
 				  </FormGroup>
 				</CardBody>
 			)
@@ -88,22 +123,17 @@ class LookupSearchForm extends React.Component {
 				    <TextFieldGroup
 				      label=""
 				      focus={true}
-			          onChange={this.onChange}
-			          value={this.state.sha}
-		          	  field="sha"
+			              onChange={this.onChange}
+			              value={this.state.sha}
+		          	      field="sha"
 				    />
 				  <div>
 				    <select value={this.state.from} name="from" onChange={this.onChange}>
+				      <option selected value="">Select</option>
 				      <option field="b">blob</option>
 				      <option field="c">commit</option>
 				    </select>
-				    <div> To </div>
-				    <select value={this.state.to} name="to" onChange={this.onChange}>
-				      <option field="a">author</option>
-				      <option field="c">commit</option>
-				      <option field="p">project</option>
-				      <option field="P">Project</option>
-				    </select>
+				    {this.Mappings()}
 				    <p></p>
 				  </div>
 				  <FormGroup>
@@ -112,7 +142,7 @@ class LookupSearchForm extends React.Component {
 				      {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
 				    </Button>
 				  </FormGroup>
-				  </CardBody>
+				</CardBody>
 			)
 
 		}
@@ -124,17 +154,16 @@ class LookupSearchForm extends React.Component {
 			<form onSubmit={this.onSubmit}>
 			  <Card className="bg-secondary shadow border-0" style={{ width: '30rem'}}>
 			    <CardHeader className="bg-transparent">
-				  <div>
-				    <select value={this.state.command} name="command" onChange={this.onChange}>
-				      <option field="showCnt">showCnt</option>
-				      <option field="getValues">getValues</option>
-				    </select>
-				    <p></p>
+		              <div>
+			        <select value={this.state.command} name="command" onChange={this.onChange}>
+			          <option field="showCnt">showCnt</option>
+			          <option field="getValues">getValues</option>
+			        </select>
+			        <p></p>
 			      </div>
-				 <LookupSearchHeader option={this.state.command}/> 
+		              <LookupSearchHeader option={this.state.command}/> 
 			    </CardHeader>
-			
-				{this.generatecard()}
+		              {this.generatecard()}
 			  </Card>
 			</form>
 		);

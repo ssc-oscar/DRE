@@ -22,7 +22,6 @@ import {
 class MapResultsForm extends Component{
 	constructor(props){
 		super(props);
-
 		this.state = {
 			isError: false,
 			back: false,
@@ -30,7 +29,6 @@ class MapResultsForm extends Component{
 			type: '',
 			sha: ''
 		}
-
 		this.onClick = this.onClick.bind(this);
 	}
 
@@ -82,6 +80,7 @@ class MapResultsForm extends Component{
 					this.displayWarning(warning);
 					isError = true;
 				}
+
 				if(!isError) {
 					let stderr = response.data.stderr;
 					let data = [];
@@ -99,10 +98,7 @@ class MapResultsForm extends Component{
 					});
 				}
 			});
-		} else { 
-			this.displayWarning(warning);
-		}
-
+		} else this.displayWarning(warning);
 	}
 
 	onClick(e,type,sha){
@@ -113,17 +109,8 @@ class MapResultsForm extends Component{
 	render() {
 		const { sha, type } = this.state;
 		console.log(this.state);
-		if (type[0] === "b") {
-			return (
-				<BlobMap state={this.state}/>
-			)
-
-		}
-		else if (type[0] === 'c') {
-			return (
-				<CommitMap state={this.state}/>
-			)
-		}
+		if (type[0] === "b") return (<BlobMap state={this.state}/>)
+		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
 		else {
 			return (
 				<div>

@@ -12,13 +12,11 @@ class MapResultsPage extends Component {
 		const { lookupSha } = this.props;
 
 		return (
-			<Row className="justify-content-center">
-			  <Col xs="10">
-			    <MapResultsForm
-			      lookupSha={lookupSha}
-			     />
-			  </Col>
-			</Row>
+			<div>
+			  <p align="center">
+			    <MapResultsForm lookupSha={lookupSha}/>
+			  </p>
+			</div>
 		)
 
 	}

@@ -5,15 +5,9 @@ import { connect } from 'react-redux';
 import { styles } from '../../common/styles';
 import queryString from 'query-string';
 import {
-		Container,
-		Row,
-		Col,
-		Card,
-		CardBody,
-		Table,
-		FilterableContent,
-		ListGroup,
-		ListGroupItem
+	Card,
+	CardBody,
+	Table,
 } from "reactstrap";
 
 function pick_a_map(props){
@@ -30,7 +24,7 @@ function format_b2a_table(data){
 
 	return (
 		<>
-		  <tr>
+	  	  <tr>
 		    <td>Blob:</td>
 		    <td><a href={blob_link}>{data[0]}</a></td>
 		  </tr>
@@ -55,25 +49,25 @@ function format_b2c_table(data) {
 	data.shift();
 
 	return data.map((commit) => 
-			<tr key={commit}> 
-			  <td>Commit:</td>
-			  <td><a href={"./lookupresult?sha1="+commit+"&type=commit"}>{commit}</a></td>
-			</tr>
+		<tr key={commit}> 
+		  <td>Commit:</td>
+		  <td><a href={"./lookupresult?sha1="+commit+"&type=commit"}>{commit}</a></td>
+		</tr>
 	)
 }
 
 export function BlobMap(props) {
-		console.log(props.state);
-		return(
+	console.log(props.state);
+	return(
 		<div>
 		  <Card className="bg-secondary shadow border-0">
-			<CardBody>
-			  <Table style={styles.table} className="align-items-center table-flush" responsive>
-				<tbody>
-				  {pick_a_map(props)}
-				</tbody>
-			  </Table>
-			</CardBody>
+		    <CardBody>
+		      <Table style={styles.table} className="align-items-center table-flush" responsive>
+		        <tbody>
+		          {pick_a_map(props)}
+		        </tbody>
+		      </Table>
+		    </CardBody>
 		  </Card>
 		</div>
 	);

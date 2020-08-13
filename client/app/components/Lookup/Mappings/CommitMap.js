@@ -11,17 +11,8 @@ import {
 } from 'reactstrap';
 
 function formatTable(props) {
-	if(props.state.type === 'c2p') {
-		return c2p(props);
-	} 
-	else if(props.state.type === 'c2P') {
-		return c2P(props);
-	}else {
-		return (
-		<h1> Nothing to see here </h1>
-		)
-	}
-
+	if(props.state.type === 'c2p') return c2p(props);
+	else if(props.state.type === 'c2P') return c2P(props);
 }
 
 function c2p(props) {
@@ -53,16 +44,16 @@ export function CommitMap(props) {
 	console.log("In CommitMap");
 	console.log(props.state);
 	return(
-	<>
-	  <Card className='bg-secondary shadow border-0'>
-	    <CardBody>
-	      <Table style={styles.table} className='align-items-center table-flush' responsive>
-	        <tbody>
-	          { formatTable(props) }
-		</tbody>
-	      </Table>
-            </CardBody>
-	  </Card>
-	</>
+		<>
+		  <Card className='bg-secondary shadow border-0'>
+		    <CardBody>
+		      <Table style={styles.table} className='align-items-center table-flush' responsive>
+		        <tbody>
+		        { formatTable(props) }
+		        </tbody>
+		      </Table>
+		    </CardBody>
+		  </Card>
+		</>
 	)
 }

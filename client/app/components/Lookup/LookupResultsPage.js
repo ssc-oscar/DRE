@@ -13,13 +13,11 @@ class LookupResultsPage extends Component {
 		const { lookupSha } = this.props;
 
 		return (
-			<Row className="justify-content-center">
-			  <Col xs="10">
-			    <LookupResultsForm
-			      lookupSha={lookupSha}
-			    />
-			  </Col>
-			</Row>
+			<div>
+			  <p align="center">
+			    <LookupResultsForm lookupSha={lookupSha}/>
+			  </p>
+			</div>
 		)
 
 	}
