@@ -3,6 +3,7 @@ import { FilterableContent } from 'react-filterable-content';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
+import LookupSearchHeader from './LookupSearchHeader';
 import {
 	Button,
 	Card,
