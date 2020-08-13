@@ -60,7 +60,11 @@ class ProjStatTable extends React.Component {
           const { nc, depth, users, blob } = proj;
           return (
             <tr key={blob.substr(1,4)}>
-              <th scope="row">{blob}</th>
+              <th scope="row">
+                <a href="#" onClick={(e) => {e.preventDefault(); this.props.onClickBlob(blob);}}>
+                {blob}
+                </a>
+              </th>
               <td>{nc}</td>
               <td>{depth}</td>
               <td>{JSON.stringify(users)}</td>
