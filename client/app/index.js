@@ -15,6 +15,7 @@ import UploadAuthorsPage from './components/Upload/UploadAuthorsPage';
 import LocateProfilesPage from './components/Locate/LocateProfilesPage';
 import LookupSearchPage from './components/Lookup/LookupSearchPage';
 import LookupResultsPage from './components/Lookup/LookupResultsPage';
+import MapResultsPage from './components/Lookup/MapResultsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import rootReducer from '../rootReducer';
 import requireAuth from '../utils/requireAuth';
@@ -51,13 +52,14 @@ render((
       <App>
         <Switch>
           <Route exact path="/" component={HomeWOC} />
-	  <Route exact path="/DRE" component={Home} />
+	      <Route exact path="/DRE" component={Home} />
           <Route path="/search" component={requireAuth(AuthorSearchPage)} />
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
           <Route path="/dash" component={requireAuth(DashboardPage)} />
           <Route path="/locate" component={requireAuth(LocateProfilesPage)} />
-	  <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
-	  <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
+	        <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
+	        <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
+	        <Route path="/mapresult" component={requireAuth(MapResultsPage)} />
           <Route path="/upload" component={requireAuth(UploadAuthorsPage)} />
           <Route path="/error" component={NotFound} />
           <Route component={NotFound} />

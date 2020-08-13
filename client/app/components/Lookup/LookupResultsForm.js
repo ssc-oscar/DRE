@@ -6,15 +6,9 @@ import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import queryString from 'query-string';
 import {
-	Container,
-	Row,
-	Col,
 	Card,
 	CardBody,
-	Table,
-	FilterableContent,
-	ListGroup,
-	ListGroupItem
+	Table
 } from "reactstrap";
 
 class LookupResultsForm extends Component{
@@ -50,7 +44,6 @@ class LookupResultsForm extends Component{
 	}
 
 	displayWarning(warning) {
-		
 		this.props.history.push('./error');
 	}
 	
@@ -71,29 +64,30 @@ class LookupResultsForm extends Component{
 
 	Search(sha, type) {
 		let { warning, isError } = this.generateWarning(sha);
+		let command = "showCnt";
+
 		if(!isError) {
-			this.props.lookupSha(sha, type)
+			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
 				let result = response.data.stdout;
+	
 				if(!result) {
 					warning = "Search returned nothing.";
 					this.displayWarning(warning);
 					isError = true;
 				}
+
 				if(!isError) {
 					let stderr = response.data.stderr;
 					let data = [];
-					if (type == "blob") {
-						data = result;
-						
-					}
-					else { 
-						data = result.split(/;|\r|\n/);
-						
-					}
+
+					if (type == "blob") data = result;
+					else data = result.split(/;|\r|\n/);
+
 					if(!this.state.back) {
 						window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
 					}
+
 					this.setState({
 						data: data,
 						type: type,
@@ -102,10 +96,7 @@ class LookupResultsForm extends Component{
 					});
 				}
 			});
-		} else { 
-			this.displayWarning(warning);
-		}
-
+		} else this.displayWarning(warning);
 	}
 
 	onClick(e,type,sha){
@@ -125,36 +116,46 @@ class LookupResultsForm extends Component{
 			let committer = data[4];
 			let c_time = data[6];	
 			return (
-				   <>
-				    <tr>
-				      <td>Commit:</td>
-				      <td>{c}</td>
-				    </tr>
-				    <tr>
-				      <td>Tree:</td>
-				      <td><a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></td>
-				    </tr>
-				    <tr>
-				      <td>Parent:</td>
-				      <td><a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></td>
-				    </tr>
-				    <tr>
-				      <td>Author:</td>
-				      <td>{author}</td>
-				    </tr>
-				    <tr>
-				      <td>Author Time:</td>
-				      <td>{a_time}</td>
-				    </tr>
-				    <tr>
-				      <td>Committer:</td>
-				      <td>{committer}</td>
-				    </tr>
-				    <tr>
-				      <td>Commit Time:</td>
-				      <td>{c_time}</td>
-				    </tr>
-				   </>
+		          <>		   
+		            <p align="center">
+		              <Card className="bg-secondary shadow border-0" style={{ width: '35rem', height: '35rem'}}>
+			        <CardBody>
+			          <Table style={styles.table} className="align-items-center table-flush" responsive>
+			            <tbody>
+				      <tr>
+				        <td>Commit:</td>
+				        <td>{c}</td>
+				      </tr>
+				      <tr>
+				        <td>Tree:</td>
+				        <td><a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></td>
+				      </tr>
+				      <tr>
+				        <td>Parent:</td>
+				        <td><a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></td>
+				      </tr>
+				      <tr>
+				        <td>Author:</td>
+				        <td>{author}</td>
+				      </tr>
+				      <tr>
+				        <td>Author Time:</td>
+				        <td>{a_time}</td>
+				      </tr>
+				      <tr>
+				        <td>Committer:</td>
+				        <td>{committer}</td>
+				      </tr>
+				      <tr>
+				        <td>Commit Time:</td>
+				        <td>{c_time}</td>
+				      </tr>
+			            </tbody>
+		                  </Table>
+			        </CardBody>
+			      </Card>
+		            </p>
+	                  </>
 			)
 		}
 		else if(type == 'tree'){
@@ -168,23 +169,53 @@ class LookupResultsForm extends Component{
 				row['filename'] = data[i+2];
 				table_rows.push(row);
 			}
-			return table_rows.map((result, index) => {
+			const treeTable = table_rows.map((result, index) => {
 				const { id, mode, sha, filename } = result
 				return (
 					<tr key={id}>
 					  <td>{mode}</td>
-					  <td><a href="#" 
-						onClick={(e) => this.onClick(e,(mode === "040000") ? "tree" : "blob",sha)}>
+					  <td><a href="#" onClick={(e) => this.onClick(e,(mode === "040000") ? "tree" : "blob",sha)}>
 					      {sha}</a></td>
 					  <td>{filename}</td>
 					</tr>
 				)
 			})
+			return (
+			  <>
+		            <p align="center">
+		              <Card className="bg-secondary shadow border-0" style={{ width: '45rem', height: '35rem'}}>
+			        <CardBody>
+			          <Table style={styles.table} className="align-items-center table-flush" responsive>
+			            <tbody>
+				      {treeTable}
+			            </tbody>
+		                  </Table>
+			        </CardBody>
+			      </Card>
+		            </p>
+	                  </>
+			)
 		}
 		else if(type == 'blob'){
-			return data.split("\n").map((i,key) => {
+			const blobTable = data.split("\n").map((i,key) => {
 				return <tr key={key}>{i}</tr>;
 			})
+			return (
+			  <>
+		            <p align="center">
+		              <Card className="bg-secondary shadow border-0">
+			        <CardBody>
+			          <Table style={styles.table} className="align-items-center table-flush" responsive>
+			            <tbody>
+				      {blobTable}
+			            </tbody>
+		                  </Table>
+			        </CardBody>
+			      </Card>
+		            </p>
+	                  </>
+			)
+
 		}
 	}
 
@@ -192,15 +223,7 @@ class LookupResultsForm extends Component{
 		const { sha, type } = this.state;
 			return (
 			<div>	
-		          <Card className="bg-secondary shadow border-0">
-			    <CardBody>
-			      <Table style={styles.table} className="align-items-center table-flush" responsive>
-			        <tbody>
-			          {this.generateTable()}
-			        </tbody>
-		              </Table>
-			    </CardBody>
-			  </Card>
+		          {this.generateTable()}
 			</div>
 		)
 	}
