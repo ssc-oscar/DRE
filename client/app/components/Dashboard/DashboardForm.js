@@ -27,8 +27,7 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  ModalFooter,
-  ModalTitle
+  ModalFooter
 } from "reactstrap";
 
 class DashboardForm extends React.Component {
