@@ -274,7 +274,7 @@ Lookup Search is a UI on www.worldofcode.org/lookup that utilizes the lookup RES
         `www.worldofcode.org/lookupresults?sha1={sha1 of blob}&type={blob}`
       - And if you wanted to map a blob to commit you could do the following:
         `www.worldofcode.org/mapresult?sha1={sha1 of blob}&type=b2c`
-    - The benefit of using the graphical application rather than querying the REST API directly is the navagation it offers. For example, if you do a search on a commit sha1           using Lookup Search it will return links for the parent and tree sha1 associated with it that you can click on to view the contents of.
+  - The benefit of using the graphical application rather than querying the REST API directly is the navagation it offers. For example, if you do a search on a commit sha1           using Lookup Search it will return links for the parent and tree sha1 associated with it that you can click on to view the contents of.
        
 ### Adding a mapping to Lookup Search
 - Coming Soon
