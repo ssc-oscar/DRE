@@ -42,42 +42,95 @@ class LookupSearchForm extends React.Component {
 			this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
 		}
 		else if (command === "getValues"){
-			type = from[0] + "2" + to[0];
+			console.log(to);
+			if (to === "Pc") type = "P2c";
+			else type = from + "2" + to; 
 			console.log(type);
 			this.props.history.push(`/mapresult?sha1=${sha}&type=${type}`);
 		}
 	}
 
 	onChange(e) {
-		console.log(e);
 		this.setState({
 			[e.target.name]: e.target.value
 		})
 	}
 	
 	Mappings() {
-		console.log(this.state.from);
-		if(this.state.from === 'commit') {
+		if(this.state.from === 'c') {
 			const maps = ( 
 				<>
 				  {" to "}
 				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option selected value="">Select</option>
-				    <option field="p">project</option>
-				    <option field="P">Project</option>
+				    <option defaultValue="">Select</option>
+				    <option value="b">blob</option>
+				    <option value="p">project</option>
+				    <option value="P">root project</option>
+				    <option value="cc">child commit</option>
+				    <option value="f">file</option>
+				    <option value="h">head commit</option>
+				    <option value="pc">parent commit</option>
+				    <option value="ta">time author</option>
+				    <option value="td">tdiff</option>
 				  </select>
 				</>
 			);
 			return maps;
 		}
-		else if (this.state.from === 'blob') {
+		else if (this.state.from === 'b') {
 			const maps = ( 
 				<>
 				  {" to "}
 				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option selected value="">Select</option>
-				    <option field="a">author</option>
-				    <option field="c">commit</option>
+				    <option defaultValue="">Select</option>
+				    <option value="a">author</option>
+				    <option value="c">commit</option>
+				    <option value="f">file</option>
+				    <option value="ob">old blob</option>
+				    <option value="tk">tokens</option>
+				  </select>
+				</>
+			);
+			return maps;
+		}
+		else if(this.state.from === 'a') {
+			const maps = ( 
+				<>
+				  {" to "}
+				  <select value={this.state.to} name="to" onChange={this.onChange}>
+				    <option defaultValue="">Select</option>
+				    <option value="fb">blob</option>
+				    <option value="c">commit</option>
+				    <option value="f">file</option>
+				    <option value="p">project</option>
+				  </select>
+				</>
+			);
+			return maps;
+		}
+		else if(this.state.from === 'p') {
+			const maps = ( 
+				<>
+				  {" to "}
+				  <select value={this.state.to} name="to" onChange={this.onChange}>
+				    <option defaultValue="">Select</option>
+				    <option value="a">author</option>
+				    <option value="c">commit</option>
+				    <option value="Pc">central commit</option>
+				  </select>
+				</>
+			);
+			return maps;
+		}
+		else if(this.state.from === 'f') {
+			const maps = ( 
+				<>
+				  {" to "}
+				  <select value={this.state.to} name="to" onChange={this.onChange}>
+				    <option defaultValue="">Select</option>
+				    <option value="a">author</option>
+				    <option value="b">blob</option>
+				    <option value="c">commit</option>
 				  </select>
 				</>
 			);
@@ -101,10 +154,10 @@ class LookupSearchForm extends React.Component {
 				  />
 				  <div>
 				    <select value={this.state.type} name="type" onChange={this.onChange}>
-				      <option selected value="">Select</option>
-				      <option field="commit">commit</option>
-				      <option field="tree">tree</option>
-				      <option field="blob">blob</option>
+				      <option defaultValue="">Select</option>
+				      <option value="commit">commit</option>
+				      <option value="tree">tree</option>
+				      <option value="blob">blob</option>
 				    </select>
 				    <p></p>
 				  </div>
@@ -123,15 +176,18 @@ class LookupSearchForm extends React.Component {
 				    <TextFieldGroup
 				      label=""
 				      focus={true}
-			              onChange={this.onChange}
-			              value={this.state.sha}
-		          	      field="sha"
+			          onChange={this.onChange}
+			          value={this.state.sha}
+		          	  field="sha"
 				    />
 				  <div>
 				    <select value={this.state.from} name="from" onChange={this.onChange}>
-				      <option selected value="">Select</option>
-				      <option field="b">blob</option>
-				      <option field="c">commit</option>
+				      <option defaultValue="">Select</option>
+				      <option value="a">author</option>
+				      <option value="b">blob</option>
+				      <option value="c">commit</option>
+				      <option value="p">project</option>
+				      <option value="f">file</option>
 				    </select>
 				    {this.Mappings()}
 				    <p></p>

@@ -34,11 +34,11 @@ export default {
     blurb: ''
   },
   '/lookupresult': {
-    title: 'Lookup Results',
+    title: '',
     blurb: ''
   },
   '/mapresult': {
-    title: 'Mapping Results',
+    title: '',
     blurb: ''
   },
   '/error': {

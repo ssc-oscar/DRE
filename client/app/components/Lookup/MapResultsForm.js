@@ -7,6 +7,9 @@ import { styles } from '../common/styles';
 import queryString from 'query-string';
 import { BlobMap } from './Mappings/BlobMap';
 import { CommitMap } from './Mappings/CommitMap';
+import { AuthorMap } from './Mappings/AuthorMap';
+import { ProjectMap } from './Mappings/ProjectMap';
+import { FileMap } from './Mappings/FileMap';
 import {
 	Container,
 	Row,
@@ -36,13 +39,12 @@ class MapResultsForm extends Component{
 		let warning = '';
 		let isError = false;
 		let len = sha.length;
-
-		if(len != 40) {
+		/*if(len != 40) {
 			warning = 'Warning: A SHA1 must be 40 characters long.'
 			isError = true;
-		}
-		else if(len == 0) {
-			warning = 'Warning: No SHA1 specified.'
+		}*/
+		if(len == 0) {
+			warning = 'Warning: No SHA1/query specified.'
 			isError = true;
 		}
 
@@ -74,19 +76,24 @@ class MapResultsForm extends Component{
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
+				console.log(response);
 				let result = response.data.stdout;
-				if(!result) {
+				let stderr = response.data.stderr;
+
+				/*Don't immediately go to error page if lookup returned
+				empty results. "no {sha} in {*.tch file}" is the only 
+				error that should be allowed past this check.*/
+				if(!result && !(/no\s.+\sin\s.+/.test(stderr))) {
 					warning = "Search returned nothing.";
 					this.displayWarning(warning);
 					isError = true;
 				}
 
 				if(!isError) {
-					let stderr = response.data.stderr;
 					let data = [];
 					data = result.split(/;|\r|\n/);
+					//last element in array is always "", so remove it!
 					data.pop();
-					console.log(data);				
 					if(!this.state.back) {
 						window.history.pushState({sha: sha, type: type}, '', `./mapresult?sha1=${sha}&type=${type}`);
 					}
@@ -108,9 +115,11 @@ class MapResultsForm extends Component{
 
 	render() {
 		const { sha, type } = this.state;
-		console.log(this.state);
-		if (type[0] === "b") return (<BlobMap state={this.state}/>)
+		if (type[0] === "a") return (<AuthorMap state={this.state}/>)
+		else if (type[0] === "b") return (<BlobMap state={this.state}/>)
 		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
+		else if (type[0] === 'p' || type[0] === 'P') return (<ProjectMap state={this.state}/>)
+		else if (type[0] === 'f') return (<FileMap state={this.state}/>)
 		else {
 			return (
 				<div>
