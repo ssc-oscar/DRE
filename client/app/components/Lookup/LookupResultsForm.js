@@ -8,6 +8,7 @@ import queryString from 'query-string';
 import {
 	Card,
 	CardBody,
+	CardHeader,
 	Table
 } from "reactstrap";
 
@@ -116,9 +117,9 @@ class LookupResultsForm extends Component{
 			let committer = data[4];
 			let c_time = data[6];	
 			return (
-		          <>		   
-		            <p align="center">
-		              <Card className="bg-secondary shadow border-0" style={{ width: '35rem', height: '35rem'}}>
+		            <div className="row justify-content-center">
+		              <Card className="bg-secondary shadow border-0" style={{ width: '35rem', height: '37rem'}}>
+			      <CardHeader>Lookup Results for Commit</CardHeader>
 			        <CardBody>
 			          <Table style={styles.table} className="align-items-center table-flush" responsive>
 			            <tbody>
@@ -154,8 +155,7 @@ class LookupResultsForm extends Component{
 		                  </Table>
 			        </CardBody>
 			      </Card>
-		            </p>
-	                  </>
+	                    </div>
 			)
 		}
 		else if(type == 'tree'){
@@ -181,9 +181,9 @@ class LookupResultsForm extends Component{
 				)
 			})
 			return (
-			  <>
-		            <p align="center">
-		              <Card className="bg-secondary shadow border-0" style={{ width: '45rem', height: '35rem'}}>
+		            <div className="row justify-content-center">
+		              <Card className="bg-secondary shadow border-0" style={{ width: '45rem', height: '37rem'}}>
+			      <CardHeader>Lookup Results for Tree</CardHeader>
 			        <CardBody>
 			          <Table style={styles.table} className="align-items-center table-flush" responsive>
 			            <tbody>
@@ -192,8 +192,7 @@ class LookupResultsForm extends Component{
 		                  </Table>
 			        </CardBody>
 			      </Card>
-		            </p>
-	                  </>
+	                    </div>
 			)
 		}
 		else if(type == 'blob'){
@@ -201,9 +200,9 @@ class LookupResultsForm extends Component{
 				return <tr key={key}>{i}</tr>;
 			})
 			return (
-			  <>
-		            <p align="center">
+		            <div className="row justify-content-center">
 		              <Card className="bg-secondary shadow border-0">
+			      <CardHeader>Lookup Results for Blob</CardHeader>
 			        <CardBody>
 			          <Table style={styles.table} className="align-items-center table-flush" responsive>
 			            <tbody>
@@ -212,8 +211,7 @@ class LookupResultsForm extends Component{
 		                  </Table>
 			        </CardBody>
 			      </Card>
-		            </p>
-	                  </>
+	                    </div>
 			)
 
 		}

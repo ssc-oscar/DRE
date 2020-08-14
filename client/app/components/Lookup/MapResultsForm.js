@@ -86,7 +86,6 @@ class MapResultsForm extends Component{
 					let data = [];
 					data = result.split(/;|\r|\n/);
 					data.pop();
-					console.log(data);				
 					if(!this.state.back) {
 						window.history.pushState({sha: sha, type: type}, '', `./mapresult?sha1=${sha}&type=${type}`);
 					}
@@ -108,7 +107,6 @@ class MapResultsForm extends Component{
 
 	render() {
 		const { sha, type } = this.state;
-		console.log(this.state);
 		if (type[0] === "b") return (<BlobMap state={this.state}/>)
 		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
 		else {

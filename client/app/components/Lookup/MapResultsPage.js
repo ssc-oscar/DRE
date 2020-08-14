@@ -12,10 +12,8 @@ class MapResultsPage extends Component {
 		const { lookupSha } = this.props;
 
 		return (
-			<div>
-			  <p align="center">
-			    <MapResultsForm lookupSha={lookupSha}/>
-			  </p>
+			<div className="row justify-content-center">
+			  <MapResultsForm lookupSha={lookupSha}/>
 			</div>
 		)
 

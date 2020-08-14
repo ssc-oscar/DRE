@@ -41,8 +41,6 @@ function c2P(props) {
 }
 	
 export function CommitMap(props) {
-	console.log("In CommitMap");
-	console.log(props.state);
 	return(
 		<>
 		  <Card className='bg-secondary shadow border-0'>
