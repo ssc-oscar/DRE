@@ -243,6 +243,15 @@ These APIs are equivalent to calling the `lookup` perl scripts which can be foun
   - To query for `b2c` map: `sha1={sha1 of blob}&type=b2c&command=getValues`
   - Note that because only `sha1` inputs are accepted right now, only mappings from commit, blob, and tree to other objects are supported currently
 
+The GET request can also be utilized from a Jupyter Notebook (ipynb file) from any machine, local or remote:
+```
+In [1]: import requests, json
+In [2]: url='http://worldofcode.org/api/lookup?command=showCnt&type=blob&sha1=8bfa9b6cde7b8d89abab622035c9fb002d10f157'
+In [3]: r = requests.get(url)
+In [4]: print(json.loads(r.content)['stdout'])
+        Removed at request of NucleusHealth;mblaha@nucleushealth.io;858-251-3369
+```
+
 ### Clickhouse
 These APIs are used to query the Clickhouse database. The details of the database can be found [here](https://github.com/woc-hack/tutorial) under the `Python Clickhouse API` section.
 - GET `/api/clickhouse/commits`
@@ -254,6 +263,21 @@ These APIs are used to query the Clickhouse database. The details of the databas
   - To query for `commits` from time 0 to 1: `/api/clickhouse/commits?start=0&end=1`
   - To query for `b2cPtaPkgR` map at time 42: `/api/clickhouse/b2cPtaPkgR?start=42`
   - To get the number of `commits` from time 0 to 1: `/api/clickhouse/commits?start=0&end=1&count=true`
+  
+## Lookup Search
+Lookup Search is a UI on www.worldofcode.org/lookup that utilizes the lookup REST API. It is essentially a graphical interpretation of the "lookup" perl scripts. To access       this, you will need to create an account of WoC and be logged in.
+  
+- Lookup Search allows you to view the contents of commit, blob, or tree sha1's using "showCnt" or map them to other objects using "getValues".
+  - You can specify whether you want to do a search or a map using the dropdown box on the header of the search card. Additionally, there will be dropdown boxes on the bottom       to specify what type of sha1 you are seaching on (and what you want to map it to in the case of getValues).
+    - It is also possible to manually search and view the outputs graphically by passing the arguments directly to the address bar.
+      - For example, to manually do a search on a blob sha, you can type the following in the address bar:
+        `www.worldofcode.org/lookupresults?sha1={sha1 of blob}&type={blob}`
+      - And if you wanted to map a blob to commit you could do the following:
+        `www.worldofcode.org/mapresult?sha1={sha1 of blob}&type=b2c`
+  - The benefit of using the graphical application rather than querying the REST API directly is the navagation it offers. For example, if you do a search on a commit sha1           using Lookup Search it will return links for the parent and tree sha1 associated with it that you can click on to view the contents of.
+       
+### Adding a mapping to Lookup Search
+- Coming Soon
 
 ## External Scripts
 - `check_updates.py` - checks for any updates to a user (including new users) and generates their profile by calling `sdpg.perl`

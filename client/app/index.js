@@ -57,9 +57,9 @@ render((
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
           <Route path="/dash" component={requireAuth(DashboardPage)} />
           <Route path="/locate" component={requireAuth(LocateProfilesPage)} />
-	      <Route path="/lookup" component={LookupSearchPage} />
-	      <Route path="/lookupresult" component={LookupResultsPage} />
-	      <Route path="/mapresult" component={MapResultsPage} />
+	        <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
+	        <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
+	        <Route path="/mapresult" component={requireAuth(MapResultsPage)} />
           <Route path="/upload" component={requireAuth(UploadAuthorsPage)} />
           <Route path="/error" component={NotFound} />
           <Route component={NotFound} />
