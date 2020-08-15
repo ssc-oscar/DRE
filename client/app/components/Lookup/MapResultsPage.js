@@ -1,28 +1,27 @@
 import LookupSearchForm from './LookupSearchForm';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import LookupResultsForm from './LookupResultsForm';
+import MapResultsForm from './MapResultsForm';
 import { Row, Col, Container, Card } from 'reactstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { lookupSha } from '../../../actions/Search';
 
-class LookupResultsPage extends Component {
-	
+class MapResultsPage extends Component {
 	render() {
 		const { lookupSha } = this.props;
 
 		return (
 			<div className="row justify-content-center">
-			  <LookupResultsForm lookupSha={lookupSha}/>
+			  <MapResultsForm lookupSha={lookupSha}/>
 			</div>
 		)
 
 	}
 }
 
-LookupResultsPage.propTypes = {
-	lookupSha: PropTypes.func.isRequired
+MapResultsPage.propTypes = {
+	    lookupSha: PropTypes.func.isRequired
 }
 
-export default connect(null, { lookupSha }) (LookupResultsPage);
+export default connect(null, { lookupSha }) (MapResultsPage);

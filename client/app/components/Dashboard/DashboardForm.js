@@ -118,7 +118,7 @@ class DashboardForm extends React.Component {
 
   onClickBlob(sha1) {
     this.toggleBlob();
-    this.props.lookupSha(sha1, "blob")
+    this.props.lookupSha(sha1, "blob", "showCnt")
     .then((res) => {
       this.setState({ blobCnt: res.data.stdout });
     });
