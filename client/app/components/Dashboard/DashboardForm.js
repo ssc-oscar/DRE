@@ -121,7 +121,6 @@ class DashboardForm extends React.Component {
     this.props.lookupSha(sha1, "blob")
     .then((res) => {
       this.setState({ blobCnt: res.data.stdout });
-      console.log(this.state.blobCnt);
     });
   }
 
