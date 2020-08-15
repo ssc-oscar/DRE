@@ -57,7 +57,6 @@ function format_b2c_table(data) {
 }
 
 export function BlobMap(props) {
-	console.log(props.state);
 	return(
 		<div>
 		  <Card className="bg-secondary shadow border-0">

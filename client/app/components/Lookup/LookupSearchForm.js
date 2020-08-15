@@ -43,26 +43,23 @@ class LookupSearchForm extends React.Component {
 		}
 		else if (command === "getValues"){
 			type = from[0] + "2" + to[0];
-			console.log(type);
 			this.props.history.push(`/mapresult?sha1=${sha}&type=${type}`);
 		}
 	}
 
 	onChange(e) {
-		console.log(e);
 		this.setState({
 			[e.target.name]: e.target.value
 		})
 	}
 	
 	Mappings() {
-		console.log(this.state.from);
 		if(this.state.from === 'commit') {
 			const maps = ( 
 				<>
 				  {" to "}
 				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option selected value="">Select</option>
+				    <option defaultValue="">Select</option>
 				    <option field="p">project</option>
 				    <option field="P">Project</option>
 				  </select>
@@ -75,7 +72,7 @@ class LookupSearchForm extends React.Component {
 				<>
 				  {" to "}
 				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option selected value="">Select</option>
+				    <option defaultValue="">Select</option>
 				    <option field="a">author</option>
 				    <option field="c">commit</option>
 				  </select>
@@ -101,7 +98,7 @@ class LookupSearchForm extends React.Component {
 				  />
 				  <div>
 				    <select value={this.state.type} name="type" onChange={this.onChange}>
-				      <option selected value="">Select</option>
+				      <option defaultValue="">Select</option>
 				      <option field="commit">commit</option>
 				      <option field="tree">tree</option>
 				      <option field="blob">blob</option>
@@ -129,7 +126,7 @@ class LookupSearchForm extends React.Component {
 				    />
 				  <div>
 				    <select value={this.state.from} name="from" onChange={this.onChange}>
-				      <option selected value="">Select</option>
+				      <option defaultValue="">Select</option>
 				      <option field="b">blob</option>
 				      <option field="c">commit</option>
 				    </select>
