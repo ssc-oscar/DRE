@@ -1,6 +1,7 @@
 const config = require('../../../config/config');
 const { exec } = require("child_process");
 const { query, validationResult } = require('express-validator');
+const { isHash } = require('validator');
 
 module.exports = (app) => {
   const cmds = {
@@ -9,7 +10,14 @@ module.exports = (app) => {
   }
   
   app.get('/api/lookup', [
-      query('sha1').isHash('sha1').escape(),
+      query('sha1').custom((value) => {
+        value.split(';').forEach(sha1 => {
+          if (!isHash(sha1, 'sha1')){
+            throw new Error("Sha1 must be a valid sha1 string or semicolon separated sha1 string");
+          }
+        });
+        return true;
+      }).escape(),
       query('type').isAlphanumeric().escape(),
       query('command').isIn(cmds).escape()
     ],
