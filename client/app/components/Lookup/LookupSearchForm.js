@@ -42,7 +42,13 @@ class LookupSearchForm extends React.Component {
 			this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
 		}
 		else if (command === "getValues"){
-			type = from[0] + "2" + to[0];
+			if (from === "blob"){
+				if (to[0] === "o") type = from[0] + "2" + "ob";
+				else if (to[0] === "t") type = from[0] + "2" + "tk";
+				else type = from[0] + "2" + to[0]; 
+			}
+			else
+				type = from[0] + "2" + to[0]; 
 			this.props.history.push(`/mapresult?sha1=${sha}&type=${type}`);
 		}
 	}
@@ -75,6 +81,9 @@ class LookupSearchForm extends React.Component {
 				    <option defaultValue="">Select</option>
 				    <option field="a">author</option>
 				    <option field="c">commit</option>
+				    <option field="f">file</option>
+				    <option field="ob">old blob</option>
+				    <option field="tk">tokens</option>
 				  </select>
 				</>
 			);

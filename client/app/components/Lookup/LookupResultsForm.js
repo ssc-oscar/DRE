@@ -112,15 +112,16 @@ class LookupResultsForm extends Component{
 			let tree = data[1];
 			let p = data[2];
 			let author = data[3];
+			let widest = author.length + 'rem';
 			let a_time = data[5];
 			let committer = data[4];
 			let c_time = data[6];	
 			return (
 		            <div className="row justify-content-center">
-		              <Card className="bg-secondary shadow border-0" style={{ width: '35rem', height: '28rem'}}>
+		              <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '26rem'}}>
 			      <CardHeader>Lookup Results for Commit {sha}</CardHeader>
 			        <CardBody>
-			          <Table className="align-items-center table-flush" responsive>
+			          <Table className="align-items-center table-flush">
 			            <tbody>
 				      <tr>
 				        <td>Tree:</td>
@@ -176,18 +177,18 @@ class LookupResultsForm extends Component{
 				)
 			})
 			return (
-		            <div className="row justify-content-center">
-		              <Card className="bg-secondary shadow border-0" style={{ width: '45rem', height: '37rem'}}>
-			      <CardHeader>Lookup Results for Tree {sha}</CardHeader>
-			        <CardBody>
-			          <Table style={styles.table} className="align-items-center table-flush" responsive>
-			            <tbody>
-				      {treeTable}
-			            </tbody>
-		                  </Table>
-			        </CardBody>
+		        <div className="row justify-content-center">
+				  <Card className="bg-secondary shadow border-0" style={{ width: '45rem', height: '37rem'}}>
+					<CardHeader>Lookup Results for Tree {sha}</CardHeader>
+					  <CardBody>
+						<Table style={styles.table} className="align-items-center table-flush" responsive>
+						  <tbody>
+							  {treeTable}
+						  </tbody>
+					    </Table>
+				      </CardBody>
 			      </Card>
-	                    </div>
+				</div>
 			)
 		}
 		else if(type == 'blob'){
