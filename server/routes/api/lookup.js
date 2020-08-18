@@ -26,7 +26,7 @@ function assertString(input) {
   }
 }
 
-var auth = /^[a-zA-Z0-9\-\.\@\<\>]*$/;
+var auth = /^[\sa-zA-Z0-9\-\.@<>]*$/;
 function isAuth (str) {
   assertString(str);
   return auth.test(str);
@@ -42,6 +42,7 @@ function validSha1(sha1, req1){
   //vv = JSON.stringify(req1.req.query, function(key, value) {if (typeof value === 'object' && value !== null) {if (cache.indexOf(value) !== -1) { try { return JSON.parse(JSON.stringify(value))}catch (error) {return;}} cache.push(value);} return value;});
   //console .log(sha1 + ';' + vv);
   if (/^[aA]/ .test(req1.req.query.type)){
+    console .log (';'+req1.req.query.type+';'+sha1+';');
     return isAuth (sha1);
   }else{
     if (/^[pPf]/ .test(req1.req.query.type)){
@@ -69,15 +70,16 @@ module.exports = (app) => {
           }
         });
         return true;
-      }).escape(),
-      query ('type') .isAlphanumeric().escape(),
-      query('command') .isIn(cmds) .escape()
+      }),
+      query ('type') .isAlphanumeric(),
+      query('command') .isIn(cmds)
     ],
     (req, res, next) => {
       const errors = validationResult (req);
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
       }
+      //console .log (";"+req.query.sha1+";")
       exec(config.remoteCmd + ' << EOF\n' +
         `  echo "${req.query.sha1}" | ${cmds[req.query.command]} ${req.query.type}\n` +
         'EOF',
