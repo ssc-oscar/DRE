@@ -7,51 +7,57 @@ import { styles } from '../../common/styles';
 import { 
 	Card,
 	CardBody,
+	CardHeader,
 	Table,
+	ListGroup,
+	ListGroupItem
 } from 'reactstrap';
 
-function formatTable(props) {
-	if(props.state.type === 'c2p') return c2p(props);
-	else if(props.state.type === 'c2P') return c2P(props);
+function select_map(props) {
+	const type = props.state.type;
+	const data = props.state.data;
+	
+	if(type === 'c2p') return c2p(data);
+	else if(type === 'c2P') return c2P(data);
+	else if(type === 'c2b') return c2b(data);
 }
 
-function c2p(props) {
-	let data = props.state.data;
-	data.shift();
-
-	const c2pTable = props.state.data.map( (project) =>
+function c2p(data) {
+	const c2pTable = data.map( (project) =>
+		<Table>
+		<tbody>
 		<tr key={project}>
 		  <td> Project: </td>
 	      	  <td> {project} </td>
 		</tr>
+		</tbody>
+		</Table>
 	)
 	return c2pTable;
 }
 
-function c2P(props) {
-	let data = props.state.data;
-
+function c2P(data) {
 	const c2PTable = (
-		<tr>
-		  <td> Project: </td>
-		  <td> {data[1]} </td>
-		</tr>
+		<ListGroup>
+		  <ListGroupItem>Project: {data[1]}</ListGroupItem>
+		</ListGroup>
 	)
 	return c2PTable;
+}
+
+function c2b(data) {
+
 }
 	
 export function CommitMap(props) {
 	return(
-		<>
+		<div>
 		  <Card className='bg-secondary shadow border-0'>
+		    <CardHeader> Mapping Results for Commit: {props.state.sha}</CardHeader>
 		    <CardBody>
-		      <Table style={styles.table} className='align-items-center table-flush' responsive>
-		        <tbody>
-		        { formatTable(props) }
-		        </tbody>
-		      </Table>
+		      { select_map(props) }
 		    </CardBody>
 		  </Card>
-		</>
+		</div>
 	)
 }
