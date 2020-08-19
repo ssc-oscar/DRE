@@ -31,25 +31,34 @@ function isAuth (str) {
   assertString(str);
   return auth.test(str);
 }
-var prj = /^[a-zA-Z0-9\-\.]+_[a-zA-Z0-9\-_\/\.]+$/;
+var prj = /^[a-zA-Z0-9\-\.]+_[a-zA-Z0-9\-_\/\.]+$/; 
 function isPrj(str) {
   assertString(str);
   return prj.test(str);
+}
+var fname = /^[ a-zA-Z0-9\-\.\/_]+$/; // include filename related characters
+function isFname(str) {
+  assertString(str);
+  return fname.test(str);
 }
 
 function validSha1(sha1, req1){
   var cache = [];
   //vv = JSON.stringify(req1.req.query, function(key, value) {if (typeof value === 'object' && value !== null) {if (cache.indexOf(value) !== -1) { try { return JSON.parse(JSON.stringify(value))}catch (error) {return;}} cache.push(value);} return value;});
   //console .log(sha1 + ';' + vv);
-  if (/^[aA]/ .test(req1.req.query.type)){
-    console .log (';'+req1.req.query.type+';'+sha1+';');
-    return isAuth (sha1);
-  }else{
-    if (/^[pPf]/ .test(req1.req.query.type)){
-      return isPrj (sha1);
+  if (/^[bc]/ .test(req1.req.query.type)){
+    return isHash(sha1, 'sha1');
+  } else {
+    if (/^[aA]/ .test(req1.req.query.type)){
+      // console .log (';'+req1.req.query.type+';'+sha1+';');
+      return isAuth (sha1);
     }else{
-       if (/^[bc]/ .test(req1.req.query.type)){
-       return isHash(sha1, 'sha1');
+      if (/^[pP]/ .test(req1.req.query.type)){
+        return isPrj (sha1);
+      }else{
+        if (/^f/ .test(req1.req.query.type)){
+          return isFname (sha1);
+        }
       }
     }
   }
@@ -66,7 +75,7 @@ module.exports = (app) => {
       query ('sha1') .custom( (val, req) => {
         val.split(';') .forEach(sha1 => {
           if (!validSha1(sha1, req)){
-            throw new Error("Sha1 must be a valid sha1 string or semicolon separated sha1 string:" + sha1);
+            throw new Error("Sha1 or file/project/author name must be a valid sha1/name string or semicolon separated string:" + sha1);
           }
         });
         return true;
@@ -79,7 +88,7 @@ module.exports = (app) => {
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
       }
-      //console .log (";"+req.query.sha1+";")
+      console .log (";"+req.query.sha1+";")
       exec(config.remoteCmd + ' << EOF\n' +
         `  echo "${req.query.sha1}" | ${cmds[req.query.command]} ${req.query.type}\n` +
         'EOF',
