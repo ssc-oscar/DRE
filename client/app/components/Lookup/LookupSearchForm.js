@@ -55,7 +55,7 @@ class LookupSearchForm extends React.Component {
 	}
 	
 	Mappings() {
-		if(this.state.from === 'commit') {
+		if(this.state.from === 'c') {
 			const maps = ( 
 				<>
 				  {" to "}
@@ -68,7 +68,7 @@ class LookupSearchForm extends React.Component {
 			);
 			return maps;
 		}
-		else if (this.state.from === 'blob') {
+		else if (this.state.from === 'b') {
 			const maps = ( 
 				<>
 				  {" to "}
@@ -84,7 +84,7 @@ class LookupSearchForm extends React.Component {
 			);
 			return maps;
 		}
-		else if(this.state.from === 'author') {
+		else if(this.state.from === 'a') {
 			const maps = ( 
 				<>
 				  {" to "}
@@ -146,9 +146,9 @@ class LookupSearchForm extends React.Component {
 				  <div>
 				    <select value={this.state.from} name="from" onChange={this.onChange}>
 				      <option defaultValue="">Select</option>
-				      <option field="a">author</option>
-				      <option field="b">blob</option>
-				      <option field="c">commit</option>
+				      <option value="a">author</option>
+				      <option value="b">blob</option>
+				      <option value="c">commit</option>
 				    </select>
 				    {this.Mappings()}
 				    <p></p>

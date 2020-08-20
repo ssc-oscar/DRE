@@ -16,13 +16,15 @@ import {
 function select_map(props) {
 	const type = props.state.type;
 	const data = props.state.data;
-	
+
 	if(type === 'c2p') return c2p(data);
 	else if(type === 'c2P') return c2P(data);
 	else if(type === 'c2b') return c2b(data);
 }
 
 function c2p(data) {
+	//leave query out of results
+	data.shift();	
 	const c2pTable = data.map( (project) =>
 		<Table>
 		<tbody>

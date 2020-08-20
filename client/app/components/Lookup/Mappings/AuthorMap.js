@@ -4,6 +4,7 @@ import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../../common/styles';
 import queryString from 'query-string';
+import { URLS } from './URL';
 import {
 	Card,
 	CardBody,
@@ -18,7 +19,7 @@ function select_map(props){
 	let data = props.state.data;
 	//query string won't be displayed in results
 	data.shift();
-
+	
 	if (type === "a2c") return a2c(data);
 	else if (type === "a2f") return a2f(data);
 	else if (type === "a2fb") return a2fb(data);
@@ -50,10 +51,36 @@ function a2fb(data) {
 }
 
 function a2p(data) {
-	return data.map((Project) =>
+	const p_list = [];
+	let URI_ = "";
+	let build_str = ""
+	let len = 0;
+
+	for (let i = 0; i < data.length; i++) {
+		let found = false;
+		len = 0;
+		if (data[i].match(/_/)) len = data[i].match(/_/).length;
+		for (var URI in Object.keys(URLS)) {
+			URI_ = URI + "_";
+			if (data[i].startsWith(URI_) && (len >= 2 || URI === "sourcefordge.net")) {
+				build_str = "https://" + URLS[URI] + "/" + data[i];
+				found = true;
+				break;
+			}
+		}
+		if (!found) build_str = "https://github.com/" + data[i];
+
+		if (build_str.match(/_/)) len = build_str.match(/_/).length;
+		for (let j = 0; j < len; j++) build_str = build_str.replace("_","/");
+	
+		console.log(build_str);
+		p_list.push(build_str);
+	}
+
+	return data.map((Project, index) =>
 			<tr key={Project}>
 			<td>Project:</td>
-			<td>{Project}</td>
+			<td><a href={p_list[index]}>{Project}</a></td>
 			</tr>);
 }
 

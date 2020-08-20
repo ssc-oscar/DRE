@@ -37,8 +37,6 @@ class MapResultsForm extends Component{
 		let warning = '';
 		let isError = false;
 		let len = sha.length;
-		console.log(sha);
-		console.log(sha.length);
 		/*if(len != 40) {
 			warning = 'Warning: A SHA1 must be 40 characters long.'
 			isError = true;
@@ -88,7 +86,7 @@ class MapResultsForm extends Component{
 					let stderr = response.data.stderr;
 					let data = [];
 					data = result.split(/;|\r|\n/);
-					console.log(data);
+					//last element in array is always "", so remove it!
 					data.pop();
 					if(!this.state.back) {
 						window.history.pushState({sha: sha, type: type}, '', `./mapresult?sha1=${sha}&type=${type}`);
