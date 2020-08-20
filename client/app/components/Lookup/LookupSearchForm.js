@@ -42,13 +42,8 @@ class LookupSearchForm extends React.Component {
 			this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
 		}
 		else if (command === "getValues"){
-			if (from === "blob"){
-				if (to[0] === "o") type = from[0] + "2" + "ob";
-				else if (to[0] === "t") type = from[0] + "2" + "tk";
-				else type = from[0] + "2" + to[0]; 
-			}
-			else
-				type = from[0] + "2" + to[0]; 
+			type = from[0] + "2" + to; 
+			console.log(type);
 			this.props.history.push(`/mapresult?sha1=${sha}&type=${type}`);
 		}
 	}
@@ -66,8 +61,8 @@ class LookupSearchForm extends React.Component {
 				  {" to "}
 				  <select value={this.state.to} name="to" onChange={this.onChange}>
 				    <option defaultValue="">Select</option>
-				    <option field="p">project</option>
-				    <option field="P">Project</option>
+				    <option value="p">project</option>
+				    <option value="P">Project</option>
 				  </select>
 				</>
 			);
@@ -79,11 +74,11 @@ class LookupSearchForm extends React.Component {
 				  {" to "}
 				  <select value={this.state.to} name="to" onChange={this.onChange}>
 				    <option defaultValue="">Select</option>
-				    <option field="a">author</option>
-				    <option field="c">commit</option>
-				    <option field="f">file</option>
-				    <option field="ob">old blob</option>
-				    <option field="tk">tokens</option>
+				    <option value="a">author</option>
+				    <option value="c">commit</option>
+				    <option value="f">file</option>
+				    <option value="ob">old blob</option>
+				    <option value="tk">tokens</option>
 				  </select>
 				</>
 			);
@@ -95,7 +90,10 @@ class LookupSearchForm extends React.Component {
 				  {" to "}
 				  <select value={this.state.to} name="to" onChange={this.onChange}>
 				    <option defaultValue="">Select</option>
-				    <option field="b">blob</option>
+				    <option value="fb">blob</option>
+				    <option value="c">commit</option>
+				    <option value="f">file</option>
+				    <option value="p">project</option>
 				  </select>
 				</>
 			);

@@ -7,6 +7,7 @@ import { styles } from '../common/styles';
 import queryString from 'query-string';
 import { BlobMap } from './Mappings/BlobMap';
 import { CommitMap } from './Mappings/CommitMap';
+import { AuthorMap } from './Mappings/AuthorMap';
 import {
 	Container,
 	Row,
@@ -36,12 +37,13 @@ class MapResultsForm extends Component{
 		let warning = '';
 		let isError = false;
 		let len = sha.length;
-
-		if(len != 40) {
+		console.log(sha);
+		console.log(sha.length);
+		/*if(len != 40) {
 			warning = 'Warning: A SHA1 must be 40 characters long.'
 			isError = true;
-		}
-		else if(len == 0) {
+		}*/
+		if(len == 0) {
 			warning = 'Warning: No SHA1 specified.'
 			isError = true;
 		}
@@ -74,6 +76,7 @@ class MapResultsForm extends Component{
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
+				console.log(response);
 				let result = response.data.stdout;
 				if(!result) {
 					warning = "Search returned nothing.";
@@ -85,6 +88,7 @@ class MapResultsForm extends Component{
 					let stderr = response.data.stderr;
 					let data = [];
 					data = result.split(/;|\r|\n/);
+					console.log(data);
 					data.pop();
 					if(!this.state.back) {
 						window.history.pushState({sha: sha, type: type}, '', `./mapresult?sha1=${sha}&type=${type}`);
@@ -107,7 +111,8 @@ class MapResultsForm extends Component{
 
 	render() {
 		const { sha, type } = this.state;
-		if (type[0] === "b") return (<BlobMap state={this.state}/>)
+		if (type[0] === "a") return (<AuthorMap state={this.state}/>)
+		else if (type[0] === "b") return (<BlobMap state={this.state}/>)
 		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
 		else {
 			return (
