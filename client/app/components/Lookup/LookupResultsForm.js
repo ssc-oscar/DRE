@@ -10,6 +10,8 @@ import {
 	Card,
 	CardBody,
 	CardHeader,
+	ListGroup,
+	ListGroupItem,
 	Table
 } from "reactstrap";
 
@@ -119,37 +121,17 @@ class LookupResultsForm extends Component{
 			let c_time = data[6];	
 			return (
 		            <div className="row justify-content-center">
-		              <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '26rem'}}>
+		              <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '29rem'}}>
 			      <CardHeader>Lookup Results for Commit {sha}</CardHeader>
 			        <CardBody>
-			          <Table className="align-items-center table-flush">
-			            <tbody>
-				      <tr>
-				        <td>Tree:</td>
-				        <td><a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></td>
-				      </tr>
-				      <tr>
-				        <td>Parent:</td>
-				        <td><a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></td>
-				      </tr>
-				      <tr>
-				        <td>Author:</td>
-				        <td>{author}</td>
-				      </tr>
-				      <tr>
-				        <td>Author Time:</td>
-				        <td>{a_time}</td>
-				      </tr>
-				      <tr>
-				        <td>Committer:</td>
-				        <td>{committer}</td>
-				      </tr>
-				      <tr>
-				        <td>Commit Time:</td>
-				        <td>{c_time}</td>
-				      </tr>
-			            </tbody>
-		                  </Table>
+					  <ListGroup>
+				        <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></ListGroupItem>
+				        <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></ListGroupItem>
+				        <ListGroupItem>Author: {author}</ListGroupItem>
+				        <ListGroupItem>Author Time: {a_time}</ListGroupItem>
+				        <ListGroupItem>Committer: {committer}</ListGroupItem>
+				        <ListGroupItem>Commit Time: {c_time}</ListGroupItem>
+					  </ListGroup>
 			        </CardBody>
 			      </Card>
 	                    </div>

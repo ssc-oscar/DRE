@@ -8,6 +8,7 @@ import queryString from 'query-string';
 import { BlobMap } from './Mappings/BlobMap';
 import { CommitMap } from './Mappings/CommitMap';
 import { AuthorMap } from './Mappings/AuthorMap';
+import { ProjectMap } from './Mappings/ProjectMap';
 import {
 	Container,
 	Row,
@@ -112,6 +113,7 @@ class MapResultsForm extends Component{
 		if (type[0] === "a") return (<AuthorMap state={this.state}/>)
 		else if (type[0] === "b") return (<BlobMap state={this.state}/>)
 		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
+		else if (type[0] === 'p') return (<ProjectMap state={this.state}/>)
 		else {
 			return (
 				<div>

@@ -42,7 +42,8 @@ class LookupSearchForm extends React.Component {
 			this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
 		}
 		else if (command === "getValues"){
-			type = from[0] + "2" + to; 
+			if (to === "Pc") type = "P2c";
+			else type = from + "2" + to; 
 			console.log(type);
 			this.props.history.push(`/mapresult?sha1=${sha}&type=${type}`);
 		}
@@ -100,6 +101,20 @@ class LookupSearchForm extends React.Component {
 			);
 			return maps;
 		}
+		else if(this.state.from === 'p') {
+			const maps = ( 
+				<>
+				  {" to "}
+				  <select value={this.state.to} name="to" onChange={this.onChange}>
+				    <option defaultValue="">Select</option>
+				    <option value="a">author</option>
+				    <option value="c">commit</option>
+				    <option value="Pc">central commit</option>
+				  </select>
+				</>
+			);
+			return maps;
+		}
 		else return (<div />)
 	}
 
@@ -119,9 +134,9 @@ class LookupSearchForm extends React.Component {
 				  <div>
 				    <select value={this.state.type} name="type" onChange={this.onChange}>
 				      <option defaultValue="">Select</option>
-				      <option field="commit">commit</option>
-				      <option field="tree">tree</option>
-				      <option field="blob">blob</option>
+				      <option value="commit">commit</option>
+				      <option value="tree">tree</option>
+				      <option value="blob">blob</option>
 				    </select>
 				    <p></p>
 				  </div>
@@ -140,9 +155,9 @@ class LookupSearchForm extends React.Component {
 				    <TextFieldGroup
 				      label=""
 				      focus={true}
-			              onChange={this.onChange}
-			              value={this.state.sha}
-		          	      field="sha"
+			          onChange={this.onChange}
+			          value={this.state.sha}
+		          	  field="sha"
 				    />
 				  <div>
 				    <select value={this.state.from} name="from" onChange={this.onChange}>
@@ -150,6 +165,7 @@ class LookupSearchForm extends React.Component {
 				      <option value="a">author</option>
 				      <option value="b">blob</option>
 				      <option value="c">commit</option>
+				      <option value="p">project</option>
 				    </select>
 				    {this.Mappings()}
 				    <p></p>
