@@ -55,25 +55,26 @@ function a2p(data) {
 	let URI_ = "";
 	let build_str = ""
 	let len = 0;
+	let found = false;
 
 	for (let i = 0; i < data.length; i++) {
-		let found = false;
+		found = false;
 		len = 0;
-		if (data[i].match(/_/)) len = data[i].match(/_/).length;
-		for (var URI in Object.keys(URLS)) {
+		build_str = ""
+		if (data[i].match(/_/g)) len = data[i].match(/_/g).length;
+		for (var URI in URLS) {
 			URI_ = URI + "_";
-			if (data[i].startsWith(URI_) && (len >= 2 || URI === "sourcefordge.net")) {
-				build_str = "https://" + URLS[URI] + "/" + data[i];
+			if (data[i].startsWith(URI_) && (len >= 2 || URI === "sourceforge.net")) {
+				build_str = data[i].replace(URI, URLS[URI]);
+				build_str = build_str.replace(/_/g, "/");
+				build_str = "https://" + build_str;
 				found = true;
 				break;
 			}
 		}
-		if (!found) build_str = "https://github.com/" + data[i];
+		if (!found)
+			build_str = "https://github.com/" + data[i].replace(/_/g, "/");
 
-		if (build_str.match(/_/)) len = build_str.match(/_/).length;
-		for (let j = 0; j < len; j++) build_str = build_str.replace("_","/");
-	
-		console.log(build_str);
 		p_list.push(build_str);
 	}
 
