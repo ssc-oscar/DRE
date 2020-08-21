@@ -122,6 +122,20 @@ class LookupSearchForm extends React.Component {
 			);
 			return maps;
 		}
+		else if(this.state.from === 'f') {
+			const maps = ( 
+				<>
+				  {" to "}
+				  <select value={this.state.to} name="to" onChange={this.onChange}>
+				    <option defaultValue="">Select</option>
+				    <option value="a">author</option>
+				    <option value="b">blob</option>
+				    <option value="c">commit</option>
+				  </select>
+				</>
+			);
+			return maps;
+		}
 		else return (<div />)
 	}
 
@@ -173,6 +187,7 @@ class LookupSearchForm extends React.Component {
 				      <option value="b">blob</option>
 				      <option value="c">commit</option>
 				      <option value="p">project</option>
+				      <option value="f">file</option>
 				    </select>
 				    {this.Mappings()}
 				    <p></p>

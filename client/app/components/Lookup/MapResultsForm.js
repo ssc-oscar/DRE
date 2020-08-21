@@ -9,6 +9,7 @@ import { BlobMap } from './Mappings/BlobMap';
 import { CommitMap } from './Mappings/CommitMap';
 import { AuthorMap } from './Mappings/AuthorMap';
 import { ProjectMap } from './Mappings/ProjectMap';
+import { FileMap } from './Mappings/FileMap';
 import {
 	Container,
 	Row,
@@ -114,6 +115,7 @@ class MapResultsForm extends Component{
 		else if (type[0] === "b") return (<BlobMap state={this.state}/>)
 		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
 		else if (type[0] === 'p' || type[0] === 'P') return (<ProjectMap state={this.state}/>)
+		else if (type[0] === 'f') return (<FileMap state={this.state}/>)
 		else {
 			return (
 				<div>
