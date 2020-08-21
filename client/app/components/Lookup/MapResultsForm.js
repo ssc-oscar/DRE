@@ -113,7 +113,7 @@ class MapResultsForm extends Component{
 		if (type[0] === "a") return (<AuthorMap state={this.state}/>)
 		else if (type[0] === "b") return (<BlobMap state={this.state}/>)
 		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
-		else if (type[0] === 'p') return (<ProjectMap state={this.state}/>)
+		else if (type[0] === 'p' || type[0] === 'P') return (<ProjectMap state={this.state}/>)
 		else {
 			return (
 				<div>

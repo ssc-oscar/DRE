@@ -42,6 +42,7 @@ class LookupSearchForm extends React.Component {
 			this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
 		}
 		else if (command === "getValues"){
+			console.log(to);
 			if (to === "Pc") type = "P2c";
 			else type = from + "2" + to; 
 			console.log(type);

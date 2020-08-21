@@ -20,10 +20,8 @@ function select_map(props) {
 	if(type === 'c2p') return c2p(data);
 	else if(type === 'c2P') return c2P(data);
 	else if(type === 'c2b') return c2b(data);
-	else if(type === 'c2cc') return c2cc(data);
+	else if(type === 'c2cc' || type === "c2pc" || type === "c2h") return c2c(data,type);
 	else if(type === 'c2f') return c2f(data);
-	else if(type === 'c2h') return c2h(data);
-	else if(type === 'c2pc') return c2pc(data);
 	else if(type === 'c2ta') return c2ta(data);
 	else if(type === 'c2td') return c2td(data);
 }
@@ -73,13 +71,17 @@ function c2b(data) {
 	return c2bTable;
 }
 
-function c2cc(data) {
-	const c2ccTable = (
+function c2c(data, type) {
+	let ctype = "";
+	if (type === "c2cc") ctype = "Child";
+	if (type === "c2pc") ctype = "Parent";
+	if (type === "c2h") ctype = "Head";
+	const c2cTable = (
 		<ListGroup>
-	          <ListGroupItem>Child Commit: <a href={"./lookupresult?sha1=" + data[1] + "&type=commit"}>{data[1]}</a></ListGroupItem>
+	          <ListGroupItem>{ctype} Commit: <a href={"./lookupresult?sha1=" + data[1] + "&type=commit"}>{data[1]}</a></ListGroupItem>
 		</ListGroup>
 	)
-	return c2ccTable;
+	return c2cTable;
 }
 
 function c2f(data) {
@@ -98,24 +100,6 @@ function c2f(data) {
 		</Table>
 	)
 	return c2fTable;
-}
-
-function c2h(data) {
-	const c2hTable = (
-		<ListGroup>
-		  <ListGroupItem>Head Commit: <a href={"./lookupresult?sha1=" + data[1] + "&type=commit"}>{data[1]}</a></ListGroupItem>
-		</ListGroup>
-	)
-	return c2hTable;
-}
-	
-function c2pc(data) {
-	const c2pcTable = (
-		<ListGroup>
-		  <ListGroupItem>Parent Commit: <a href={"./lookupresult?sha1=" + data[1] + "&type=commit"}>{data[1]}</a></ListGroupItem>
-		</ListGroup>
-	)
-	return c2pcTable;
 }
 
 function c2ta(data) {
