@@ -63,7 +63,13 @@ class LookupSearchForm extends React.Component {
 				    <option defaultValue="">Select</option>
 				    <option value="b">blob</option>
 				    <option value="p">project</option>
-				    <option value="P">Root Project</option>
+				    <option value="P">root project</option>
+				    <option value="cc">child commit</option>
+				    <option value="f">file</option>
+				    <option value="h">head commit</option>
+				    <option value="pc">parent commit</option>
+				    <option value="ta">time author</option>
+				    <option value="td">tdiff</option>
 				  </select>
 				</>
 			);
