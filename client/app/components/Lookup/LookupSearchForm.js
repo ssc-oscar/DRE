@@ -61,8 +61,9 @@ class LookupSearchForm extends React.Component {
 				  {" to "}
 				  <select value={this.state.to} name="to" onChange={this.onChange}>
 				    <option defaultValue="">Select</option>
+				    <option value="b">blob</option>
 				    <option value="p">project</option>
-				    <option value="P">Project</option>
+				    <option value="P">Root Project</option>
 				  </select>
 				</>
 			);

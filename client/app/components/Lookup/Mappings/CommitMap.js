@@ -16,23 +16,25 @@ import {
 function select_map(props) {
 	const type = props.state.type;
 	const data = props.state.data;
-
+	
 	if(type === 'c2p') return c2p(data);
 	else if(type === 'c2P') return c2P(data);
 	else if(type === 'c2b') return c2b(data);
 }
 
 function c2p(data) {
-	//leave query out of results
-	data.shift();	
-	const c2pTable = data.map( (project) =>
-		<Table>
-		<tbody>
-		<tr key={project}>
-		  <td> Project: </td>
-	      	  <td> {project} </td>
-		</tr>
-		</tbody>
+	data.shift();
+
+	const c2pTable = (
+		<Table className="align-items-center table-flush" responsive>
+		  <tbody>
+		    {data.map( (project) =>
+		      <tr key={project}>
+		        <td> Project: </td>
+	      	        <td> {project} </td>
+		      </tr>
+		    )}
+		  </tbody>
 		</Table>
 	)
 	return c2pTable;
@@ -48,7 +50,21 @@ function c2P(data) {
 }
 
 function c2b(data) {
+	data.shift();
 
+	const c2bTable = (
+		<Table className="align-items-center table-flush" responsive>
+		  <tbody>
+		    {data.map( (blob) => 
+		      <tr key={blob}>
+		        <td> Blob: </td>
+	      	        <td><a href={"./lookupresult?sha1=" + blob + "&type=blob"}>{blob}</a></td>
+		      </tr>
+		    )}
+		  </tbody>
+		</Table>
+	)
+	return c2bTable;
 }
 	
 export function CommitMap(props) {
@@ -63,3 +79,4 @@ export function CommitMap(props) {
 		</div>
 	)
 }
+
