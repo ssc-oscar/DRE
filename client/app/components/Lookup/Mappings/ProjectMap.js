@@ -40,7 +40,9 @@ function p2a(data){
 }
 
 function p2c(data){
-	if (data.length == 1) {
+	console.log(data);
+	if (data.length == 0) {
+		console.log("this is true");
 		return (
 			<ListGroup>
 			  <ListGroupItem>No commits found, may not be central repo.</ListGroupItem>

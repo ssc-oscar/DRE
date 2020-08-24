@@ -44,7 +44,7 @@ class MapResultsForm extends Component{
 			isError = true;
 		}*/
 		if(len == 0) {
-			warning = 'Warning: No SHA1 specified.'
+			warning = 'Warning: No SHA1/query specified.'
 			isError = true;
 		}
 
@@ -78,14 +78,18 @@ class MapResultsForm extends Component{
 			.then( (response) => {
 				console.log(response);
 				let result = response.data.stdout;
-				if(!result) {
+				let stderr = response.data.stderr;
+
+				/*Don't immediately go to error page if lookup returned
+				empty results. "no {sha} in {*.tch file}" is the only 
+				error that should be allowed past this check.*/
+				if(!result && !(/no\s.+\sin\s.+/.test(stderr))) {
 					warning = "Search returned nothing.";
 					this.displayWarning(warning);
 					isError = true;
 				}
 
 				if(!isError) {
-					let stderr = response.data.stderr;
 					let data = [];
 					data = result.split(/;|\r|\n/);
 					//last element in array is always "", so remove it!
