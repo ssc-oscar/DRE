@@ -46,7 +46,7 @@ function validSha1(sha1, req1){
   var cache = [];
   //vv = JSON.stringify(req1.req.query, function(key, value) {if (typeof value === 'object' && value !== null) {if (cache.indexOf(value) !== -1) { try { return JSON.parse(JSON.stringify(value))}catch (error) {return;}} cache.push(value);} return value;});
   //console .log(sha1 + ';' + vv);
-  if (/^[bc]/ .test(req1.req.query.type)){
+  if (/^[bct]/ .test(req1.req.query.type)){
     return isHash(sha1, 'sha1');
   } else {
     if (/^[aA]/ .test(req1.req.query.type)){
