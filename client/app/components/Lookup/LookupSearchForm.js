@@ -4,6 +4,16 @@ import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
 import LookupSearchHeader from './LookupSearchHeader';
+import { 
+	Button as MenuButton,
+	FormControl,
+	InputLabel,
+	makeStyles,
+	Menu, 
+	MenuItem,
+	TextField,
+	Select
+} from '@material-ui/core';
 import {
 	Button,
 	Card,
@@ -27,10 +37,15 @@ class LookupSearchForm extends React.Component {
 			command: 'showCnt',
 			from: '',
 			to: '',
-			isLoading: false
+			isLoading: false,
+			anchorEl: null,
+			setAnchorEl: null
 		}
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
 	}
 
 	onSubmit(e) {
@@ -59,86 +74,85 @@ class LookupSearchForm extends React.Component {
 	Mappings() {
 		if(this.state.from === 'c') {
 			const maps = ( 
-				<>
-				  {" to "}
-				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option defaultValue="">Select</option>
-				    <option value="b">blob</option>
-				    <option value="p">project</option>
-				    <option value="P">root project</option>
-				    <option value="cc">child commit</option>
-				    <option value="f">file</option>
-				    <option value="h">head commit</option>
-				    <option value="pc">parent commit</option>
-				    <option value="ta">time author</option>
-				    <option value="td">tdiff</option>
-				  </select>
-				</>
+				  <FormControl variant="standard" size="medium" style={{minWidth: 80}}>
+				    <InputLabel id="label" required={true}>To</InputLabel>
+				     <Select value={this.state.to} name="to" onChange={this.onChange}>
+						<MenuItem value=""><em>None</em></MenuItem>
+						<MenuItem value="b">blob</MenuItem>
+						<MenuItem value="p">project</MenuItem>
+						<MenuItem value="P">root project</MenuItem>
+						<MenuItem value="cc">child commit</MenuItem>
+						<MenuItem value="f">file</MenuItem>
+						<MenuItem value="h">head commit</MenuItem>
+						<MenuItem value="pc">parent commit</MenuItem>
+						<MenuItem value="ta">time author</MenuItem>
+						<MenuItem value="td">tdiff</MenuItem>
+				      </Select>
+				  </FormControl>
 			);
-			return maps;
+		    return maps;
 		}
 		else if (this.state.from === 'b') {
 			const maps = ( 
-				<>
-				  {" to "}
-				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option defaultValue="">Select</option>
-				    <option value="a">author</option>
-				    <option value="c">commit</option>
-				    <option value="f">file</option>
-				    <option value="ob">old blob</option>
-				    <option value="tk">tokens</option>
-				  </select>
-				</>
+				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
+				  <InputLabel id="label" required={true}>To</InputLabel>
+				    <Select value={this.state.to} name="to" onChange={this.onChange}>
+					  <MenuItem value=""><em>None</em></MenuItem>
+						<MenuItem value="a">author</MenuItem>
+						<MenuItem value="c">commit</MenuItem>
+						<MenuItem value="f">file</MenuItem>
+						<MenuItem value="ob">old blob</MenuItem>
+						<MenuItem value="tk">tokens</MenuItem>
+				    </Select>
+				</FormControl> 
 			);
-			return maps;
+		    return maps;
 		}
 		else if(this.state.from === 'a') {
 			const maps = ( 
-				<>
-				  {" to "}
-				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option defaultValue="">Select</option>
-				    <option value="fb">blob</option>
-				    <option value="c">commit</option>
-				    <option value="f">file</option>
-				    <option value="p">project</option>
-				  </select>
-				</>
+				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
+				  <InputLabel id="label" required={true}>To</InputLabel>
+				    <Select value={this.state.to} name="to" onChange={this.onChange}>
+					  <MenuItem value=""><em>None</em></MenuItem>
+						<MenuItem value="fb">blob</MenuItem>
+						<MenuItem value="c">commit</MenuItem>
+						<MenuItem value="f">file</MenuItem>
+						<MenuItem value="p">project</MenuItem>
+				     </Select>
+				</FormControl> 
 			);
-			return maps;
+		    return maps;
 		}
 		else if(this.state.from === 'p') {
 			const maps = ( 
-				<>
-				  {" to "}
-				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option defaultValue="">Select</option>
-				    <option value="a">author</option>
-				    <option value="c">commit</option>
-				    <option value="Pc">central commit</option>
-				  </select>
-				</>
+				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
+				  <InputLabel id="label" required={true}>To</InputLabel>
+				    <Select value={this.state.to} name="to" onChange={this.onChange}>
+					  <MenuItem value=""><em>None</em></MenuItem>
+				    <MenuItem value="a">author</MenuItem>
+				    <MenuItem value="c">commit</MenuItem>
+				    <MenuItem value="Pc">central commit</MenuItem>
+				  </Select>
+				</FormControl>
 			);
-			return maps;
+		    return maps;
 		}
 		else if(this.state.from === 'f') {
 			const maps = ( 
-				<>
-				  {" to "}
-				  <select value={this.state.to} name="to" onChange={this.onChange}>
-				    <option defaultValue="">Select</option>
-				    <option value="a">author</option>
-				    <option value="b">blob</option>
-				    <option value="c">commit</option>
-				  </select>
-				</>
+				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
+				  <InputLabel id="label" required={true}>To</InputLabel>
+				    <Select value={this.state.to} name="to" onChange={this.onChange}>
+					  <MenuItem value=""><em>None</em></MenuItem>
+					  <MenuItem value="a">author</MenuItem>
+					  <MenuItem value="b">blob</MenuItem>
+					  <MenuItem value="c">commit</MenuItem>
+				    </Select>
+				</FormControl>
 			);
-			return maps;
+		    return maps;
 		}
-		else return (<div />)
+		else return ( <div/> );
 	}
-
 
 	generatecard() {
 		if(this.state.command == "showCnt") {
@@ -146,30 +160,34 @@ class LookupSearchForm extends React.Component {
 				<CardBody className="px-lg-5 py-lg-5">
 				  <Label>SHA</Label>
 				  <TextFieldGroup
-				    label=""
 				    focus={true}
+				    label=""
 				    onChange={this.onChange}
 				    value={this.state.sha}
-				    field="sha"
+		          	field="sha"
 				  />
 				  <div>
-				    <select value={this.state.type} name="type" onChange={this.onChange}>
-				      <option defaultValue="">Select</option>
-				      <option value="commit">commit</option>
-				      <option value="tree">tree</option>
-				      <option value="blob">blob</option>
-				    </select>
+					<FormControl variant="standard" size="medium" style={{minWidth: 80}}> 
+				      <InputLabel id="label" required={true}>Type</InputLabel>
+				      <Select value={this.state.type} name="type" onChange={this.onChange}>
+				        <MenuItem value=""><em>None</em></MenuItem>
+				        <MenuItem value="commit">commit</MenuItem>
+				        <MenuItem value="tree">tree</MenuItem>
+				        <MenuItem value="blob">blob</MenuItem>
+				      </Select>
+					</FormControl>
 				    <p></p>
 				  </div>
 				  <FormGroup>
 				    <Button color="primary" disabled={this.state.isLoading}>
-				      Search
+				      SEARCH
 				      {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
 				    </Button>
 				  </FormGroup>
 				</CardBody>
 			)
 		} else {
+			let spacer = "\xa0\xa0\xa0\xa0";
 			return (
 				<CardBody className="px-lg-5 py-lg-5">
 				  <Label>SHA</Label>
@@ -181,20 +199,26 @@ class LookupSearchForm extends React.Component {
 		          	  field="sha"
 				    />
 				  <div>
-				    <select value={this.state.from} name="from" onChange={this.onChange}>
-				      <option defaultValue="">Select</option>
-				      <option value="a">author</option>
-				      <option value="b">blob</option>
-				      <option value="c">commit</option>
-				      <option value="p">project</option>
-				      <option value="f">file</option>
-				    </select>
+					<FormControl variant="standard" size="medium" style={{minWidth: 80}}> 
+				    <InputLabel id="label" required={true}>From</InputLabel>
+						<Select value={this.state.from} onChange={this.onChange} name="from">
+						<MenuItem value="">
+						<em>None</em>
+						</MenuItem>
+						  <MenuItem value="a">author</MenuItem>
+						  <MenuItem value="b">blob</MenuItem>
+						  <MenuItem value="c">commit</MenuItem>
+						  <MenuItem value="p">project</MenuItem>
+						  <MenuItem value="f">file</MenuItem>
+						</Select>
+					</FormControl>
+					{spacer}
 				    {this.Mappings()}
 				    <p></p>
 				  </div>
 				  <FormGroup>
 				    <Button color="primary" disabled={this.state.isLoading}>
-				      Search
+				      SEARCH
 				      {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
 				    </Button>
 				  </FormGroup>
@@ -204,18 +228,59 @@ class LookupSearchForm extends React.Component {
 		}
 	}
 
+   handleClick(e){
+	   console.log(e.currentTarget);
+	   this.setState({ setAnchorEl: e.currentTarget });
+   }
+
+   handleMenuItemClick(e, option) {
+	   console.log(option);
+		this.setState({
+			command: option,
+			setAnchorEl: null 
+		})
+   }
+
+
+   handleClose(e){
+		this.setState({
+			setAnchorEl: null 
+		})
+   }
 
 	render() {
+		const options = [
+			'showCnt',
+			'getValues',
+			];
 		return (
 			<form onSubmit={this.onSubmit}>
 			  <Card className="bg-secondary shadow border-0" style={{ width: '30rem'}}>
 			    <CardHeader className="bg-transparent">
-		              <div>
-			        <select value={this.state.command} name="command" onChange={this.onChange}>
-			          <option field="showCnt">showCnt</option>
-			          <option field="getValues">getValues</option>
-			        </select>
-			        <p></p>
+		          <div> 
+
+				  <MenuButton aria-controls="simple-menu" aria-haspopup="true" 
+				  onClick={this.handleClick} variant="contained" style={{color: 'white', backgroundColor: '#5e72e4'}}>
+				  Command
+				  </MenuButton>
+				  <Menu
+				    id="simple-menu"
+				    anchorEl={this.state.setAnchorEl}
+				    keepMounted
+				    open={Boolean(this.state.setAnchorEl)}
+				    onClose={this.handleClose}
+				  >
+				  {options.map((option) => (
+					<MenuItem
+						key={option}
+						selected={option === this.state.command}
+						onClick={(event) => this.handleMenuItemClick(event, option)}
+						>
+						{option}
+						</MenuItem>
+						))}
+				  </Menu>
+				  <p></p>
 			      </div>
 		              <LookupSearchHeader option={this.state.command}/> 
 			    </CardHeader>
