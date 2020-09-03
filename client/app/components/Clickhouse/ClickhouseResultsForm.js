@@ -70,10 +70,8 @@ class ClickhouseResultsForm extends Component{
 		return result;
 	}
 
-	//if((year % 4 == 0 && year % 100 == 0 && year % 400 == 0) 
-	//	|| (year % 4 == 0 && year % 100 != 0)) days["Feb"] = 29;
-
 	formatDate(){
+		let nc = this.state.data.length;
 		let start = new Date(this.state.start * 1000);
 		let start_min = start.getMinutes();
 		let start_month = start.getMonth()+1;
@@ -88,10 +86,10 @@ class ClickhouseResultsForm extends Component{
 			if (end_min < 10) end_min = "0" + end_min;
 			let end_date = end_month + "/" + end.getDate() + "/" + end.getFullYear()
 						+ ", " + end.getHours() + ":" + end_min + ":" + end.getSeconds();
-			return "Commits from "+start_date+" to "+end_date;
+			return nc+" Commits from "+start_date+" to "+end_date;
 		}
 
-		return "Commits made on "+start_date;
+		return nc+" Commits made on "+start_date;
 	}
 
 	render() {
