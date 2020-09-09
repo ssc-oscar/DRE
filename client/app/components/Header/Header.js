@@ -50,6 +50,15 @@ class Header extends React.Component {
         <NavItem>
           <NavLink
             className="nav-link-icon"
+            to={"/clickhouse"}
+            tag={Link}>
+            <i className="fa fa-mouse-pointer" />
+            <span className="nav-link-inner--text">Clickhouse</span>
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className="nav-link-icon"
             to={"/lookup"}
             tag={Link}>
             <i className="fa fa-database" />
