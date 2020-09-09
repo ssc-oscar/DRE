@@ -11,3 +11,15 @@ export function lookupSha(sha, type, command) {
 		})
 	}
 }
+
+export function clickhouseQuery(start, end, count) {
+	return dispatch => {
+		return axios.get('/api/clickhouse/commits', {
+			params: {
+				start: start,
+				end: end,
+				count: count
+			}
+		})
+	}
+}
