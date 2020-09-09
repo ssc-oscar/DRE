@@ -43,11 +43,27 @@ class ClickhouseResultsForm extends Component{
 		this.Search(sha,type);
 	}
 
+	unicodeToChar(text) {
+		var build_str = []
+		for(var i = 0; i < text.length; i++){
+			var hex = Number(text.charCodeAt(i).toString(16));
+			build_str.push(hex);
+		}
+		return build_str.join(' ');
+	}
+
+
 	Query(start, end, count){
 		if(!end) end = start;
 		this.props.clickhouseQuery(start, end, count)
 		.then( (response) => {
 			console.log(response.data);
+			console.log(response.data[0]['parent']);
+			console.log(this.unicodeToChar(response.data[0]['parent']));
+			console.log(response.data[1]['parent']);
+			console.log(this.unicodeToChar(response.data[1]['parent']));
+			console.log(response.data[2]['parent']);
+			console.log(this.unicodeToChar(response.data[2]['parent']));
 			this.setState({
 				start: start,
 				end: end,
