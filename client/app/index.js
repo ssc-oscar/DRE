@@ -17,6 +17,8 @@ import LookupSearchPage from './components/Lookup/LookupSearchPage';
 import LookupResultsPage from './components/Lookup/LookupResultsPage';
 import MapResultsPage from './components/Lookup/MapResultsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
+import ClickhousePage from './components/Clickhouse/ClickhousePage';
+import ClickhouseResultsPage from './components/Clickhouse/ClickhouseResultsPage';
 import rootReducer from '../rootReducer';
 import requireAuth from '../utils/requireAuth';
 import jwt from 'jsonwebtoken';
@@ -54,12 +56,14 @@ render((
           <Route exact path="/" component={HomeWOC} />
 	      <Route exact path="/DRE" component={Home} />
           <Route path="/search" component={requireAuth(AuthorSearchPage)} />
+          <Route path="/clickhouse" component={ClickhousePage} />
+          <Route path="/clickhouseresult" component={ClickhouseResultsPage} />
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
           <Route path="/dash" component={requireAuth(DashboardPage)} />
           <Route path="/locate" component={requireAuth(LocateProfilesPage)} />
-	        <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
-	        <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
-	        <Route path="/mapresult" component={requireAuth(MapResultsPage)} />
+	      <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
+	      <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
+	      <Route path="/mapresult" component={requireAuth(MapResultsPage)} />
           <Route path="/upload" component={requireAuth(UploadAuthorsPage)} />
           <Route path="/error" component={NotFound} />
           <Route component={NotFound} />
