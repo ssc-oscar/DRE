@@ -5,10 +5,13 @@ import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import queryString from 'query-string';
+import Markdown from 'react-markdown';
 import {
 	Card,
 	CardBody,
 	CardHeader,
+	ListGroup,
+	ListGroupItem,
 	Table
 } from "reactstrap";
 
@@ -69,6 +72,7 @@ class LookupResultsForm extends Component{
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
+				console.log(response);
 				let result = response.data.stdout;
 				if(!result) {
 					warning = "Search returned nothing.";
@@ -106,51 +110,26 @@ class LookupResultsForm extends Component{
 	generateTable() {
 		let { data, type, sha } = this.state;
 		if(type == 'commit'){
-			let c = data[0];
-			let key = c._id;
 			let tree = data[1];
 			let p = data[2];
 			let author = data[3];
+			let widest = author.length + 'rem';
 			let a_time = data[5];
 			let committer = data[4];
 			let c_time = data[6];	
 			return (
 		            <div className="row justify-content-center">
-		              <Card className="bg-secondary shadow border-0" style={{ width: '35rem', height: '37rem'}}>
-			      <CardHeader>Lookup Results for Commit</CardHeader>
+		              <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '29rem'}}>
+			      <CardHeader>Lookup Results for Commit {sha}</CardHeader>
 			        <CardBody>
-			          <Table style={styles.table} className="align-items-center table-flush" responsive>
-			            <tbody>
-				      <tr>
-				        <td>Commit:</td>
-				        <td>{c}</td>
-				      </tr>
-				      <tr>
-				        <td>Tree:</td>
-				        <td><a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></td>
-				      </tr>
-				      <tr>
-				        <td>Parent:</td>
-				        <td><a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></td>
-				      </tr>
-				      <tr>
-				        <td>Author:</td>
-				        <td>{author}</td>
-				      </tr>
-				      <tr>
-				        <td>Author Time:</td>
-				        <td>{a_time}</td>
-				      </tr>
-				      <tr>
-				        <td>Committer:</td>
-				        <td>{committer}</td>
-				      </tr>
-				      <tr>
-				        <td>Commit Time:</td>
-				        <td>{c_time}</td>
-				      </tr>
-			            </tbody>
-		                  </Table>
+					  <ListGroup>
+				        <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></ListGroupItem>
+				        <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></ListGroupItem>
+				        <ListGroupItem>Author: {author}</ListGroupItem>
+				        <ListGroupItem>Author Time: {a_time}</ListGroupItem>
+				        <ListGroupItem>Committer: {committer}</ListGroupItem>
+				        <ListGroupItem>Commit Time: {c_time}</ListGroupItem>
+					  </ListGroup>
 			        </CardBody>
 			      </Card>
 	                    </div>
@@ -159,7 +138,7 @@ class LookupResultsForm extends Component{
 		else if(type == 'tree'){
 			var i, j;
 			let table_rows = []
-			for (i = 0, j=0; i < data.length; i+=3, j++) {
+			for (i=0, j=0; i < data.length; i+=3, j++) {
 				let row = [];
 				row['id'] = j;
 				row['mode'] = data[i];
@@ -179,37 +158,30 @@ class LookupResultsForm extends Component{
 				)
 			})
 			return (
-		            <div className="row justify-content-center">
-		              <Card className="bg-secondary shadow border-0" style={{ width: '45rem', height: '37rem'}}>
-			      <CardHeader>Lookup Results for Tree</CardHeader>
-			        <CardBody>
-			          <Table style={styles.table} className="align-items-center table-flush" responsive>
-			            <tbody>
-				      {treeTable}
-			            </tbody>
-		                  </Table>
-			        </CardBody>
+		        <div className="row justify-content-center">
+				  <Card className="bg-secondary shadow border-0" style={{ width: '45rem', height: '37rem'}}>
+					<CardHeader>Lookup Results for Tree {sha}</CardHeader>
+					  <CardBody>
+						<Table style={styles.table} className="align-items-center table-flush" responsive>
+						  <tbody>
+							  {treeTable}
+						  </tbody>
+					    </Table>
+				      </CardBody>
 			      </Card>
-	                    </div>
+				</div>
 			)
 		}
 		else if(type == 'blob'){
-			const blobTable = data.split("\n").map((i,key) => {
-				return <tr key={key}>{i}</tr>;
-			})
 			return (
-		            <div className="row justify-content-center">
-		              <Card className="bg-secondary shadow border-0">
-			      <CardHeader>Lookup Results for Blob</CardHeader>
-			        <CardBody>
-			          <Table style={styles.table} className="align-items-center table-flush" responsive>
-			            <tbody>
-				      {blobTable}
-			            </tbody>
-		                  </Table>
-			        </CardBody>
+				<div className="row justify-content-center">
+		          <Card className="bg-secondary shadow border-0">
+			        <CardHeader>Lookup Results for Blob {sha}</CardHeader>
+			          <CardBody>
+				        <Markdown source={data} />
+			          </CardBody>
 			      </Card>
-	                    </div>
+	            </div>
 			)
 
 		}
