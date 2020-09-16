@@ -43,27 +43,11 @@ class ClickhouseResultsForm extends Component{
 		this.Search(sha,type);
 	}
 
-	unicodeToChar(text) {
-		var build_str = []
-		for(var i = 0; i < text.length; i++){
-			var hex = Number(text.charCodeAt(i).toString(16));
-			build_str.push(hex);
-		}
-		return build_str.join(' ');
-	}
-
-
 	Query(start, end, count){
 		if(!end) end = start;
 		this.props.clickhouseQuery(start, end, count)
 		.then( (response) => {
 			console.log(response.data);
-			console.log(response.data[0]['parent']);
-			console.log(this.unicodeToChar(response.data[0]['parent']));
-			console.log(response.data[1]['parent']);
-			console.log(this.unicodeToChar(response.data[1]['parent']));
-			console.log(response.data[2]['parent']);
-			console.log(this.unicodeToChar(response.data[2]['parent']));
 			this.setState({
 				start: start,
 				end: end,
@@ -74,10 +58,11 @@ class ClickhouseResultsForm extends Component{
 	}
 
 	generateTable(){
+        this.state.data.sort((a,b) => (a['time'] > b['time'] ? 1 : -1));
 		let result = this.state.data.map((entry, index) => {
 			return (
 				<tr key={index}>
-				<td>Commit:</td>
+				<td>Commit made at {entry['time']}:</td>
 				<td><a href={"./lookupresult?sha1="+entry['sha1']+"&type=commit"}>{entry['sha1']}</a></td>
 				</tr>
 			)

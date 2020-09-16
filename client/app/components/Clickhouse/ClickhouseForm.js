@@ -129,7 +129,8 @@ class ClickhouseForm extends Component{
 					</Label>
 					<UncontrolledTooltip placement="top" target="start">
 					  Filling this field while leaving "End time" blank will search 
-					  on this specific timestamp, rather than a range.
+					  on this specific timestamp, rather than a range. All queries are
+                      limited to 1000 commits.
 					</UncontrolledTooltip>
 			        <TextFieldGroup
 						focus={true}
