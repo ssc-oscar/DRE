@@ -5,6 +5,7 @@ import ProjStatTable from '../common/ProjStatTable';
 import FriendStatTable from '../common/FriendStatTable';
 import LanguageChart from './LanguageChart';
 import TorvaldsGraph from './TorvaldsGraph';
+import FastGraph from '../FastGraph/FastGraph.js';
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -76,6 +77,8 @@ class DashboardForm extends React.Component {
     this.props.getProfile(userId)
     .then((rv) => {
       if (rv.data) {
+
+				//console.log('response: ', rv.data);
         let complete = true;
 
         for (let key in rv.data) {
@@ -144,7 +147,7 @@ class DashboardForm extends React.Component {
   
 
   render() {
-    console.log(this.state.profile.projects);
+    //console.log(this.state.profile.projects);
     if (!this.state.ready) {
       return <div />
     }
@@ -251,7 +254,7 @@ class DashboardForm extends React.Component {
             </Col>
           </Row>
           <Row className="justify-content-center align-items-center">
-            <Col md="8">
+            <Col md="6">
               {!isEmpty(this.state.profile.blobs) &&
                <ProjStatTable
                   onClickBlob={this.onClickBlob}
@@ -260,6 +263,11 @@ class DashboardForm extends React.Component {
                   title="Your Blobs"/>
               }
             </Col>
+			<Col md="6">
+				{
+					<FastGraph />
+				}
+			</Col>	
           </Row>
           {!this.state.publicView &&
             <Row>

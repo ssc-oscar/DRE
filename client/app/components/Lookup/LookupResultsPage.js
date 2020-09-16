@@ -6,6 +6,7 @@ import { Row, Col, Container, Card } from 'reactstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { lookupSha } from '../../../actions/Search';
+import FastGraph from '../FastGraph/FastGraph.js';
 
 class LookupResultsPage extends Component {
 	
@@ -15,6 +16,7 @@ class LookupResultsPage extends Component {
 		return (
 			<div className="row justify-content-center">
 			  <LookupResultsForm lookupSha={lookupSha}/>
+				<FastGraph				 lookupSha={lookupSha}/>
 			</div>
 		)
 

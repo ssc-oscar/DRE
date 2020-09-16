@@ -66,12 +66,10 @@ class LookupResultsForm extends Component{
 	Search(sha, type) {
 		let { warning, isError } = this.generateWarning(sha);
 		let command = "showCnt";
-
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
 				let result = response.data.stdout;
-	
 				if(!result) {
 					warning = "Search returned nothing.";
 					this.displayWarning(warning);
