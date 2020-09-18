@@ -7,11 +7,16 @@ import { styles } from '../common/styles';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
+	Button,
 	Card,
 	CardBody,
 	CardHeader,
+	FormGroup,
 	ListGroup,
 	ListGroupItem,
+	Modal,
+	ModalHeader,
+	ModalBody,
 	Table
 } from "reactstrap";
 
@@ -24,10 +29,14 @@ class LookupResultsForm extends Component{
 			back: false,
 			data: [],
 			type: '',
-			sha: ''
+			sha: '',
+			showMap: false,
+			wasClicked: false
 		}
 
 		this.onClick = this.onClick.bind(this);
+		this.onClickMap = this.onClickMap.bind(this);
+		this.toggleMap = this.toggleMap.bind(this);
 	}
 
 	generateWarning(sha) {
@@ -109,8 +118,17 @@ class LookupResultsForm extends Component{
 		this.Search(sha,type);
 	}
 
+	onClickMap(){
+		this.toggleMap();
+	}
+
+	toggleMap(){
+		this.setState({ showMap: !this.state.showMap, wasClicked: !this.state.wasClicked});
+	}
+
 	generateTable() {
 		let { data, type, sha } = this.state;
+		let spacer = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
 		if(type == 'commit'){
 			let tree = data[1];
 			let p = data[2];
@@ -126,7 +144,13 @@ class LookupResultsForm extends Component{
 			        <CardBody>
 					  <ListGroup>
 				        <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></ListGroupItem>
-				        <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a></ListGroupItem>
+				        <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a>
+						{spacer}
+						<Button color="primary" disabled={this.state.isLoading} onClick={this.onClickMap}>
+						Map
+						{this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
+						</Button>
+						</ListGroupItem>
 				        <ListGroupItem>Author: {author}</ListGroupItem>
 				        <ListGroupItem>Author Time: {a_time}</ListGroupItem>
 				        <ListGroupItem>Committer: {committer}</ListGroupItem>
@@ -134,7 +158,7 @@ class LookupResultsForm extends Component{
 					  </ListGroup>
 			        </CardBody>
 			      </Card>
-	                    </div>
+	              </div>
 			)
 		}
 		else if(type == 'tree'){
@@ -191,8 +215,11 @@ class LookupResultsForm extends Component{
 
 	render() {
 		const { sha, type } = this.state;
+		console.log(this.state.wasClicked);
+		console.log(this.state.showMap);
 			return (
 			<div>	
+				{this.state.wasClicked && <Modal isOpen={this.state.showMap} size="lg" fade={false} toggle={this.toggleMap}><ModalBody>Hello there</ModalBody></Modal>}
 		          {this.generateTable()}
 			</div>
 		)
