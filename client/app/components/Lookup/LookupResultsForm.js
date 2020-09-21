@@ -4,8 +4,18 @@ import ReactDOM from 'react-dom';
 import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
+import { options } from './options';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
+import {
+    Button as MenuButton,
+    FormControl,
+    Menu,
+    MenuItem,
+    InputLabel,
+    Select
+} from '@material-ui/core';
+
 import {
 	Button,
 	Card,
@@ -31,13 +41,67 @@ class LookupResultsForm extends Component{
 			type: '',
 			sha: '',
 			showMap: false,
-			wasClicked: false
+            setAnchorEl: null,
+            anchorEl: null,
+            command: ''
 		}
 
 		this.onClick = this.onClick.bind(this);
 		this.onClickMap = this.onClickMap.bind(this);
 		this.toggleMap = this.toggleMap.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
 	}
+	
+	componentDidMount() {
+		let search = window.location.search;
+		let params = new URLSearchParams(search);
+		let sha = params.get('sha1');
+		let type = params.get('type');
+		this.Search(sha, type);
+	}
+
+	UNSAFE_componentWillMount() {
+		window.addEventListener('popstate', e => {
+			this.setState({ back: true });
+			this.Search(window.history.state.sha, window.history.state.type);
+		})
+	}
+
+	onClick(e,type,sha){
+		e.preventDefault();
+		this.Search(sha,type);
+	}
+
+	onClickMap(){
+		this.toggleMap();
+	}
+
+	toggleMap(){
+		this.setState({ showMap: !this.state.showMap });
+	}
+
+    handleClick(e){
+        console.log(e.currentTarget);
+        this.setState({ setAnchorEl: e.currentTarget });
+    }
+
+    handleMenuItemClick(e, option) {
+        console.log(option);
+        this.setState({
+            command: option,
+            setAnchorEl: null 
+        })
+        this.toggleMap();
+    }
+
+
+    handleClose(e){
+        this.setState({
+            setAnchorEl: null 
+        })
+    }
 
 	generateWarning(sha) {
 		let warning = '';
@@ -58,21 +122,6 @@ class LookupResultsForm extends Component{
 
 	displayWarning(warning) {
 		this.props.history.push('./error');
-	}
-	
-	componentDidMount() {
-		let search = window.location.search;
-		let params = new URLSearchParams(search);
-		let sha = params.get('sha1');
-		let type = params.get('type');
-		this.Search(sha, type);
-	}
-
-	UNSAFE_componentWillMount() {
-		window.addEventListener('popstate', e => {
-			this.setState({ back: true });
-			this.Search(window.history.state.sha, window.history.state.type);
-		})
 	}
 
 	Search(sha, type) {
@@ -113,21 +162,9 @@ class LookupResultsForm extends Component{
 		} else this.displayWarning(warning);
 	}
 
-	onClick(e,type,sha){
-		e.preventDefault();
-		this.Search(sha,type);
-	}
-
-	onClickMap(){
-		this.toggleMap();
-	}
-
-	toggleMap(){
-		this.setState({ showMap: !this.state.showMap, wasClicked: !this.state.wasClicked});
-	}
-
 	generateTable() {
 		let { data, type, sha } = this.state;
+        let c_options = options["commit"];
 		let spacer = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
 		if(type == 'commit'){
 			let tree = data[1];
@@ -138,18 +175,36 @@ class LookupResultsForm extends Component{
 			let committer = data[4];
 			let c_time = data[6];	
 			return (
-		            <div className="row justify-content-center">
-		              <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '29rem'}}>
+		      <div className="row justify-content-center">
+		        <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '29rem'}}>
 			      <CardHeader>Lookup Results for Commit {sha}</CardHeader>
 			        <CardBody>
 					  <ListGroup>
 				        <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></ListGroupItem>
 				        <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a>
 						{spacer}
-						<Button color="primary" disabled={this.state.isLoading} onClick={this.onClickMap}>
-						Map
-						{this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
-						</Button>
+						<MenuButton 
+                          color="primary" 
+                          disabled={this.state.isLoading} 
+                          onClick={this.handleClick}>
+                        Map
+                        </MenuButton>
+                        <Menu
+                          id="simple-menu"
+                          anchorEl={this.state.setAnchorEl}
+                          keepMounted
+                          open={Boolean(this.state.setAnchorEl)}
+                          onClose={this.handleClose}
+                        >
+                        {c_options.map((option) => (
+                        <MenuItem
+                            key={option}
+                            selected={option === this.state.command}
+                            onClick={(event) => this.handleMenuItemClick(event, option)}>
+                            {option}
+                        </MenuItem>
+                        ))}
+                        </Menu>
 						</ListGroupItem>
 				        <ListGroupItem>Author: {author}</ListGroupItem>
 				        <ListGroupItem>Author Time: {a_time}</ListGroupItem>
@@ -215,11 +270,16 @@ class LookupResultsForm extends Component{
 
 	render() {
 		const { sha, type } = this.state;
-		console.log(this.state.wasClicked);
 		console.log(this.state.showMap);
 			return (
 			<div>	
-				{this.state.wasClicked && <Modal isOpen={this.state.showMap} size="lg" fade={false} toggle={this.toggleMap}><ModalBody>Hello there</ModalBody></Modal>}
+				{this.state.showMap && <Modal isOpen={this.state.showMap} centered={true} size="lg"
+                    fade={false} toggle={this.toggleMap}>
+                    <ModalBody>
+                    Eat my ass there are starving kids in Africa. 
+                    {this.state.command}
+                    </ModalBody>
+                    </Modal>}
 		          {this.generateTable()}
 			</div>
 		)
