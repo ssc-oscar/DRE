@@ -5,6 +5,7 @@ import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import { options } from './options';
+import { CommitMap } from './Mappings/CommitMap';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
@@ -43,15 +44,15 @@ class LookupResultsForm extends Component{
 			showMap: false,
             setAnchorEl: null,
             anchorEl: null,
-            command: ''
+			mapQuery: '',
+			mapType: '',
+			mapData: []
 		}
 
 		this.onClick = this.onClick.bind(this);
-		this.onClickMap = this.onClickMap.bind(this);
 		this.toggleMap = this.toggleMap.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
 	}
 	
 	componentDidMount() {
@@ -59,23 +60,19 @@ class LookupResultsForm extends Component{
 		let params = new URLSearchParams(search);
 		let sha = params.get('sha1');
 		let type = params.get('type');
-		this.Search(sha, type);
+		this.Search(sha, type, "showCnt");
 	}
 
 	UNSAFE_componentWillMount() {
 		window.addEventListener('popstate', e => {
 			this.setState({ back: true });
-			this.Search(window.history.state.sha, window.history.state.type);
+			this.Search(window.history.state.sha, window.history.state.type, "showCnt");
 		})
 	}
 
-	onClick(e,type,sha){
+	onClick(e, type, sha, command){
 		e.preventDefault();
-		this.Search(sha,type);
-	}
-
-	onClickMap(){
-		this.toggleMap();
+		this.Search(sha, type, command);
 	}
 
 	toggleMap(){
@@ -86,16 +83,6 @@ class LookupResultsForm extends Component{
         console.log(e.currentTarget);
         this.setState({ setAnchorEl: e.currentTarget });
     }
-
-    handleMenuItemClick(e, option) {
-        console.log(option);
-        this.setState({
-            command: option,
-            setAnchorEl: null 
-        })
-        this.toggleMap();
-    }
-
 
     handleClose(e){
         this.setState({
@@ -124,39 +111,53 @@ class LookupResultsForm extends Component{
 		this.props.history.push('./error');
 	}
 
-	Search(sha, type) {
+	Search(sha, type, command) {
 		let { warning, isError } = this.generateWarning(sha);
-		let command = "showCnt";
 
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
 				console.log(response);
 				let result = response.data.stdout;
-	
-				if(!result) {
+				let stderr = response.data.stderr;
+
+				/*Don't immediately go to error page if lookup returned
+				  empty results. "no {sha} in {*.tch file}" is the only 
+				  error that should be allowed past this check.*/
+				if(!result && !(/no\s.+\sin\s.+/.test(stderr))) {
 					warning = "Search returned nothing.";
 					this.displayWarning(warning);
 					isError = true;
 				}
-
+	
 				if(!isError) {
-					let stderr = response.data.stderr;
 					let data = [];
 
-					if (type == "blob") data = result;
+					if(type == "blob") data = result;
 					else data = result.split(/;|\r|\n/);
 
-					if(!this.state.back) {
+					if(command === "getValues") data.pop();
+
+					if(!this.state.back && command === "showCnt") {
 						window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
 					}
-
-					this.setState({
-						data: data,
-						type: type,
-						sha: sha,
-						back: false
-					});
+					if(command === "showCnt"){
+						this.setState({
+							data: data,
+							type: type,
+							sha: sha,
+							back: false
+						});
+					}
+					else if(command === "getValues"){
+						this.setState({
+							setAnchorEl: null,
+							mapData: data,
+							mapType: type,
+							mapQuery: sha,
+							showMap: !this.state.showMap
+						})
+					}
 				}
 			});
 		} else this.displayWarning(warning);
@@ -164,7 +165,7 @@ class LookupResultsForm extends Component{
 
 	generateTable() {
 		let { data, type, sha } = this.state;
-        let c_options = options["commit"];
+        let c_options = Object.keys(options["commit"]);
 		let spacer = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
 		if(type == 'commit'){
 			let tree = data[1];
@@ -180,8 +181,8 @@ class LookupResultsForm extends Component{
 			      <CardHeader>Lookup Results for Commit {sha}</CardHeader>
 			        <CardBody>
 					  <ListGroup>
-				        <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree",tree)}>{tree}</a></ListGroupItem>
-				        <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit",p)}>{p}</a>
+				        <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree", tree, "showCnt")}>{tree}</a></ListGroupItem>
+				        <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit", p, "showCnt")}>{p}</a>
 						{spacer}
 						<MenuButton 
                           color="primary" 
@@ -196,12 +197,11 @@ class LookupResultsForm extends Component{
                           open={Boolean(this.state.setAnchorEl)}
                           onClose={this.handleClose}
                         >
-                        {c_options.map((option) => (
+                        {c_options.map((keyy) => (
                         <MenuItem
-                            key={option}
-                            selected={option === this.state.command}
-                            onClick={(event) => this.handleMenuItemClick(event, option)}>
-                            {option}
+                            key={options["commit"][keyy]}
+                            onClick={(event) => this.Search(p, "c2"+options["commit"][keyy], "getValues")}>
+                            {keyy}
                         </MenuItem>
                         ))}
                         </Menu>
@@ -232,7 +232,7 @@ class LookupResultsForm extends Component{
 				return (
 					<tr key={id}>
 					  <td>{mode}</td>
-					  <td><a href="#" onClick={(e) => this.onClick(e,(mode === "040000") ? "tree" : "blob",sha)}>
+					  <td><a href="#" onClick={(e) => this.onClick(e,(mode === "040000") ? "tree" : "blob",sha,"showCnt")}>
 					      {sha}</a></td>
 					  <td>{filename}</td>
 					</tr>
@@ -269,19 +269,18 @@ class LookupResultsForm extends Component{
 	}
 
 	render() {
-		const { sha, type } = this.state;
+		const { sha, type, mapData, mapType, mapQuery} = this.state;
 		console.log(this.state.showMap);
 			return (
-			<div>	
-				{this.state.showMap && <Modal isOpen={this.state.showMap} centered={true} size="lg"
-                    fade={false} toggle={this.toggleMap}>
-                    <ModalBody>
-                    Eat my ass there are starving kids in Africa. 
-                    {this.state.command}
-                    </ModalBody>
-                    </Modal>}
-		          {this.generateTable()}
-			</div>
+				<div>	
+					{this.state.showMap && <Modal isOpen={this.state.showMap} centered={true} size="lg"
+						fade={false} toggle={this.toggleMap}>
+				  <ModalBody>
+					<CommitMap state={{sha: mapQuery, type: mapType, data: mapData}}/>
+				  </ModalBody>
+					</Modal>}
+					{this.generateTable()}
+				</div>
 		)
 	}
 }

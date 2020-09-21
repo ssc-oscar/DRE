@@ -1,10 +1,12 @@
 let options = {
-    "commit": ["blob", "project", "root project", "child commit", "file", "head commit", "parent commit",
-    "time author", "tdiff"],
-    "author": ["blob", "commit", "file", "project"],
-    "blob": ["author", "commit", "file", "old blob", "tokens"],
-    "project": ["author", "commit", "central commit"],
-    "file": ["author", "blob", "commit"]
+    "commit": {"blob": "b", "project": "p", "root project": "P", 
+			"child commit": "cc", "file": "f", "head commit": "h", 
+			"parent commit": "pc", "time author": "ta", "tdiff": "td"},
+    "author": {"blob": "fb", "commit": "c", "file": "f", "project": "p"},
+    "blob": {"author": "a", "commit": "c", "file": "f", 
+			"old blob": "ob", "tokens": "tk"},
+    "project": {"author": "a", "commit": "c", "central commit": "Pc"},
+    "file": {"author": "a", "blob": "b", "commit": "c"}
 }
 
 export {options};
