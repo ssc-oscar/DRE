@@ -60,7 +60,7 @@ class LookupSearchForm extends React.Component {
 		else if (command === "getValues"){
 			console.log(to);
 			if (to === "Pc") type = "P2c";
-			else type = from + "2" + to; 
+			else type = from[0] + "2" + to; 
 			console.log(type);
 			this.props.history.push(`/mapresult?sha1=${sha}&type=${type}`);
 		}
@@ -72,103 +72,43 @@ class LookupSearchForm extends React.Component {
 		})
 	}
 	
+    handleClick(e){
+	    console.log(e.currentTarget);
+	    this.setState({ setAnchorEl: e.currentTarget });
+    }
+
+    handleMenuItemClick(e, option) {
+	    console.log(option);
+		this.setState({
+			command: option,
+			setAnchorEl: null 
+		})
+    }
+
+    handleClose(e){
+		this.setState({
+			setAnchorEl: null 
+		})
+    }
+
 	Mappings() {
-		if(this.state.from === 'c') {
-			const maps = ( 
-				  <FormControl variant="standard" size="medium" style={{minWidth: 80}}>
-				    <InputLabel id="label" required={true}>To</InputLabel>
-				     <Select value={this.state.to} name="to" onChange={this.onChange}>
-						<MenuItem value=""><em>None</em></MenuItem>
-                        {Object.keys(options['commit']).map((to) => (
-                            <MenuItem
-                                key={options['commit'][to]}
-                                value={options['commit'][to]}
-                            >
-                            {to}
-                            </MenuItem>
-                        ))}
-				      </Select>
-				  </FormControl>
-			);
-		    return maps;
-		}
-		else if (this.state.from === 'b') {
-			const maps = ( 
-				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
-				  <InputLabel id="label" required={true}>To</InputLabel>
-				    <Select value={this.state.to} name="to" onChange={this.onChange}>
-						<MenuItem value=""><em>None</em></MenuItem>
-                        {Object.keys(options['blob']).map((to) => (
-                            <MenuItem
-                                key={options['blob'][to]}
-                                value={options['blob'][to]}
-                            >
-                            {to}
-                            </MenuItem>
-                        ))}
-				    </Select>
-				</FormControl> 
-			);
-		    return maps;
-		}
-		else if(this.state.from === 'a') {
-			const maps = ( 
-				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
-				  <InputLabel id="label" required={true}>To</InputLabel>
-				    <Select value={this.state.to} name="to" onChange={this.onChange}>
-						<MenuItem value=""><em>None</em></MenuItem>
-                        {Object.keys(options['author']).map((to) => (
-                            <MenuItem
-                                key={options['author'][to]}
-                                value={options['author'][to]}
-                            >
-                            {to}
-                            </MenuItem>
-                        ))}
-				     </Select>
-				</FormControl> 
-			);
-		    return maps;
-		}
-		else if(this.state.from === 'p') {
-			const maps = ( 
-				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
-				  <InputLabel id="label" required={true}>To</InputLabel>
-				    <Select value={this.state.to} name="to" onChange={this.onChange}>
-						<MenuItem value=""><em>None</em></MenuItem>
-                        {Object.keys(options['project']).map((to) => (
-                            <MenuItem
-                                key={options['project'][to]}
-                                value={options['project'][to]}
-                            >
-                            {to}
-                            </MenuItem>
-                        ))}
+		//console.log(this.state.from);
+		return ( 
+			  <FormControl variant="standard" size="medium" style={{minWidth: 80}}>
+				<InputLabel id="label" required={true}>To</InputLabel>
+				 <Select value={this.state.to} name="to" onChange={this.onChange}>
+					<MenuItem value=""><em>None</em></MenuItem>
+					{Object.keys(options[this.state.from]).map((to) => (
+						<MenuItem
+							key={options[this.state.from][to]}
+							value={options[this.state.from][to]}
+						>
+						{to}
+						</MenuItem>
+					))}
 				  </Select>
-				</FormControl>
-			);
-		    return maps;
-		}
-		else if(this.state.from === 'f') {
-			const maps = ( 
-				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
-				  <InputLabel id="label" required={true}>To</InputLabel>
-				    <Select value={this.state.to} name="to" onChange={this.onChange}>
-						<MenuItem value=""><em>None</em></MenuItem>
-                        {Object.keys(options['file']).map((to) => (
-                            <MenuItem
-                                key={options['file'][to]}
-                                value={options['file'][to]}
-                            >
-                            {to}
-                            </MenuItem>
-                        ))}
-				    </Select>
-				</FormControl>
-			);
-		    return maps;
-		}
-		else return ( <div/> );
+			  </FormControl>
+		);
 	}
 
 	generatecard() {
@@ -222,15 +162,15 @@ class LookupSearchForm extends React.Component {
 						<MenuItem value="">
 						<em>None</em>
 						</MenuItem>
-						  <MenuItem value="a">author</MenuItem>
-						  <MenuItem value="b">blob</MenuItem>
-						  <MenuItem value="c">commit</MenuItem>
-						  <MenuItem value="p">project</MenuItem>
-						  <MenuItem value="f">file</MenuItem>
+						  <MenuItem value="author">author</MenuItem>
+						  <MenuItem value="blob">blob</MenuItem>
+						  <MenuItem value="commit">commit</MenuItem>
+						  <MenuItem value="project">project</MenuItem>
+						  <MenuItem value="file">file</MenuItem>
 						</Select>
 					</FormControl>
 					{spacer}
-				    {this.Mappings()}
+				    {this.state.from && this.Mappings()}
 				    <p></p>
 				  </div>
 				  <FormGroup>
@@ -245,25 +185,6 @@ class LookupSearchForm extends React.Component {
 		}
 	}
 
-   handleClick(e){
-	   console.log(e.currentTarget);
-	   this.setState({ setAnchorEl: e.currentTarget });
-   }
-
-   handleMenuItemClick(e, option) {
-	   console.log(option);
-		this.setState({
-			command: option,
-			setAnchorEl: null 
-		})
-   }
-
-
-   handleClose(e){
-		this.setState({
-			setAnchorEl: null 
-		})
-   }
 
 	render() {
 		const options = [
