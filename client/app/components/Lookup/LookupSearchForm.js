@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
 import LookupSearchHeader from './LookupSearchHeader';
+import { options } from './options';
 import { 
 	Button as MenuButton,
 	FormControl,
@@ -78,15 +79,14 @@ class LookupSearchForm extends React.Component {
 				    <InputLabel id="label" required={true}>To</InputLabel>
 				     <Select value={this.state.to} name="to" onChange={this.onChange}>
 						<MenuItem value=""><em>None</em></MenuItem>
-						<MenuItem value="b">blob</MenuItem>
-						<MenuItem value="p">project</MenuItem>
-						<MenuItem value="P">root project</MenuItem>
-						<MenuItem value="cc">child commit</MenuItem>
-						<MenuItem value="f">file</MenuItem>
-						<MenuItem value="h">head commit</MenuItem>
-						<MenuItem value="pc">parent commit</MenuItem>
-						<MenuItem value="ta">time author</MenuItem>
-						<MenuItem value="td">tdiff</MenuItem>
+                        {Object.keys(options['commit']).map((to) => (
+                            <MenuItem
+                                key={options['commit'][to]}
+                                value={options['commit'][to]}
+                            >
+                            {to}
+                            </MenuItem>
+                        ))}
 				      </Select>
 				  </FormControl>
 			);
@@ -97,12 +97,15 @@ class LookupSearchForm extends React.Component {
 				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
 				  <InputLabel id="label" required={true}>To</InputLabel>
 				    <Select value={this.state.to} name="to" onChange={this.onChange}>
-					  <MenuItem value=""><em>None</em></MenuItem>
-						<MenuItem value="a">author</MenuItem>
-						<MenuItem value="c">commit</MenuItem>
-						<MenuItem value="f">file</MenuItem>
-						<MenuItem value="ob">old blob</MenuItem>
-						<MenuItem value="tk">tokens</MenuItem>
+						<MenuItem value=""><em>None</em></MenuItem>
+                        {Object.keys(options['blob']).map((to) => (
+                            <MenuItem
+                                key={options['blob'][to]}
+                                value={options['blob'][to]}
+                            >
+                            {to}
+                            </MenuItem>
+                        ))}
 				    </Select>
 				</FormControl> 
 			);
@@ -113,11 +116,15 @@ class LookupSearchForm extends React.Component {
 				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
 				  <InputLabel id="label" required={true}>To</InputLabel>
 				    <Select value={this.state.to} name="to" onChange={this.onChange}>
-					  <MenuItem value=""><em>None</em></MenuItem>
-						<MenuItem value="fb">blob</MenuItem>
-						<MenuItem value="c">commit</MenuItem>
-						<MenuItem value="f">file</MenuItem>
-						<MenuItem value="p">project</MenuItem>
+						<MenuItem value=""><em>None</em></MenuItem>
+                        {Object.keys(options['author']).map((to) => (
+                            <MenuItem
+                                key={options['author'][to]}
+                                value={options['author'][to]}
+                            >
+                            {to}
+                            </MenuItem>
+                        ))}
 				     </Select>
 				</FormControl> 
 			);
@@ -128,10 +135,15 @@ class LookupSearchForm extends React.Component {
 				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
 				  <InputLabel id="label" required={true}>To</InputLabel>
 				    <Select value={this.state.to} name="to" onChange={this.onChange}>
-					  <MenuItem value=""><em>None</em></MenuItem>
-				    <MenuItem value="a">author</MenuItem>
-				    <MenuItem value="c">commit</MenuItem>
-				    <MenuItem value="Pc">central commit</MenuItem>
+						<MenuItem value=""><em>None</em></MenuItem>
+                        {Object.keys(options['project']).map((to) => (
+                            <MenuItem
+                                key={options['project'][to]}
+                                value={options['project'][to]}
+                            >
+                            {to}
+                            </MenuItem>
+                        ))}
 				  </Select>
 				</FormControl>
 			);
@@ -142,10 +154,15 @@ class LookupSearchForm extends React.Component {
 				<FormControl variant="standard" size="medium" style={{minWidth: 80}}>
 				  <InputLabel id="label" required={true}>To</InputLabel>
 				    <Select value={this.state.to} name="to" onChange={this.onChange}>
-					  <MenuItem value=""><em>None</em></MenuItem>
-					  <MenuItem value="a">author</MenuItem>
-					  <MenuItem value="b">blob</MenuItem>
-					  <MenuItem value="c">commit</MenuItem>
+						<MenuItem value=""><em>None</em></MenuItem>
+                        {Object.keys(options['file']).map((to) => (
+                            <MenuItem
+                                key={options['file'][to]}
+                                value={options['file'][to]}
+                            >
+                            {to}
+                            </MenuItem>
+                        ))}
 				    </Select>
 				</FormControl>
 			);

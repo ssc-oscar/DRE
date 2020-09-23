@@ -38,7 +38,7 @@ function a2f(data) {
 	return data.map((File) =>
 			<tr key={File}>
 			<td>File:</td>
-			<td><a href={"./lookupresult?sha1="+File+"&type=blob"}>{File}</a></td>
+			<td>{File}</td>
 			</tr>);
 }
 
