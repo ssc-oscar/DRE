@@ -1,5 +1,7 @@
 let URLS = {
-		"bb": "bitbucket.org", "gl": "gitlab.org",
+		"bb": "bitbucket.org", 
+		"bitbucket.org": "bitbucket.org",
+		"gl": "gitlab.org",
 		"gitlab.com": "gitlab.com",
 		"android.googlesource.com": "android.googlesource.com",
 		"bioconductor.org": "bioconductor.org",

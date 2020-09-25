@@ -17,9 +17,11 @@ import {
 function select_map(props) {
 	const type = props.state.type;
 	const data = props.state.data;
-	
-	if(type === 'c2p') return c2p(data);
-	else if(type === 'c2P') return c2P(data);
+
+	data.shift();		//take search query out of results array
+	data.pop();			//remove last element in array, which is always an empty string ""
+
+	if(type === 'c2p' || type === 'c2P') return c2project(data,type);
 	else if(type === 'c2b') return c2b(data);
 	else if(type === 'c2cc' || type === "c2pc" || type === "c2h") return c2c(data,type);
 	else if(type === 'c2f') return c2f(data);
@@ -27,8 +29,8 @@ function select_map(props) {
 	else if(type === 'c2td') return c2td(data);
 }
 
-function c2p(data) {
-	data.shift();
+function c2project(data,type) {
+	//console.log(data);
 
 	let p_list = [];
 	let URI_ = "";
@@ -57,140 +59,115 @@ function c2p(data) {
 		p_list.push(build_str);
 	}
 
-	const c2pTable = (
-		<Table className="align-items-center table-flush" responsive>
-		  <tbody>
-		    {data.map((Project, index) =>
-		      <tr key={Project}>
-		        <td>Project:</td>
-		        <td><a href={p_list[index]}>{Project}</a></td>
-		      </tr>
-		    )}
-		  </tbody>
-		</Table>
-	);
-	return c2pTable;
-}
-
-function c2P(data) {
-	data.shift();
-
-	let p_list = [];
-	let URI_ = "";
-	let build_str = ""
-	let len = 0;
-	let found = false;
-
-	for (let i = 0; i < data.length; i++) {
-		found = false;
-		len = 0;
-		build_str = ""
-		if (data[i].match(/_/g)) len = data[i].match(/_/g).length;
-		for (var URI in URLS) {
-			URI_ = URI + "_";
-			if (data[i].startsWith(URI_) && (len >= 2 || URI === "sourceforge.net")) {
-				build_str = data[i].replace(URI, URLS[URI]);
-				build_str = build_str.replace(/_/g, "/");
-				build_str = "https://" + build_str;
-				found = true;
-				break;
-			}
-		}
-		if (!found)
-			build_str = "https://github.com/" + data[i].replace(/_/g, "/");
-
-		p_list.push(build_str);
+	//list all repos
+	if (type === "c2p" && data.length > 1) {
+		return (
+			<Table className="align-items-center table-flush" responsive>
+			  <tbody>
+				{data.map((Project, index) =>
+				  <tr key={Project}>
+					<td>Project:</td>
+					<td><a href={p_list[index]}>{Project}</a></td>
+				  </tr>
+				)}
+			  </tbody>
+			</Table>
+		);
 	}
-
-	const c2PTable = (
-		<Table className="align-items-center table-flush" responsive>
-		  <tbody>
-		    {data.map((Project, index) =>
-		      <tr key={Project}>
-		        <td>Project:</td>
-		        <td><a href={p_list[index]}>{Project}</a></td>
-		      </tr>
-		    )}
-		  </tbody>
-		</Table>
-	);
-	return c2PTable;
+	//list root repository (or diff. formatting for commit with only 1 repo)
+	else if (type === "c2P" || data.length === 1) {
+		return (
+			<ListGroup>
+				  <ListGroupItem>Root Project: <a href={p_list[0]}>{data[0]}</a></ListGroupItem>
+			</ListGroup>
+		);
+	}
 }
 
 function c2b(data) {
-	data.shift();
-
-	const c2bTable = (
+	//console.log(data);
+	return (
 		<Table className="align-items-center table-flush" responsive>
 		  <tbody>
 		    {data.map( (blob) => 
 		      <tr key={blob}>
 		        <td> Blob: </td>
-	      	        <td><a href={"./lookupresult?sha1=" + blob + "&type=blob"}>{blob}</a></td>
+				<td><a href={"./lookupresult?sha1=" + blob + "&type=blob"}>{blob}</a></td>
 		      </tr>
 		    )}
 		  </tbody>
 		</Table>
-	)
-	return c2bTable;
-}
-
-function c2c(data, type) {
-	let ctype = "";
-	if (type === "c2cc") ctype = "Child";
-	if (type === "c2pc") ctype = "Parent";
-	if (type === "c2h") ctype = "Head";
-	const c2cTable = (
-		<ListGroup>
-	          <ListGroupItem>{ctype} Commit: <a href={"./lookupresult?sha1=" + data[1] + "&type=commit"}>{data[1]}</a></ListGroupItem>
-		</ListGroup>
-	)
-	return c2cTable;
+	);
 }
 
 function c2f(data) {
-	data.shift();
-
-	const c2fTable = (
+	//console.log(data);
+	return (
 		<Table className="align-items-center table-flush" responsive>
 		  <tbody>
 		    {data.map( (file) => 
 		      <tr key={file}>
 		        <td> File: </td>
-	      	        <td>{file}</td>
+	      	    <td>{file}</td>
 		      </tr>
 		    )}
 		  </tbody>
 		</Table>
-	)
-	return c2fTable;
+	);
 }
 
+function c2c(data, type) {
+	//console.log(data);
+	let ctype = "";
+	if(type === "c2cc") ctype = "Child";
+	if(type === "c2pc") ctype = "Parent";
+	if(type === "c2h")  ctype = "Head";
+
+	//Commits can have multiple parent/child shas, but only 1 head commit
+	if (data.length > 1 && ctype !== "Head") {
+		return (
+			<Table className="align-items-center table-flush" responsive>
+			  <tbody>
+				{data.map( (commit) => 
+				  <tr key={commit}>
+					<td> {ctype} Commit: </td>
+					<td><a href={"./lookupresult?sha1=" + commit + "&type=blob"}>{commit}</a></td>
+				  </tr>
+				)}
+			  </tbody>
+			</Table>
+		);
+	}
+	else {
+		const c2cTable = (
+			<ListGroup>
+				  <ListGroupItem>{ctype} Commit: <a href={"./lookupresult?sha1=" + data[0] + "&type=commit"}>{data[0]}</a></ListGroupItem>
+			</ListGroup>
+		)
+		return c2cTable;
+	}
+}
+
+
 function c2ta(data) {
-	const c2taTable = (
+	return (
 		<ListGroup>
-		  <ListGroupItem>Author: {data[2]}</ListGroupItem>
-		  <ListGroupItem>Time: {data[1]}</ListGroupItem>
+		  <ListGroupItem>Author: {data[1]}</ListGroupItem>
+		  <ListGroupItem>Time: {data[0]}</ListGroupItem>
 		</ListGroup>
-	)
-	return c2taTable;
+	);
 }
 		
 function c2td(data) {
-	let output = "";
-	if(data.length == 1) output = "No tdiff available for this commit";
-	else output = data[1];
-
-	const c2tdTable = (
+	return (
 		<ListGroup>
-		  <ListGroupItem>{output}</ListGroupItem>
+		  <ListGroupItem>Tdiff: (data ? "No tdiff available for this commit" : data[0])</ListGroupItem>
 		</ListGroup>
-	)
-	return c2tdTable;
-
+	);
 }
 
 export function CommitMap(props) {
+	console.log("CommitMap");
 	return(
 		<div>
 		  <Card className='bg-secondary shadow border-0'>
