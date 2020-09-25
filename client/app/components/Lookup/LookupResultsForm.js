@@ -43,8 +43,6 @@ class LookupResultsForm extends Component{
 			type: '',
 			sha: '',
 			showMap: false,
-            setAnchorEl: null,
-            anchorEl: null,
             parentAnchor: null,
             authorAnchor: null,
             commitAnchor: null,
@@ -86,6 +84,9 @@ class LookupResultsForm extends Component{
     handleClick(e, mapping){
         console.log(e.currentTarget);
         console.log(e);
+        if(mapping === "commit") {
+        this.setState({ commitAnchor: e.currentTarget });
+        }
         if(mapping === "parent") {
         this.setState({ parentAnchor: e.currentTarget });
         }
@@ -97,7 +98,7 @@ class LookupResultsForm extends Component{
     handleClose(e){
         console.log("handleClose");
         this.setState({
-            //setAnchorEl: null 
+            commitAnchor: null,
             parentAnchor: null,
             authorAnchor: null
         })
@@ -129,6 +130,7 @@ class LookupResultsForm extends Component{
 
 	Search(sha, type, command) {
 		let { warning, isError } = this.generateWarning(sha, command);
+        console.log(sha);
 
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
@@ -169,6 +171,7 @@ class LookupResultsForm extends Component{
 						this.setState({
                             parentAnchor: null,
                             authorAnchor: null,
+                            commitAnchor: null,
 							mapData: data,
 							mapType: type,
 							mapQuery: sha,
@@ -191,68 +194,98 @@ class LookupResultsForm extends Component{
 			let a_time = data[5];
 			let committer = data[4];
 			let c_time = data[6];	
-			return (
-		      <div className="row justify-content-center">
-		        <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '22rem'}}>
-			      <CardHeader>Lookup Results for Commit {sha}</CardHeader>
-			        <CardBody>
-					  <ListGroup>
-				        <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree", tree, "showCnt")}>{tree}</a></ListGroupItem>
-				        <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit", p, "showCnt")}>{p}</a>
-						{spacer}
-						<MenuButton 
-                          color="primary" 
-                          disabled={this.state.isLoading} 
-                          onClick={(e) => this.handleClick(e, "parent")}>
-                        Map
-                        </MenuButton>
-                        <Menu
-                          id="simple-menu"
-                          anchorEl={this.state.parentAnchor}
-                          keepMounted
-                          open={Boolean(this.state.parentAnchor)}
-                          onClose={this.handleClose}
-                        >
-                        {Object.keys(options['commit']).map((to) => (
-                        <MenuItem
-                            key={options["commit"][to]}
-                            onClick={(event) => this.Search(p, "c2"+options["commit"][to], "getValues")}>
-                            {to}
-                        </MenuItem>
-                        ))}
-                        </Menu>
-						</ListGroupItem>
-				        <ListGroupItem>Author: {author}
-						{spacer}
-						<MenuButton 
-                          color="primary" 
-                          disabled={this.state.isLoading} 
-                          onClick={(e) => this.handleClick(e, "author")}>
-                        Map
-                        </MenuButton>
-                        <Menu
-                          id="simple-menu"
-                          anchorEl={this.state.authorAnchor}
-                          keepMounted
-                          open={Boolean(this.state.authorAnchor)}
-                          onClose={this.handleClose}
-                        >
-                        {Object.keys(options['author']).map((to) => (
-                        <MenuItem
-                            key={options["author"][to]}
-                            onClick={(event) => this.Search(author, "a2"+options["author"][to], "getValues")}>
-                            {to}
-                        </MenuItem>
-                        ))}
-                        </Menu>
-                        </ListGroupItem>
-				        <ListGroupItem>Author Time: {a_time}</ListGroupItem>
-					  </ListGroup>
-			        </CardBody>
-			      </Card>
-	              </div>
-			)
-		}
+            return (
+                <div className="row justify-content-center">
+                  <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '27rem'}}>
+                    <CardHeader>Lookup Results for Commit {sha}</CardHeader>
+                      <CardBody>
+                        <ListGroup>
+                          <ListGroupItem>Commit: {sha}
+                          {spacer}
+                          <span className="float-right">
+                            <MenuButton 
+                              color="primary" 
+                              disabled={this.state.isLoading} 
+                              onClick={(e) => this.handleClick(e, "commit")}>
+                              Map
+                            </MenuButton>
+                          </span>
+                            <Menu
+                              id="simple-menu"
+                              anchorEl={this.state.commitAnchor}
+                              keepMounted
+                              open={Boolean(this.state.commitAnchor)}
+                              onClose={this.handleClose} 
+                            >
+                            {Object.keys(options['commit']).map((to) => (
+                              <MenuItem
+                                key={options["commit"][to]}
+                                onClick={(event) => this.Search(sha, "c2"+options["commit"][to], "getValues")}>
+                                {to}
+                              </MenuItem>
+                              ))}
+                            </Menu>
+                          </ListGroupItem>
+                          <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree", tree, "showCnt")}>{tree}</a></ListGroupItem>
+                          <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit", p, "showCnt")}>{p}</a>
+                          {spacer}
+                          <span className="float-right">
+                            <MenuButton 
+                              color="primary" 
+                              disabled={this.state.isLoading} 
+                              onClick={(e) => this.handleClick(e, "parent")}>
+                              Map
+                            </MenuButton>
+                          </span>
+                            <Menu
+                              id="simple-menu"
+                              anchorEl={this.state.parentAnchor}
+                              keepMounted
+                              open={Boolean(this.state.parentAnchor)}
+                              onClose={this.handleClose}
+                            >
+                            {Object.keys(options['commit']).map((to) => (
+                              <MenuItem
+                                key={options["commit"][to]}
+                                onClick={(event) => this.Search(p, "c2"+options["commit"][to], "getValues")}>
+                                {to}
+                              </MenuItem>
+                              ))}
+                            </Menu>
+                          </ListGroupItem>
+                          <ListGroupItem>Author: {author}
+                          {spacer}
+                          <span className="float-right">
+                            <MenuButton 
+                              color="primary" 
+                              disabled={this.state.isLoading} 
+                              onClick={(e) => this.handleClick(e, "author")}>
+                              Map
+                            </MenuButton>
+                          </span>
+                            <Menu
+                              id="simple-menu"
+                              anchorEl={this.state.authorAnchor}
+                              keepMounted
+                              open={Boolean(this.state.authorAnchor)}
+                              onClose={this.handleClose}
+                            >
+                            {Object.keys(options['author']).map((to) => (
+                              <MenuItem
+                                key={options["author"][to]}
+                                onClick={(event) => this.Search(author, "a2"+options["author"][to], "getValues")}>
+                                {to}
+                              </MenuItem>
+                              ))}
+                            </Menu>
+                          </ListGroupItem>
+                          <ListGroupItem>Author Time: {a_time}</ListGroupItem>
+                        </ListGroup>
+                      </CardBody>
+                    </Card>
+                  </div>
+            )
+        }
 		else if(type == 'tree'){
 			var i, j;
 			let table_rows = []
@@ -282,7 +315,7 @@ class LookupResultsForm extends Component{
 					  <CardBody>
 						<Table style={styles.table} className="align-items-center table-flush" responsive>
 						  <tbody>
-							  {treeTable}
+						    {treeTable}
 						  </tbody>
 					    </Table>
 				      </CardBody>
@@ -295,9 +328,9 @@ class LookupResultsForm extends Component{
 				<div className="row justify-content-center">
 		          <Card className="bg-secondary shadow border-0">
 			        <CardHeader>Lookup Results for Blob {sha}</CardHeader>
-			          <CardBody>
-				        <Markdown source={data} />
-			          </CardBody>
+			        <CardBody>
+				      <Markdown source={data} />
+			        </CardBody>
 			      </Card>
 	            </div>
 			)
