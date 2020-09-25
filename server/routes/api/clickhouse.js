@@ -24,7 +24,7 @@ module.exports = (app) => {
     
     if(typeof req.query.start != 'undefined'){
       if(typeof req.query.end != 'undefined'){
-        where += `time>=${req.query.start} AND time<=${req.query.end}`;
+        where += `time>=${req.query.start} AND time<=${req.query.end} LIMIT 1000`;
         valid_params += 2;
       } else {
         where += `time=${req.query.start}`;
@@ -65,7 +65,7 @@ module.exports = (app) => {
   ],
   (req, res, next) => {
     if(Object.keys(req.query).length === 0){
-      return res.status(400).send('Query not specified');
+        return res.status(400).send('Query not specified');
     }
     
     let valid_params = 0;
@@ -78,7 +78,7 @@ module.exports = (app) => {
     
     if(typeof req.query.start != 'undefined'){
       if(typeof req.query.end != 'undefined'){
-        where += `time>=${req.query.start} AND time<=${req.query.end}`;
+        where += `time>=${req.query.start} AND time<=${req.query.end} LIMIT 1000`;
         valid_params += 2;
       } else {
         where += `time=${req.query.start}`;
