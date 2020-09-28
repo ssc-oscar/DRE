@@ -7,7 +7,8 @@ module.exports = (app) => {
   app.get('/api/clickhouse/commits', [
     query('start').optional().isInt({min:0}),
     query('end').optional().isInt({min:0}),
-    query('count').optional().isBoolean()
+    query('count').optional().isBoolean(),
+    query('limit').optional().isInt({min:0})
   ],
   (req, res, next) => {
     if(Object.keys(req.query).length === 0){
@@ -24,10 +25,10 @@ module.exports = (app) => {
     
     if(typeof req.query.start != 'undefined'){
       if(typeof req.query.end != 'undefined'){
-        where += `time>=${req.query.start} AND time<=${req.query.end} LIMIT 1000`;
+        where += `time>=${req.query.start} AND time<=${req.query.end} LIMIT ${req.query.limit}`;
         valid_params += 2;
       } else {
-        where += `time=${req.query.start}`;
+        where += `time=${req.query.start} LIMIT ${req.query.limit}`;
         valid_params++;
       }
     } else {
@@ -78,7 +79,7 @@ module.exports = (app) => {
     
     if(typeof req.query.start != 'undefined'){
       if(typeof req.query.end != 'undefined'){
-        where += `time>=${req.query.start} AND time<=${req.query.end} LIMIT 1000`;
+        where += `time>=${req.query.start} AND time<=${req.query.end}`;
         valid_params += 2;
       } else {
         where += `time=${req.query.start}`;

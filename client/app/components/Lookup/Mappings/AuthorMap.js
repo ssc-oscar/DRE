@@ -86,8 +86,6 @@ function a2p(data) {
 }
 
 export function AuthorMap(props) {
-	console.log("AuthorMap");
-	console.log(props);
 	return (
 		<div>
 		  <Card className="bg-secondary shadow border-0">

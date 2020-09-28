@@ -35,7 +35,8 @@ class ClickhouseResultsForm extends Component{
 		let start = params.get('start');
 		let end = params.get('end');
 		let count = params.get('count');
-		this.Query(start, end, count);
+		let limit = params.get('limit');
+		this.Query(start, end, count, limit);
 	}
 
 	onClick(e,type,sha){
@@ -43,9 +44,9 @@ class ClickhouseResultsForm extends Component{
 		this.Search(sha,type);
 	}
 
-	Query(start, end, count){
+	Query(start, end, count, limit){
 		if(!end) end = start;
-		this.props.clickhouseQuery(start, end, count)
+		this.props.clickhouseQuery(start, end, count, limit)
 		.then( (response) => {
 			console.log(response.data);
 			this.setState({

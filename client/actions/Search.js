@@ -12,13 +12,14 @@ export function lookupSha(sha, type, command) {
 	}
 }
 
-export function clickhouseQuery(start, end, count) {
+export function clickhouseQuery(start, end, count, limit) {
 	return dispatch => {
 		return axios.get('/api/clickhouse/commits', {
 			params: {
 				start: start,
 				end: end,
-				count: count
+				count: count,
+				limit: limit 
 			}
 		})
 	}

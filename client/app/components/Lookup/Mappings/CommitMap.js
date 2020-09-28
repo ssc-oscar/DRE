@@ -161,7 +161,7 @@ function c2ta(data) {
 function c2td(data) {
 	return (
 		<ListGroup>
-		  <ListGroupItem>Tdiff: (data ? "No tdiff available for this commit" : data[0])</ListGroupItem>
+		  <ListGroupItem>Tdiff: {(data ? "No tdiff available for this commit" : data[0])}</ListGroupItem>
 		</ListGroup>
 	);
 }
