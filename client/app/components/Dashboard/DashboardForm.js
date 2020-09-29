@@ -77,8 +77,6 @@ class DashboardForm extends React.Component {
     this.props.getProfile(userId)
     .then((rv) => {
       if (rv.data) {
-
-				//console.log('response: ', rv.data);
         let complete = true;
 
         for (let key in rv.data) {
@@ -147,7 +145,6 @@ class DashboardForm extends React.Component {
   
 
   render() {
-    //console.log(this.state.profile.projects);
     if (!this.state.ready) {
       return <div />
     }

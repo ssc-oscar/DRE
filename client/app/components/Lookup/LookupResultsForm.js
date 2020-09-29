@@ -72,7 +72,7 @@ class LookupResultsForm extends Component{
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
-				console.log(response);
+				//console.log(response);
 				let result = response.data.stdout;
 				if(!result) {
 					warning = "Search returned nothing.";
