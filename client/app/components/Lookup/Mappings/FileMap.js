@@ -18,14 +18,14 @@ function select_map(props){
 	let type = props.state.type;
 	let data = props.state.data;
 	
+	data.shift();	//take off "" at end of the array
+
 	if(type === "f2a") return f2a(data);
 	else if(type === "f2b") return f2b(data);
 	else if(type === "f2c") return f2c(data);
 }
 
 function f2a(data) {
-	data.shift();
-
 	const f2aTable = (
 		<Table className="align-items-center table-flush" responsive>
 		  <tbody>
@@ -42,8 +42,6 @@ function f2a(data) {
 }
 
 function f2b(data) {
-	data.shift();
-	
 	const f2bTable = (
 		<Table className="align-items-center table-flush" responsive>
 		  <tbody>
@@ -60,8 +58,6 @@ function f2b(data) {
 }
 
 function f2c(data) {
-	data.shift();
-
 	const f2cTable = (
 		<Table style={styles.table} className="align-items-center table-flush" responsive>
 		<tbody>

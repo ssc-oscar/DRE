@@ -10,6 +10,7 @@ import { CommitMap } from './Mappings/CommitMap';
 import { AuthorMap } from './Mappings/AuthorMap';
 import { ProjectMap } from './Mappings/ProjectMap';
 import { FileMap } from './Mappings/FileMap';
+import { ShowFileContent } from './showFileContent';
 import {
 	Container,
 	Row,
@@ -115,7 +116,14 @@ class MapResultsForm extends Component{
 
 	render() {
 		const { sha, type } = this.state;
-		if (type[0] === "a") return (<AuthorMap state={this.state}/>)
+		if (type[0] === "a") {
+			return (
+				<div>
+				  {type === "a2f" && <ShowFileContent lookupSha={this.props.lookupSha} file={this.state.data[2]}/>}
+				  <AuthorMap state={this.state}/>
+				</div>
+			)
+		}
 		else if (type[0] === "b") return (<BlobMap state={this.state}/>)
 		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
 		else if (type[0] === 'p' || type[0] === 'P') return (<ProjectMap state={this.state}/>)

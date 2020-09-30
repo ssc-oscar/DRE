@@ -7,6 +7,7 @@ import { styles } from '../common/styles';
 import { options } from './options';
 import { CommitMap } from './Mappings/CommitMap';
 import { AuthorMap } from './Mappings/AuthorMap';
+import { ShowFileContent } from './showFileContent';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
@@ -89,15 +90,9 @@ class LookupResultsForm extends Component{
     handleClick(e, mapping){
         console.log(e.currentTarget);
         console.log(e);
-        if(mapping === "commit") {
-        this.setState({ commitAnchor: e.currentTarget });
-        }
-        if(mapping === "parent") {
-        this.setState({ parentAnchor: e.currentTarget });
-        }
-        if(mapping === "author") {
-        this.setState({ authorAnchor: e.currentTarget });
-        }
+        if(mapping === "commit") this.setState({ commitAnchor: e.currentTarget });
+        if(mapping === "parent") this.setState({ parentAnchor: e.currentTarget });
+        if(mapping === "author") this.setState({ authorAnchor: e.currentTarget });
     }
 
     handleClose(e){
@@ -129,7 +124,7 @@ class LookupResultsForm extends Component{
 	}
 
 	displayWarning(warning) {
-        console.log(warning);
+        console.warn(warning);
 		this.props.history.push('./error');
 	}
 
@@ -158,8 +153,6 @@ class LookupResultsForm extends Component{
 
 					if(type == "blob") data = result;
 					else data = result.split(/;|\r|\n/);
-
-				//	if(command === "getValues") data.pop();
 
 					if(!this.state.back && command === "showCnt") {
 						window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
@@ -218,18 +211,17 @@ class LookupResultsForm extends Component{
 		)
 	}
 
-	generateTable() {
+	generateTable() {	
 		let { data, type, sha } = this.state;
 		if(type == 'commit'){
 			let tree = data[1];
 			let p = data[2];
 			let author = data[3];
+			let a_time = data[5].replace(/ \+\d{4}/, "");
 			let widest = author.length + 'rem';
-			let a_time = data[5];
-			let committer = data[4];
-			let c_time = data[6];	
             return (
                 <div className="row justify-content-center">
+				<ShowFileContent lookupSha={this.props.lookupSha}/>
                   <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '27rem'}}>
                     <CardHeader>Lookup Results for Commit {sha}</CardHeader>
                       <CardBody>
@@ -244,7 +236,8 @@ class LookupResultsForm extends Component{
                           <ListGroupItem>Author: {author}
 							{this.formatButton(author, "author", this.state.authorAnchor)}
                           </ListGroupItem>
-                          <ListGroupItem>Author Time: {a_time}</ListGroupItem>
+                          <ListGroupItem>Author Time:  
+						    <a href={`./clickhouseresult?start=${a_time}&end=&count=false&limit=1000`}>{a_time}</a></ListGroupItem>
                         </ListGroup>
                       </CardBody>
                     </Card>
