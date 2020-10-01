@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { styles } from '../../common/styles';
 import queryString from 'query-string';
 import { URLS } from './URL';
+import MapButton from './MapButton';
 import {
 	Card,
 	CardBody,
@@ -31,6 +32,7 @@ function a2c(data) {
 			<tr key={Commit}>
 			<td>Commit:</td>
 			<td><a href={"./lookupresult?sha1="+Commit+"&type=commit"}>{Commit}</a></td>
+            <td><MapButton query={Commit} from={"commit"}/></td>
 			</tr>);
 }
 
