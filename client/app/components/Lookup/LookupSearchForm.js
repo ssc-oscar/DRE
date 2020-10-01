@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
 import LookupSearchHeader from './LookupSearchHeader';
 import { options } from './options';
+import './body.css';
 import { 
 	Button as MenuButton,
 	FormControl,

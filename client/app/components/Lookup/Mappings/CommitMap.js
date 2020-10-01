@@ -119,6 +119,7 @@ function c2f(data) {
 function c2c(data, type) {
 	//console.log(data);
 	let ctype = "";
+	let spacer = "\xa0";
 	if(type === "c2cc") ctype = "Child";
 	if(type === "c2pc") ctype = "Parent";
 	if(type === "c2h")  ctype = "Head";
@@ -139,12 +140,14 @@ function c2c(data, type) {
 		);
 	}
 	else {
-		const c2cTable = (
+		return (
 			<ListGroup>
-				  <ListGroupItem>{ctype} Commit: <a href={"./lookupresult?sha1=" + data[0] + "&type=commit"}>{data[0]}</a></ListGroupItem>
+				  <ListGroupItem>{ctype} Commit:{spacer} 
+				  {(data.length != 0 ? <a href={"./lookupresult?sha1=" + data[0] + "&type=commit"}>{data[0]}</a>
+						: "This commit has no parents")}
+				  </ListGroupItem>
 			</ListGroup>
-		)
-		return c2cTable;
+		);
 	}
 }
 

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import LookupSearchForm from './LookupSearchForm';
 import { lookupSha } from '../../../actions/Search';
 
-class LookupSearchPage extends React.Component {
+class LookupSearchPage extends Component {
 	render() {
 		const { lookupSha } = this.props;
 		return (

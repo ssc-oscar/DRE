@@ -10,6 +10,7 @@ import { BlobMap } from './BlobMap';
 import { FileMap } from './FileMap';
 import { ProjectMap } from './ProjectMap';
 import { lookupSha } from '../../../../actions/Search';
+import '../modal.css';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
@@ -50,7 +51,6 @@ class MapButton extends Component{
 
     componentDidMount() {
         console.log(this.props);
-        console.log("React makes me want to cry");
         this.setState({
             query: this.props.query,
             from: this.props.from,
@@ -61,7 +61,6 @@ class MapButton extends Component{
 	toggleMap(){
 		this.setState({ 
 			showMap: !this.state.showMap,
-			data: []
 		});
 	}
 
@@ -71,8 +70,6 @@ class MapButton extends Component{
 	}
 
     handleClick(e){
-        console.log(e.currentTarget);
-        console.log(e);
         this.setState({ Anchor: e.currentTarget });
     }
 
@@ -89,19 +86,17 @@ class MapButton extends Component{
                 let stderr = response.data.stderr;
                 let data = [];
                 data = result.split(/;|\r|\n/);
-                //last element in array is always "", so remove it!
-                data.pop();
                 this.setState({
                     data: data,
-                    type: type
+                    type: type,
+					showMap: !this.state.showMap,
+					Anchor: null
                 });
             });
     }
 
     renderButton() {
         let from = this.state.from;
-        //console.log(from);
-        //console.log(options[from]);
         return (
             <>
               <span className="float-right">
@@ -145,6 +140,7 @@ class MapButton extends Component{
 		return (
             <>
              {this.state.isLoaded && this.renderButton()}
+			 {console.log(this.state.data)}
              {this.state.data && <Modal isOpen={this.state.showMap} centered={true} size="lg"
                 fade={false} toggle={this.toggleMap}>
                 <ModalBody>
@@ -164,4 +160,4 @@ function mapStateToProps(state) {
         return { };
 }
 
-export default MapButton;
+export default connect(null, { lookupSha }) (MapButton);

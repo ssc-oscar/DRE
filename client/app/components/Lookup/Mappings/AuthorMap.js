@@ -18,9 +18,10 @@ import {
 function select_map(props){
 	let type = props.state.type;
 	let data = props.state.data;
-	//query string won't be displayed in results
-	data.shift();
 	
+	data.shift(); //query string won't be displayed in results
+	if (data[data.length-1] === "") data.pop();	  //take "" last element out of results array	
+
 	if (type === "a2c") return a2c(data);
 	else if (type === "a2f") return a2f(data);
 	else if (type === "a2fb") return a2fb(data);

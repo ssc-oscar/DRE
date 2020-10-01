@@ -214,6 +214,7 @@ class LookupResultsForm extends Component{
 	generateTable() {	
 		let { data, type, sha } = this.state;
 		if(type == 'commit'){
+			let spacer = "\xa0";
 			let tree = data[1];
 			let p = data[2];
 			let author = data[3];
@@ -221,8 +222,7 @@ class LookupResultsForm extends Component{
 			let widest = author.length + 'rem';
             return (
                 <div className="row justify-content-center">
-				<ShowFileContent lookupSha={this.props.lookupSha}/>
-                  <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '27rem'}}>
+				  <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '27rem'}}>
                     <CardHeader>Lookup Results for Commit {sha}</CardHeader>
                       <CardBody>
                         <ListGroup>
@@ -230,8 +230,10 @@ class LookupResultsForm extends Component{
 							{this.formatButton(sha, "commit", this.state.commitAnchor)}                          
 						  </ListGroupItem>
                           <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree", tree, "showCnt")}>{tree}</a></ListGroupItem>
-                          <ListGroupItem>Parent: <a href="#" onClick={(e) => this.onClick(e,"commit", p, "showCnt")}>{p}</a>
-							{this.formatButton(p, "parent", this.state.parentAnchor)}
+                          <ListGroupItem>Parent:{spacer}
+						  {(p ? <a href="#" onClick={(e) => this.onClick(e,"commit", p, "showCnt")}>{p}</a>
+							  : "This commit has no parents")}
+						  {p && this.formatButton(p, "parent", this.state.parentAnchor)}
 						  </ListGroupItem>
                           <ListGroupItem>Author: {author}
 							{this.formatButton(author, "author", this.state.authorAnchor)}

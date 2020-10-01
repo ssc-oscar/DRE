@@ -116,14 +116,7 @@ class MapResultsForm extends Component{
 
 	render() {
 		const { sha, type } = this.state;
-		if (type[0] === "a") {
-			return (
-				<div>
-				  {type === "a2f" && <ShowFileContent lookupSha={this.props.lookupSha} file={this.state.data[2]}/>}
-				  <AuthorMap state={this.state}/>
-				</div>
-			)
-		}
+		if (type[0] === "a") return (<AuthorMap state={this.state}/>)
 		else if (type[0] === "b") return (<BlobMap state={this.state}/>)
 		else if (type[0] === 'c') return (<CommitMap state={this.state}/>)
 		else if (type[0] === 'p' || type[0] === 'P') return (<ProjectMap state={this.state}/>)
