@@ -4,6 +4,7 @@ import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../../common/styles';
 import queryString from 'query-string';
+import MapButton from './MapButton';
 import {
 	Card,
 	CardBody,
@@ -16,16 +17,19 @@ import {
 function select_map(props){
 	let type = props.state.type;
 	let data = props.state.data;
-	if (type === "p2a") return p2a(data);
-	else if (type === "p2c" || type === "P2c") return p2c(data);
+    let buttonClicked = (props.state.buttonClicked) ? true : false;
+
+	if (type === "p2a") return p2a(data, buttonClicked);
+	else if (type === "p2c" || type === "P2c") return p2c(data, buttonClicked);
 }
 
-function p2a(data){
+function p2a(data, buttonClicked){
 	data.shift();
 	const authors = data.map((author) =>
 			<tr key={author}>
 			  <td>Author:</td>
 			  <td>{author}</td>
+              {!buttonClicked && <td><MapButton query={author} from={'author'}/></td>}
 			</tr>);
 
 
@@ -39,7 +43,7 @@ function p2a(data){
 
 }
 
-function p2c(data){
+function p2c(data, buttonClicked){
 	if (data.length == 0) {
 		return (
 			<ListGroup>
@@ -53,6 +57,7 @@ function p2c(data){
 			<tr key={commit}>
 			  <td>Commit:</td>
 			  <td><a href={"./lookupresult?sha1="+commit+"&type=commit"}>{commit}</a></td>
+              {!buttonClicked && <td><MapButton query={commit} from={'commit'}/></td>}
 			</tr>);
 
 
