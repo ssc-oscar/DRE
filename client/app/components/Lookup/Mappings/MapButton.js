@@ -39,7 +39,7 @@ class MapButton extends Component{
             type: '',
             showMap: false,
             Anchor: null,
-            isLoaded: false
+            isLoaded: false,
 		}
 
 	    this.onClick = this.onClick.bind(this);
@@ -126,7 +126,7 @@ class MapButton extends Component{
     }
 
     renderModal() {
-        let props = { state:{sha:this.state.query, type:this.state.type, data:this.state.data} };
+        let props = { state:{sha:this.state.query, type:this.state.type, data:this.state.data, buttonClicked:true} };
 
         if(this.state.from === "commit") return CommitMap(props);
         else if(this.state.from === "author") return AuthorMap(props);

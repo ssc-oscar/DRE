@@ -8,6 +8,7 @@ import { options } from './options';
 import { CommitMap } from './Mappings/CommitMap';
 import { AuthorMap } from './Mappings/AuthorMap';
 import { ShowFileContent } from './showFileContent';
+import MapButton from './Mappings/MapButton';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
@@ -42,20 +43,10 @@ class LookupResultsForm extends Component{
 			back: false,
 			data: [],
 			type: '',
-			sha: '',
-			showMap: false,
-            parentAnchor: null,
-            authorAnchor: null,
-            commitAnchor: null,
-			mapQuery: '',
-			mapType: '',
-			mapData: []
+			sha: ''
 		}
 
 		this.onClick = this.onClick.bind(this);
-		this.toggleMap = this.toggleMap.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        this.handleClose = this.handleClose.bind(this);
 	}
 	
 	componentDidMount() {
@@ -77,32 +68,6 @@ class LookupResultsForm extends Component{
 		e.preventDefault();
 		this.Search(sha, type, command);
 	}
-
-	toggleMap(){
-		this.setState({ 
-			showMap: !this.state.showMap,
-			mapType: '',
-			mapQuery: '',
-			mapData: []
-		});
-	}
-
-    handleClick(e, mapping){
-        console.log(e.currentTarget);
-        console.log(e);
-        if(mapping === "commit") this.setState({ commitAnchor: e.currentTarget });
-        if(mapping === "parent") this.setState({ parentAnchor: e.currentTarget });
-        if(mapping === "author") this.setState({ authorAnchor: e.currentTarget });
-    }
-
-    handleClose(e){
-        console.log("handleClose");
-        this.setState({
-            commitAnchor: null,
-            parentAnchor: null,
-            authorAnchor: null,
-        })
-    }
 
 	generateWarning(sha, command) {
 		let warning = '';
@@ -157,58 +122,15 @@ class LookupResultsForm extends Component{
 					if(!this.state.back && command === "showCnt") {
 						window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
 					}
-					if(command === "showCnt"){
-						this.setState({
-							data: data,
-							type: type,
-							sha: sha,
-							back: false
-						});
-					}
-					else if(command === "getValues"){
-						this.setState({
-                            parentAnchor: null,
-                            authorAnchor: null,
-                            commitAnchor: null,
-							mapData: data,
-							mapType: type,
-							mapQuery: sha,
-							showMap: !this.state.showMap
-						})
-					}
+					this.setState({
+						data: data,
+						type: type,
+						sha: sha,
+						back: false
+					});
 				}
 			});
 		} else this.displayWarning(warning);
-	}
-
-	formatButton(item, fromType, Anchor){
-		let from = ((fromType === "commit" || fromType === "parent") ? "commit" : "author");
-		return (
-			<>
-			  <span className="float-right">
-				<MenuButton 
-				  color="primary" 
-				  disabled={this.state.isLoading} 
-				  onClick={(e) => this.handleClick(e, fromType)}>
-				  Map
-				</MenuButton>
-			  </span>
-				<Menu
-				  id="simple-menu"
-				  anchorEl={Anchor}
-				  keepMounted
-				  open={Boolean(Anchor)}
-				  onClose={this.handleClose}>
-				{Object.keys(options[from]).map((to) => (
-				  <MenuItem
-					key={options[from][to]}
-					onClick={(e) => this.onClick(e, from[0]+"2"+options[from][to], item, "getValues")}>
-					{to}
-				  </MenuItem>
-				  ))}
-				</Menu>
-			</>
-		)
 	}
 
 	generateTable() {	
@@ -216,29 +138,33 @@ class LookupResultsForm extends Component{
 		if(type == 'commit'){
 			let spacer = "\xa0";
 			let tree = data[1];
-			let p = data[2];
+			let [p, p2] = ((data[2].length > 40) ? data[2].split(":") : [data[2], ""])
 			let author = data[3];
 			let a_time = data[5].replace(/ \+\d{4}/, "");
 			let widest = author.length + 'rem';
+			let highest = (p2 ? '30rem' : '27rem');
             return (
                 <div className="row justify-content-center">
-				  <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: '27rem'}}>
+				  <Card className="bg-secondary shadow border-0" style={{ width: {widest}, height: {highest}}}>
                     <CardHeader>Lookup Results for Commit {sha}</CardHeader>
                       <CardBody>
                         <ListGroup>
                           <ListGroupItem>Commit: {sha}
-							{this.formatButton(sha, "commit", this.state.commitAnchor)}                          
+							<MapButton query={sha} from="commit"/>                          
 						  </ListGroupItem>
                           <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree", tree, "showCnt")}>{tree}</a></ListGroupItem>
                           <ListGroupItem>Parent:{spacer}
 						  {(p ? <a href="#" onClick={(e) => this.onClick(e,"commit", p, "showCnt")}>{p}</a>
 							  : "This commit has no parents")}
-						  {p && this.formatButton(p, "parent", this.state.parentAnchor)}
+						  {p && <MapButton query={p} from="commit"/>}                          
 						  </ListGroupItem>
+                          {p2 && <ListGroupItem>Parent:{spacer} 
+							<a href="#" onClick={(e) => this.onClick(e,"commit", p2, "showCnt")}>{p2}</a>
+						   <MapButton query={p2} from="commit"/></ListGroupItem>}
                           <ListGroupItem>Author: {author}
-							{this.formatButton(author, "author", this.state.authorAnchor)}
+						   <MapButton query={author} from="author"/>
                           </ListGroupItem>
-                          <ListGroupItem>Author Time:  
+                          <ListGroupItem>Author Time:{spacer}  
 						    <a href={`./clickhouseresult?start=${a_time}&end=&count=false&limit=1000`}>{a_time}</a></ListGroupItem>
                         </ListGroup>
                       </CardBody>
@@ -298,24 +224,11 @@ class LookupResultsForm extends Component{
 	}
 
 	render() {
-		const { sha, type, mapData, mapType, mapQuery} = this.state;
-        let showCommit = false;
-        let showAuthor = false;
-        if(mapType[0] === 'c')  showCommit = true;
-        else if(mapType[0] === 'a')  showAuthor = true;
-		let props = { state: {sha: mapQuery, type: mapType, data: mapData} };
-			return (
-				<div>	
-					{this.generateTable()}
-					{mapData && <Modal isOpen={this.state.showMap} centered={true} size="lg"
-						fade={false} toggle={this.toggleMap}>
-				  <ModalBody>
-						{showCommit && CommitMap(props)}
-						{showAuthor && AuthorMap(props)}
-				  </ModalBody>
-					</Modal>}
-				</div>
-		)
+		return (
+			<div>	
+				{this.generateTable()}
+			</div>
+		);
 	}
 }
 
