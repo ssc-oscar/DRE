@@ -10,7 +10,6 @@ import { CommitMap } from './Mappings/CommitMap';
 import { AuthorMap } from './Mappings/AuthorMap';
 import { ProjectMap } from './Mappings/ProjectMap';
 import { FileMap } from './Mappings/FileMap';
-import { ShowFileContent } from './showFileContent';
 import {
 	Container,
 	Row,

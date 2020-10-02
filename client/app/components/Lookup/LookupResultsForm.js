@@ -7,7 +7,6 @@ import { styles } from '../common/styles';
 import { options } from './options';
 import { CommitMap } from './Mappings/CommitMap';
 import { AuthorMap } from './Mappings/AuthorMap';
-import { ShowFileContent } from './showFileContent';
 import MapButton from './Mappings/MapButton';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';

@@ -16,9 +16,9 @@ import {
 } from 'reactstrap';
 
 function select_map(props) {
-	const type = props.state.type;
-	const data = props.state.data;
-	const buttonClicked = (props.state.buttonClicked) ? true : false;
+	let type = props.state.type;
+	let data = props.state.data;
+	let buttonClicked = (props.state.buttonClicked) ? true : false;
 
 	data.shift();		//take search query out of results array
 	if(data[data.length-1] === "") data.pop();		//take "" out of results		
@@ -152,7 +152,7 @@ function c2c(data, type, buttonClicked) {
 				  <ListGroupItem>{ctype} Commit:{spacer} 
 				  {(data.length != 0 ? <a href={"./lookupresult?sha1=" + data[0] + "&type=commit"}>{data[0]}</a>
 						: "This commit has no parents")}
-				  {(!buttonClicked && data.length != 0) && <MapButton query={commit} from={"commit"}/>}
+				  {(!buttonClicked && data.length != 0) && <MapButton query={data[0]} from={"commit"}/>}
 				  </ListGroupItem>
 			</ListGroup>
 		);

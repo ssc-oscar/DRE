@@ -50,7 +50,6 @@ class MapButton extends Component{
 	}
 
     componentDidMount() {
-        console.log(this.props);
         this.setState({
             query: this.props.query,
             from: this.props.from,
@@ -74,14 +73,31 @@ class MapButton extends Component{
     }
 
     handleClose(e){
-        console.log("handleClose");
         this.setState({ Anchor: null })	
-	}	
+	}
+
+	showItems(){
+		return (
+			<Menu
+			  id="simple-menu"
+			  anchorEl={this.state.Anchor}
+			  keepMounted
+			  open={Boolean(this.state.Anchor)}
+			  onClose={this.handleClose}>
+			{Object.keys(options[this.state.from]).map((to) => (
+			  <MenuItem
+				key={options[this.state.from][to]}
+				onClick={(e) => this.onClick(e, this.state.from[0]+"2"+options[this.state.from][to])}>
+				{to}
+			  </MenuItem>
+			  ))}
+			</Menu>
+		);
+	}
 
     Search(type) {
         this.props.lookupSha(this.state.query, type, "getValues")
             .then( (response) => {
-                console.log(response);
                 let result = response.data.stdout;
                 let stderr = response.data.stderr;
                 let data = [];
@@ -107,22 +123,8 @@ class MapButton extends Component{
                   Map
                 </MenuButton>
               </span>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={this.state.Anchor}
-                  keepMounted
-                  open={Boolean(this.state.Anchor)}
-                  onClose={this.handleClose}>
-                {Object.keys(options[from]).map((to) => (
-                  <MenuItem
-                    key={options[from][to]}
-                    onClick={(e) => this.onClick(e, from[0]+"2"+options[from][to])}>
-                    {to}
-                  </MenuItem>
-                  ))}
-                </Menu>
             </>
-        )
+        );
     }
 
     renderModal() {
@@ -140,7 +142,7 @@ class MapButton extends Component{
 		return (
             <>
              {this.state.isLoaded && this.renderButton()}
-			 {console.log(this.state.data)}
+			 {this.state.Anchor && this.showItems()}
              {this.state.data && <Modal isOpen={this.state.showMap} centered={true} size="lg"
                 fade={false} toggle={this.toggleMap}>
                 <ModalBody>
