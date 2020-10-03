@@ -37,7 +37,7 @@ function Sha2Val(sha, traversal) {
         });
 }
 
-function getData(sha, type) {
+function getData(sha, type, maxWalkLength = 3) {
     const { warning, isError } = generateWarning(sha);
     if(isError) {
         console.log('Error: ', warning);
@@ -49,30 +49,42 @@ function getData(sha, type) {
         commit = lookupSha(sha, type[0] + '2c')[0];
     else
         commit = sha;
+        
+        
+    function nodeNames(nodes) { return nodes.map(n => n.value); }
     
-    let nodes = []
+    let nodes = [{value: sha, type: 'commit'}]
     let links = {};
+
     return Sha2Val(sha, ['c', 'P', 'c']).then(commits => {
         let promises = [];
         let promiseAll = [];
 
         for(let i = 0; i < commits.length; ++i){
             const commit = commits[i];
-            if(!nodes.includes(commit))	nodes.push({value: commit, type: 'commit'});
+            if(!nodeNames(nodes).includes(commit))	nodes.push({value: commit, type: 'commit'});
             promises.push(lookupSha(commit, 'commit').catch(()=>{}));
         };
+
         promiseAll.push(Promise.all(promises).then(cdata => {
             for(let i = 0; i < cdata.length; ++i){
                 const commit = commits[i];
+                
+                if(cdata[i].length != 6)    continue;
 
-                const commitParent = cdata[i][1];
-                if(!nodes.includes(commitParent)) nodes.push({value: commitParent, type: 'commit'});
-
-                const str = [commit, commitParent].sort().join(',');
-                links[str] = {source: commit, target: commitParent, type: 'parent'};
+                let commitParents = cdata[i][1];
+                commitParents = commitParents.split(':');
+                for(let i = 0; i < commitParents.length; ++i) {
+                    
+                    const commitParent = commitParents[i];    
+                    if(!nodeNames(nodes).includes(commitParent)) nodes.push({value: commitParent, type: 'commit'});
+                    
+                    const str = [commit, commitParent].sort().join(',');
+                    links[str] = {source: commit, target: commitParent, type: 'parent'};
+                }
 
                 const commitAuthor = cdata[i][2];
-                if(!nodes.includes(commitAuthor)) nodes.push({value: commitAuthor, type: "author"});
+                if(!nodeNames(nodes).includes(commitAuthor)) nodes.push({value: commitAuthor, type: "author"});
                 
                 const astr = [commit, commitAuthor].join(',');
                 links[astr] = {source: commit, target: commitAuthor, type: 'author'};
@@ -82,13 +94,14 @@ function getData(sha, type) {
 
         for(let i = 0; i < commits.length; ++i)
             promises.push(Sha2Val(commits[i], ['c', 'f']).catch(()=>{}));
+
         promiseAll.push(Promise.all(promises).then(fdata => {
             if(!fdata || !fdata.length) return;
             for(let i = 0; i < fdata.length; ++i) {
                 const commitFiles = fdata[i];
                 for(let j = 0; j < commitFiles.length; ++j){
                     const commitFile = commitFiles[j];
-                    if(!nodes.includes(commitFile)) nodes.push({value: commitFile, type: 'file'});
+                    if(!nodeNames(nodes).includes(commitFile)) nodes.push({value: commitFile, type: 'file'});
                     
                     const str = [commits[i], commitFile].join(',');
                     links[str] = {source: commits[i], target: commitFile, type: 'file'};
@@ -109,10 +122,29 @@ function getData(sha, type) {
                 "author": {color: "#aaa", opacity: 0.2},
                 "file":   {color: "#aaa", opacity: 0.3}
             };
+
+            let filteredCommits = [sha];
+            let linkObjs = Object.keys(links).map(linkName => links[linkName]);
+            (function walk(curr, level) {
+                let singleStepAway = linkObjs.filter(obj => obj.source === curr);
+                let addedCommits = singleStepAway.map(obj => obj.target);
+                filteredCommits = filteredCommits.concat(addedCommits);
+                if(level) {
+                    for(let i = 0; i < addedCommits.length; ++i) {
+                        walk(addedCommits[i], level-1);
+                    }
+                }
+            })(sha, maxWalkLength)
+            nodes = nodes.filter(n => filteredCommits.includes(n.value));
             nodes = nodes.map(node => {
-                return {id: node.value, name: node.value, color: typeMap[node.type] || "#000000"};
+                return {id: node.value, name: node.value, color: typeMap[node.type] || "#000000", type: node.type};
             });
-            links = Object.values(links).map(link => ({...link, color: linkMap[link.type].color, opacity: linkMap[link.type].opacity }));
+
+            let shaId = nodes.find(n => n.value === sha);
+            if(shaId >= 0) nodes[shaId].color = "#FF0";
+
+            links = Object.values(links).filter(link => filteredCommits.includes(link.source) && filteredCommits.includes(link.target));
+            links = links.map(link => ({...link, color: linkMap[link.type].color, opacity: linkMap[link.type].opacity }));
 
             return {nodes, links};
         });
@@ -121,7 +153,7 @@ function getData(sha, type) {
 
 module.exports = (app) => {
 	app.get('/api/getGraphData', (req, res, next) => {
-        getData(req.query.sha1, req.query.type).then(data => {
+        getData(req.query.sha, req.query.type).then(data => {
             res.status(200).json(data);
         });
 	});

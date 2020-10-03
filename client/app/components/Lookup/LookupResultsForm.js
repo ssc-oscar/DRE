@@ -23,61 +23,58 @@ class LookupResultsForm extends Component{
 			isError: false,
 			back: false,
 			data: [],
-			type: '',
-			sha: ''
 		}
 
 		this.onClick = this.onClick.bind(this);
 	}
 
-	generateWarning(sha) {
+	generateWarning(sha, type) {
 		let warning = '';
 		let isError = false;
 		let len = sha.length;
 
-		if(len != 40) {
-			warning = 'Warning: A SHA1 must be 40 characters long.'
-			isError = true;
+		if(type === 'commit') {
+			if(len != 40) {
+				warning = 'Warning: A SHA1 must be 40 characters long.'
+				isError = true;
+			}
+			else if(len == 0) {
+				warning = 'Warning: No SHA1 specified.'
+				isError = true;
+			}
 		}
-		else if(len == 0) {
-			warning = 'Warning: No SHA1 specified.'
-			isError = true;
-		}
-
+		if(isError)
+			console.log('Warning: ', warning, ', sha: ', sha, ', type: ', type);
 		return { warning, isError };
 	}
 
 	displayWarning(warning) {
 		this.props.history.push('./error');
 	}
-	
+
 	componentDidMount() {
-		let search = window.location.search;
-		let params = new URLSearchParams(search);
-		let sha = params.get('sha1');
-		let type = params.get('type');
-		this.Search(sha, type);
+		this.Search(this.props.sha, this.props.type);
 	}
 
-	UNSAFE_componentWillMount() {
-		window.addEventListener('popstate', e => {
-			this.setState({ back: true });
-			this.Search(window.history.state.sha, window.history.state.type);
-		})
+	componentDidUpdate(oldValues) {
+		if(oldValues.sha != this.props.sha || oldValues.type != this.props.type) {
+			this.Search(this.props.sha, this.props.type);
+		}
 	}
 
 	Search(sha, type) {
-		let { warning, isError } = this.generateWarning(sha);
+		let { warning, isError } = this.generateWarning(this.props.sha, this.props.type);
 		let command = "showCnt";
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
-				//console.log(response);
 				let result = response.data.stdout;
 				if(!result) {
-					warning = "Search returned nothing.";
-					this.displayWarning(warning);
-					isError = true;
+					this.setState({
+						data: [],
+						back: false,
+					});
+					return;
 				}
 
 				if(!isError) {
@@ -93,9 +90,7 @@ class LookupResultsForm extends Component{
 
 					this.setState({
 						data: data,
-						type: type,
-						sha: sha,
-						back: false
+						back: false,
 					});
 				}
 			});
@@ -108,12 +103,15 @@ class LookupResultsForm extends Component{
 	}
 
 	generateTable() {
-		let { data, type, sha } = this.state;
+		let { data } = this.state;
+		let type = this.props.type;
+		let sha = this.props.sha;
+
 		if(type == 'commit'){
 			let tree = data[1];
 			let p = data[2];
 			let author = data[3];
-			let widest = author.length + 'rem';
+			let widest = author ? author.length + 'rem' : '';
 			let a_time = data[5];
 			let committer = data[4];
 			let c_time = data[6];	
@@ -188,7 +186,6 @@ class LookupResultsForm extends Component{
 	}
 
 	render() {
-		const { sha, type } = this.state;
 			return (
 			<div>	
 		          {this.generateTable()}
@@ -197,13 +194,10 @@ class LookupResultsForm extends Component{
 	}
 }
 
-LookupResultsForm.propTypes = {
-}
+LookupResultsForm.propTypes = {}
 
 function mapStateToProps(state) {
-	return {
-
-	};
+	return {};
 }
 
 export default connect(mapStateToProps, {})(withRouter(LookupResultsForm));

@@ -17,13 +17,14 @@ class FastGraph extends Component {
 		super(props);
 	}
 
-	componentDidMount() {
-		const search = window.location.search;
-		const params = new URLSearchParams(search);
-		window.test = getGraphData;
-		getGraphData(params).then(data => {
+	makeGraph() {
+		getGraphData({sha: this.props.sha, type: this.props.type}).then(data => {
 			this.initGraph(data.data);
 		});
+	}
+
+	componentDidMount() {
+		this.makeGraph();
 	}	
 
 	render() {
@@ -44,6 +45,7 @@ class FastGraph extends Component {
 	}	
 
 	initGraph(data) {
+		const self = this;
 
 		/*
 			TODO:
@@ -54,8 +56,11 @@ class FastGraph extends Component {
 		let width = 400;
 		let height = 400;		
 
+		d3.select("#SVGID").remove();
+
 		const svg = d3.select("#fg_vis")
 		.append("svg")
+			.attr("id", "SVGID")
 			.attr("width", width)
   		.attr("height", height)
 		.append("g");
@@ -85,7 +90,7 @@ class FastGraph extends Component {
 					.on("drag", dragged)
 					.on("end", dragended));
 
-		const lables = node.append("title").text((d) => d.id)
+		node.on("click", onClick);
 		
 		const simulation = d3.forceSimulation(data.nodes)
 			.force("link", d3.forceLink()
@@ -105,6 +110,10 @@ class FastGraph extends Component {
 		});
 
 		//////////// UI EVENTS ////////////
+		function onClick(d) {
+			self.props.handler(d.name, d.type);
+			self.makeGraph();
+		}
 		function dragstarted(d) {
 			if (!d3.event.active) simulation.alphaTarget(0.3).restart();
 			d.fx = d.x;
