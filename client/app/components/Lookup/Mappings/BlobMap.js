@@ -81,8 +81,9 @@ function b2c(data, buttonClicked) {
 function b2f(data, buttonClicked) {
 	return(
 		<ListGroup>
-		  <ListGroupItem><a href={"./lookupresult?sha1="+data[0]+"&type=blob"}>{data[1]}</a></ListGroupItem>
+		  <ListGroupItem><a href={"./lookupresult?sha1="+data[0]+"&type=blob"}>{data[1]}</a>
           {!buttonClicked && <MapButton query={data[0]} from={'file'} />}
+          </ListGroupItem>
 		</ListGroup>
 	);
 }
@@ -90,8 +91,9 @@ function b2f(data, buttonClicked) {
 function b2ob(data, buttonClicked) {
 	return(
 		<ListGroup>
-		  <ListGroupItem><a href={"./lookupresult?sha1="+data[1]+"&type=blob"}>{data[1]}</a></ListGroupItem>
+		  <ListGroupItem><a href={"./lookupresult?sha1="+data[1]+"&type=blob"}>{data[1]}</a>
           {!buttonClicked && <MapButton query={data[1]} from={'blob'} />}
+          </ListGroupItem>
 		</ListGroup>
 	);
 }

@@ -19,6 +19,8 @@ function select_map(props){
 	let data = props.state.data;
     let buttonClicked = (props.state.buttonClicked) ? true : false;
 
+    if(data[data.length - 1] === "") data.pop();
+
 	if (type === "p2a") return p2a(data, buttonClicked);
 	else if (type === "p2c" || type === "P2c") return p2c(data, buttonClicked);
 }

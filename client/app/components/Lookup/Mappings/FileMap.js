@@ -18,9 +18,10 @@ import {
 function select_map(props){
 	let type = props.state.type;
 	let data = props.state.data;
-    let buttonClicked = (props.buttonClicked) ? true : false;
+    let buttonClicked = (props.state.buttonClicked) ? true : false;
 	
 	data.shift();	//take off "" at end of the array
+    if(data[data.length-1] === "") data.pop();
 
 	if(type === "f2a") return f2a(data, buttonClicked);
 	else if(type === "f2b") return f2b(data, buttonClicked);

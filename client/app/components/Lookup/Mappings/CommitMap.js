@@ -160,7 +160,7 @@ function c2c(data, type, buttonClicked) {
 }
 
 
-function c2ta(data) {
+function c2ta(data, buttonClicked) {
 	return (
 		<ListGroup>
 		  <ListGroupItem>Author: {data[1]}
