@@ -99,6 +99,7 @@ function getData(sha, type, maxWalkLength = 3) {
             if(!fdata || !fdata.length) return;
             for(let i = 0; i < fdata.length; ++i) {
                 const commitFiles = fdata[i];
+								if(!commitFiles) continue;
                 for(let j = 0; j < commitFiles.length; ++j){
                     const commitFile = commitFiles[j];
                     if(!nodeNames(nodes).includes(commitFile)) nodes.push({value: commitFile, type: 'file'});
