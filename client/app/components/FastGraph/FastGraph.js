@@ -12,12 +12,21 @@ import {
 
 import * as d3 from 'd3';
 
+let width = 400;
+let height = 400;	
+
 class FastGraph extends Component {
 	constructor(props) {
 		super(props);
+		this.fg = React.createRef()
 	}
 
 	makeGraph() {
+		const svg = d3.select(this.fg.current)
+			.attr("width", width)
+  			.attr("height", height)
+		.append("g");
+
 		getGraphData({sha: this.props.sha, type: this.props.type}).then(data => {
 			this.initGraph(data.data);
 		});
@@ -34,11 +43,11 @@ class FastGraph extends Component {
 					<Row className="align-items-center">
 						<div className="col">
 							<h3 className="mb-0">FastGraph</h3>
-							<div id="fg_vis"/>
 						</div>
 					</Row>
 				</CardHeader>
 				<CardBody className="text-center mx-0 my-0 px-0 py-0">
+					<svg ref={this.fg}/>
 				</CardBody>
 			</Card>	
 		);	
@@ -51,27 +60,21 @@ class FastGraph extends Component {
 			TODO:
 			zoom
 			pan
-		*/
-		
-		let width = 400;
-		let height = 400;		
+		*/	
 
-		d3.select("#SVGID").remove();
-
-		const svg = d3.select("#fg_vis")
-		.append("svg")
-			.attr("id", "SVGID")
-			.attr("width", width)
-  		.attr("height", height)
+		const svg = d3.select(this.fg.current);
+		svg.selectAll("*").remove();
+		svg.attr("width", width)
+  			.attr("height", height)
 		.append("g");
 		
-		const node = svg.append("g")
+		const nodes = svg.append("g")
 				.attr("class", "nodes")
 			.selectAll("circle")
 			.data(data.nodes)
 			.enter().append("g");
 		
-		const link = svg.append("g")
+		const links = svg.append("g")
 				.attr("class", "links")
 			.selectAll("line")
 			.data(data.links)
@@ -80,7 +83,7 @@ class FastGraph extends Component {
 				.attr("opacity", (link) => link.opacity)
 				.style("stroke", (link) => link.color);
 	
-		const circles = node.append("circle")
+		const circles = nodes.append("circle")
 				.attr("r", 5)
 				.attr("stroke", -30)
 				.attr("stroke-width", 2)
@@ -90,7 +93,7 @@ class FastGraph extends Component {
 					.on("drag", dragged)
 					.on("end", dragended));
 
-		node.on("click", onClick);
+		nodes.on("click", onClick);
 		
 		const simulation = d3.forceSimulation(data.nodes)
 			.force("link", d3.forceLink()
@@ -100,12 +103,12 @@ class FastGraph extends Component {
 			.force("center", d3.forceCenter(width / 2, height / 2));
 			
 		simulation.on("tick", () => {
-			link
+			links
 				.attr("x1", d => d.source.x )
 				.attr("y1", d => d.source.y )
 				.attr("x2", d => d.target.x )
 				.attr("y2", d => d.target.y );
-			node
+			nodes
 				.attr("transform", d => "translate(" + d.x + "," + d.y + ")");
 		});
 
@@ -128,12 +131,12 @@ class FastGraph extends Component {
 			d.fx = null;
 			d.fy = null;
 		}
+
 		// update size-related forces
-		d3.select(window).on("resize", function(){
-			width = +svg.node().getBoundingClientRect().width;
-			height = +svg.node().getBoundingClientRect().height;
-		});
-		
+		/*d3.select(window).on("resize", function(){
+			width = +svg.nodes().getBoundingClientRect().width;
+			height = +svg.nodes().getBoundingClientRect().height;
+		});*/
 	}
 }
 

@@ -260,11 +260,6 @@ class DashboardForm extends React.Component {
                   title="Your Blobs"/>
               }
             </Col>
-			<Col md="6">
-				{
-					<FastGraph />
-				}
-			</Col>	
           </Row>
           {!this.state.publicView &&
             <Row>
