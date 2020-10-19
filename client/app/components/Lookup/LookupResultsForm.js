@@ -56,7 +56,7 @@ class LookupResultsForm extends Component{
         this.handleClick = this.handleClick.bind(this);
         this.handleClose = this.handleClose.bind(this);
 	}
-	
+
 	componentDidMount() {
 		let search = window.location.search;
 		let params = new URLSearchParams(search);
@@ -140,7 +140,6 @@ class LookupResultsForm extends Component{
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
-				console.log(response);
 				let result = response.data.stdout;
 				let stderr = response.data.stderr;
 
@@ -219,12 +218,15 @@ class LookupResultsForm extends Component{
 	}
 
 	generateTable() {
-		let { data, type, sha } = this.state;
+		let { data } = this.state;
+		let type = this.props.type;
+		let sha = this.props.sha;
+
 		if(type == 'commit'){
 			let tree = data[1];
 			let p = data[2];
 			let author = data[3];
-			let widest = author.length + 'rem';
+			let widest = author ? author.length + 'rem' : '';
 			let a_time = data[5];
 			let committer = data[4];
 			let c_time = data[6];	
@@ -324,13 +326,10 @@ class LookupResultsForm extends Component{
 	}
 }
 
-LookupResultsForm.propTypes = {
-}
+LookupResultsForm.propTypes = {}
 
 function mapStateToProps(state) {
-	return {
-
-	};
+	return {};
 }
 
 export default connect(mapStateToProps, {})(withRouter(LookupResultsForm));
