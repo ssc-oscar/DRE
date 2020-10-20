@@ -37,15 +37,26 @@ class LookupResultsPage extends Component {
 	
 	render() {
     const { lookupSha } = this.props;
-    
-
 		return (
 			<div className="row justify-content-center">
-			  <LookupResultsForm lookupSha={lookupSha} sha={this.state.sha} type={this.state.type}/>
-				<FastGraph				 lookupSha={lookupSha} sha={this.state.sha} type={this.state.type} handler={this.handler}/>
+        <Container>
+          <Row>
+            <Col md="6" className="text-center mt-5">
+              <LookupResultsForm lookupSha={lookupSha} sha={this.state.sha} type={this.state.type}/>
+            </Col>
+            <Col md="6" className="text-center mt-5">
+              <FastGraph lookupSha={lookupSha} sha={this.state.sha} type={this.state.type} handler={this.handler}/>
+            </Col>
+          </Row>
+          <Row>
+            <Col md="6" className="text-center mt-5"/>
+            <Col md="6" className="text-center mt-5">
+              <FastGraph lookupSha={lookupSha} sha={this.state.sha} type={this.state.type} handler={this.handler}/>
+            </Col>
+          </Row>
+        </Container>
 			</div>
 		)
-
 	}
 }
 
