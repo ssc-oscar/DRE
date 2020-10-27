@@ -47,13 +47,13 @@ class Header extends React.Component {
 
     const userLinks = (
       <>
-        <NavItem>
+	<NavItem>
           <NavLink
             className="nav-link-icon"
-            to={"/clickhouse"}
+            to={"/sampling"}
             tag={Link}>
-            <i className="fa fa-mouse-pointer" />
-            <span className="nav-link-inner--text">Clickhouse</span>
+            <i className="fa fa-database" />
+            <span className="nav-link-inner--text">Sampling</span>
           </NavLink>
         </NavItem>
         <NavItem>
