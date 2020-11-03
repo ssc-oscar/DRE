@@ -4,7 +4,8 @@ const { isHash } = require('validator');
 
 const cmds = {
 	showCnt: config.showCnt,
-	getValues: config.getValues
+	getValues: config.getValues,
+	getNeighbors: config.getNeighbors,
 }
 
 function assertString(input) {
