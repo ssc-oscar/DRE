@@ -39,19 +39,15 @@ class DashboardForm extends React.Component {
       ready: false,
       complete: false,
       showFriend: false,
-      showBlob: false,
       publicView: false,
       friend: {
         id: '',
         projects: []
-      },
-      blobCnt: ''
+      }
     }
     this.listAuthors = this.listAuthors.bind(this);
     this.toggleFriend = this.toggleFriend.bind(this);
     this.onClickFriend = this.onClickFriend.bind(this);
-    this.toggleBlob = this.toggleBlob.bind(this);
-    this.onClickBlob = this.onClickBlob.bind(this);
     this.setupTorvalds = this.setupTorvalds.bind(this);
   }
 
@@ -114,18 +110,6 @@ class DashboardForm extends React.Component {
     
   toggleFriend() {
     this.setState({ showFriend: !this.state.showFriend });
-  }
-
-  onClickBlob(sha1) {
-    this.toggleBlob();
-    this.props.lookupSha(sha1, "blob", "showCnt")
-    .then((res) => {
-      this.setState({ blobCnt: res.data.stdout });
-    });
-  }
-
-  toggleBlob() {
-    this.setState({ showBlob: !this.state.showBlob });
   }
 
 
@@ -204,19 +188,6 @@ class DashboardForm extends React.Component {
             </ModalFooter>
           </Modal>
           }
-          {!isEmpty(this.state.blobCnt) &&
-          <Modal centered={true} isOpen={this.state.showBlob} size="lg" fade={false} toggle={this.toggleBlob} style={{maxWidth: '80%'}}>
-            <ModalHeader className="pb-0 mb-0" toggle={this.toggleBlob}>
-              {<p style={{'fontSize': '24px'}}>Blob content</p>}
-            </ModalHeader>
-            <ModalBody style={{whiteSpace: 'pre-wrap', maxHeight: 'calc(100vh - 210px)', overflowY: 'auto'}} >{this.state.blobCnt}</ModalBody>
-            <ModalFooter>
-              <Button variant="primary" onClick={this.toggleBlob}>
-                Close
-              </Button>
-            </ModalFooter>
-          </Modal>
-          }
           {!isEmpty(this.state.profile.stats) && <DashboardHeader stats={this.state.profile.stats}/>}
           <Row>
             <Col md="6">
@@ -254,7 +225,6 @@ class DashboardForm extends React.Component {
             <Col md="8">
               {!isEmpty(this.state.profile.blobs) &&
                <ProjStatTable
-                  onClickBlob={this.onClickBlob}
                   stats={this.state.profile.blobs}
                   headers={['Blob SHA', 'Duplications', 'ChildCommits', 'Users' ]}
                   title="Your Blobs"/>

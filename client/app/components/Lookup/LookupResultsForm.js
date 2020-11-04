@@ -47,7 +47,7 @@ class LookupResultsForm extends Component{
 
 		this.onClick = this.onClick.bind(this);
 	}
-	
+
 	componentDidMount() {
 		let search = window.location.search;
 		let params = new URLSearchParams(search);
@@ -99,7 +99,6 @@ class LookupResultsForm extends Component{
 		if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
-				console.log(response);
 				let result = response.data.stdout;
 				let stderr = response.data.stderr;
 
@@ -231,13 +230,10 @@ class LookupResultsForm extends Component{
 	}
 }
 
-LookupResultsForm.propTypes = {
-}
+LookupResultsForm.propTypes = {}
 
 function mapStateToProps(state) {
-	return {
-
-	};
+	return {};
 }
 
 export default connect(mapStateToProps, {})(withRouter(LookupResultsForm));
