@@ -49,6 +49,18 @@ export default {
     title: '',
     blurb: ''
   },
+  '/sampling': {
+    title: '',
+    blurb: ''
+  },
+  '/fastgraph': {
+    title: 'FastGraph',
+    blurb: ''
+  },
+  '/fastgraphresults': {
+    title: '',
+    blurb: ''
+  },
   '/error': {
     title: 'Page not found or an error occurred.',
     blurb: ''
