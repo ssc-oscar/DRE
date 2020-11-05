@@ -5,6 +5,7 @@ import { withRouter, Router } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { styles } from '../../common/styles';
 import { URLS } from './URL';
+import MapButton from './MapButton';
 import { 
 	Card,
 	CardBody,
@@ -15,23 +16,22 @@ import {
 } from 'reactstrap';
 
 function select_map(props) {
-	const type = props.state.type;
-	const data = props.state.data;
+	let type = props.state.type;
+	let data = props.state.data;
+	let buttonClicked = (props.state.buttonClicked) ? true : false;
 
 	data.shift();		//take search query out of results array
-	data.pop();			//remove last element in array, which is always an empty string ""
+	if(data[data.length-1] === "") data.pop();		//take "" out of results		
 
-	if(type === 'c2p' || type === 'c2P') return c2project(data,type);
-	else if(type === 'c2b') return c2b(data);
-	else if(type === 'c2cc' || type === "c2pc" || type === "c2h") return c2c(data,type);
-	else if(type === 'c2f') return c2f(data);
-	else if(type === 'c2ta') return c2ta(data);
-	else if(type === 'c2td') return c2td(data);
+	if(type === 'c2p' || type === 'c2P') return c2project(data,type, buttonClicked);
+	else if(type === 'c2b') return c2b(data, buttonClicked);
+	else if(type === 'c2cc' || type === "c2pc" || type === "c2h") return c2c(data,type, buttonClicked);
+	else if(type === 'c2f') return c2f(data, buttonClicked);
+	else if(type === 'c2ta') return c2ta(data, buttonClicked);
+	else if(type === 'c2td') return c2td(data, buttonClicked);
 }
 
-function c2project(data,type) {
-	//console.log(data);
-
+function c2project(data,type,buttonClicked) {
 	let p_list = [];
 	let URI_ = "";
 	let build_str = ""
@@ -68,6 +68,7 @@ function c2project(data,type) {
 				  <tr key={Project}>
 					<td>Project:</td>
 					<td><a href={p_list[index]}>{Project}</a></td>
+					{!buttonClicked && <td><MapButton query={Project} from={"project"}/></td>}
 				  </tr>
 				)}
 			  </tbody>
@@ -78,13 +79,15 @@ function c2project(data,type) {
 	else if (type === "c2P" || data.length === 1) {
 		return (
 			<ListGroup>
-				  <ListGroupItem>Root Project: <a href={p_list[0]}>{data[0]}</a></ListGroupItem>
+				  <ListGroupItem>Root Project: <a href={p_list[0]}>{data[0]}</a>
+				  {!buttonClicked && <MapButton query={data[0]} from={"project"}/>}
+				  </ListGroupItem>
 			</ListGroup>
 		);
 	}
 }
 
-function c2b(data) {
+function c2b(data, buttonClicked) {
 	//console.log(data);
 	return (
 		<Table className="align-items-center table-flush" responsive>
@@ -93,6 +96,7 @@ function c2b(data) {
 		      <tr key={blob}>
 		        <td> Blob: </td>
 				<td><a href={"./lookupresult?sha1=" + blob + "&type=blob"}>{blob}</a></td>
+				{!buttonClicked && <td><MapButton query={blob} from={"blob"}/></td>}
 		      </tr>
 		    )}
 		  </tbody>
@@ -100,7 +104,7 @@ function c2b(data) {
 	);
 }
 
-function c2f(data) {
+function c2f(data, buttonClicked) {
 	//console.log(data);
 	return (
 		<Table className="align-items-center table-flush" responsive>
@@ -109,6 +113,7 @@ function c2f(data) {
 		      <tr key={file}>
 		        <td> File: </td>
 	      	    <td>{file}</td>
+				{!buttonClicked && <td><MapButton query={file} from={"file"}/></td>}
 		      </tr>
 		    )}
 		  </tbody>
@@ -116,9 +121,10 @@ function c2f(data) {
 	);
 }
 
-function c2c(data, type) {
+function c2c(data, type, buttonClicked) {
 	//console.log(data);
 	let ctype = "";
+	let spacer = "\xa0";
 	if(type === "c2cc") ctype = "Child";
 	if(type === "c2pc") ctype = "Parent";
 	if(type === "c2h")  ctype = "Head";
@@ -132,28 +138,37 @@ function c2c(data, type) {
 				  <tr key={commit}>
 					<td> {ctype} Commit: </td>
 					<td><a href={"./lookupresult?sha1=" + commit + "&type=blob"}>{commit}</a></td>
+					{!buttonClicked && <td><MapButton query={commit} from={"commit"}/></td>}
 				  </tr>
 				)}
 			  </tbody>
 			</Table>
 		);
 	}
+	//Commit has 1 parent/child, or this is head commit
 	else {
-		const c2cTable = (
+		return (
 			<ListGroup>
-				  <ListGroupItem>{ctype} Commit: <a href={"./lookupresult?sha1=" + data[0] + "&type=commit"}>{data[0]}</a></ListGroupItem>
+				  <ListGroupItem>{ctype} Commit:{spacer} 
+				  {(data.length != 0 ? <a href={"./lookupresult?sha1=" + data[0] + "&type=commit"}>{data[0]}</a>
+						: "This commit has no parents")}
+				  {(!buttonClicked && data.length != 0) && <MapButton query={data[0]} from={"commit"}/>}
+				  </ListGroupItem>
 			</ListGroup>
-		)
-		return c2cTable;
+		);
 	}
 }
 
 
-function c2ta(data) {
+function c2ta(data, buttonClicked) {
 	return (
 		<ListGroup>
-		  <ListGroupItem>Author: {data[1]}</ListGroupItem>
-		  <ListGroupItem>Time: {data[0]}</ListGroupItem>
+		  <ListGroupItem>Author: {data[1]}
+			{!buttonClicked && <MapButton query={data[1]} from={"author"}/>}
+		  </ListGroupItem>
+		  <ListGroupItem>Time: 
+			<a href={`./clickhouseresult?start=${data[0]}&end=&count=false&limit=1000`}>{data[0]}</a>
+		  </ListGroupItem>
 		</ListGroup>
 	);
 }
@@ -161,7 +176,7 @@ function c2ta(data) {
 function c2td(data) {
 	return (
 		<ListGroup>
-		  <ListGroupItem>Tdiff: (data ? "No tdiff available for this commit" : data[0])</ListGroupItem>
+		  <ListGroupItem>Tdiff: {(data ? "No tdiff available for this commit" : data[0])}</ListGroupItem>
 		</ListGroup>
 	);
 }

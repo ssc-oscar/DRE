@@ -171,8 +171,8 @@ class SamplingRestrictionForm extends Component {
 				    name="languages"
 				    type="checkbox"
 				    onChange={this.handleClick} />
-				</Label>
-</Label>
+				 </Label>
+                </Label>
 		    <CardBody className="px-lg-5 py-lg-5">
 				<Label>
 				Start Date:&nbsp; 

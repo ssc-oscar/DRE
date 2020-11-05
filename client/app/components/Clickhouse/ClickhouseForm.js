@@ -7,6 +7,11 @@ import { styles } from '../common/styles';
 import queryString from 'query-string';
 import TextFieldGroup from '../common/TextFieldGroup';
 import {
+	Grid,
+	Input,
+	Slider
+} from "@material-ui/core";
+import {
 	Button,
 	Card,
 	CardBody,
@@ -29,6 +34,7 @@ class ClickhouseForm extends Component{
 			start: '',
 			end: '',
 			count: false,
+			slideValue: 1000,
 			start_error: false,
 			end_error: false,
 			backwards: false,
@@ -36,12 +42,15 @@ class ClickhouseForm extends Component{
 
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.handleSliderChange = this.handleSliderChange.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleBlur = this.handleBlur.bind(this);
 	}
 	
 	onSubmit(e){
 		e.preventDefault();
 		let s_err = false, e_err = false, back = false;
-		let {start, end, count} = this.state;
+		let {start, end, count, slideValue} = this.state;
 		let [new_start, new_end] = this.checkDate(start, end);
 		if (new_start === "bad start") s_err = true; 
 		if (new_end === "bad end") e_err = true;
@@ -54,13 +63,28 @@ class ClickhouseForm extends Component{
 				backwards: back,
 			})
 		}
-		else this.props.history.push(`/clickhouseresult?start=${new_start}&end=${new_end}&count=${count}`);
+		else this.props.history.push(`/clickhouseresult?start=${new_start}&end=${new_end}&count=${count}&limit=${slideValue}`);
 	}
 
 	onChange(e) {
 		this.setState({
 			[e.target.name]: e.target.value,
 		})
+	}
+
+	handleSliderChange(e, newValue){
+		this.setState({ slideValue: newValue })
+	}
+
+	handleInputChange(e){
+		this.setState({
+			slideValue: (e.target.value === '' ? '' : Number(e.target.value))
+		})
+	}
+
+	handleBlur(){
+		if (this.state.slideValue < 1) this.setState({ slideValue: 1 })
+		else if (this.state.slideValue > 50000) this.setState({ slideValue: 50000 })
 	}
 
 	checkDate(start,end){
@@ -129,28 +153,59 @@ class ClickhouseForm extends Component{
 					</Label>
 					<UncontrolledTooltip placement="top" target="start">
 					  Filling this field while leaving "End time" blank will search 
-					  on this specific timestamp, rather than a range. All queries are
-                      limited to 1000 commits.
+					  for all commits made at this specific timestamp, rather than a time range.
 					</UncontrolledTooltip>
 			        <TextFieldGroup
 						focus={true}
-						label=""
 						onChange={this.onChange}
 						value={this.state.start}
 						field="start"
 						error={start_err_msg}
+						label="UNIX timestamp or 'mm:dd:yyyy hh:mm:ss' format"
 					/>
 				    {this.state.backwards && 
 					<div className="row justify-content-center" style={{ color: "red"}}><p>Start date must be chronologically before end date!</p></div>}
 					<Label>End Time</Label>
 					<TextFieldGroup
 					  focus={true}
-					  label=""
+					  label="UNIX timestamp or 'mm:dd:yyyy hh:mm:ss' format"
 					  onChange={this.onChange}
 					  value={this.state.end}
 					  field="end"
 					  error={end_err_msg}
 					/>
+					<Label className="control-label" target="limit">
+					  Query Limit 
+					</Label>
+					<div> 
+					  <Grid container spacing={2} alignItems="center">
+					    <Grid item xs>
+					      <Slider
+					        value={typeof this.state.slideValue === 'number' ? this.state.slideValue : 0}
+					        onChange={this.handleSliderChange}
+					        min={1}
+					        max={50000}
+					        step={1}
+					        aria-labelledby="input-slider"
+					      />
+						</Grid>
+						<Grid item>
+						  <Input
+					        value={this.state.slideValue}
+					        margin="dense"
+						    onChange={this.handleInputChange}
+					        onBlur={this.handleBlur}
+					        inputProps={{
+						      step: 1,
+					          min: 0,
+					          max: 50000,
+					          type: 'number',
+					          'aria-labelledby': 'input-slider',
+					        }}
+						  />
+					    </Grid>
+					  </Grid>
+					</div>
 					<FormGroup>
 					<Button color="primary" disabled={this.state.isLoading}>
 				 	  SEARCH
@@ -165,6 +220,10 @@ class ClickhouseForm extends Component{
 	}
 }
 
+					/*<UncontrolledTooltip placement="top">
+					  If left blank, returns 1000 queries. A maximum of 50,000 queries may be specified,
+					  but load times will be significantly higher.
+					</UncontrolledTooltip>*/
 ClickhouseForm.propTypes = {
 }
 

@@ -19,6 +19,9 @@ import MapResultsPage from './components/Lookup/MapResultsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import ClickhousePage from './components/Clickhouse/ClickhousePage';
 import ClickhouseResultsPage from './components/Clickhouse/ClickhouseResultsPage';
+import SamplingRestrictionPage from './components/Sampling/SamplingRestrictionPage';
+import FastGraph from './components/FastGraph/FastGraphPage';
+import FastGraphResults from './components/FastGraph/FastGraphResultsPage';
 import rootReducer from '../rootReducer';
 import requireAuth from '../utils/requireAuth';
 import jwt from 'jsonwebtoken';
@@ -64,6 +67,9 @@ render((
 	      <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
 	      <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
 	      <Route path="/mapresult" component={requireAuth(MapResultsPage)} />
+          <Route path="/sampling" component={requireAuth(SamplingRestrictionPage)} />
+          <Route path="/fastgraph" component={requireAuth(FastGraph)} />
+          <Route path="/fastgraphresults" component={requireAuth(FastGraphResults)} />
           <Route path="/upload" component={requireAuth(UploadAuthorsPage)} />
           <Route path="/error" component={NotFound} />
           <Route component={NotFound} />

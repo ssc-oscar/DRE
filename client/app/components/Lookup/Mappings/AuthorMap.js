@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { styles } from '../../common/styles';
 import queryString from 'query-string';
 import { URLS } from './URL';
+import MapButton from './MapButton';
 import {
 	Card,
 	CardBody,
@@ -17,40 +18,68 @@ import {
 function select_map(props){
 	let type = props.state.type;
 	let data = props.state.data;
-	//query string won't be displayed in results
-	data.shift();
+	let	buttonClicked = (props.state.buttonClicked ? true : false); 
 	
-	if (type === "a2c") return a2c(data);
-	else if (type === "a2f") return a2f(data);
-	else if (type === "a2fb") return a2fb(data);
-	else if (type === "a2p") return a2p(data);
+	data.shift(); //query string won't be displayed in results
+	if (data[data.length-1] === "") data.pop();	  //take "" last element out of results array	
+
+	if (type === "a2c") return a2c(data,buttonClicked);
+	else if (type === "a2f") return a2f(data,buttonClicked);
+	else if (type === "a2fb") return a2fb(data,buttonClicked);
+	else if (type === "a2p") return a2p(data,buttonClicked);
 }
 
-function a2c(data) {
-	return data.map((Commit) =>
-			<tr key={Commit}>
+function a2c(data,buttonClicked) {
+	//console.log(data);
+	return (
+		<Table style={styles.table} className="align-items-center table-flush" responsive>
+		  <tbody>
+			{data.map((commit) =>
+			<tr key={commit}>
 			<td>Commit:</td>
-			<td><a href={"./lookupresult?sha1="+Commit+"&type=commit"}>{Commit}</a></td>
-			</tr>);
+			<td><a href={"./lookupresult?sha1="+commit+"&type=commit"}>{commit}</a></td>
+            {!buttonClicked && <td><MapButton query={commit} from={"commit"}/></td>}
+			</tr>)}
+		  </tbody>
+		</Table>
+	);
 }
 
-function a2f(data) {
-	return data.map((File) =>
-			<tr key={File}>
+function a2f(data,buttonClicked) {
+	//console.log(data);
+	return (
+		<Table style={styles.table} className="align-items-center table-flush" responsive>
+		  <tbody>
+			{data.map((file) =>
+			<tr key={file}>
 			<td>File:</td>
-			<td>{File}</td>
-			</tr>);
+			<td><a href={"./lookupresult?sha1="+file+"&type=file"}>{file}</a></td>
+            {!buttonClicked && <td><MapButton query={file} from={"file"}/></td>}
+			</tr>)}
+		  </tbody>
+		</Table>
+	);
 }
 
-function a2fb(data) {
-	return data.map((Blob) =>
-			<tr key={Blob}>
+function a2fb(data,buttonClicked) {
+	//console.log(data);
+	return (
+		<Table style={styles.table} className="align-items-center table-flush" responsive>
+		  <tbody>
+			{data.map((blob) =>
+			<tr key={blob}>
 			<td>Blob:</td>
-			<td><a href={"./lookupresult?sha1="+Blob+"&type=blob"}>{Blob}</a></td>
-			</tr>);
+			<td><a href={"./lookupresult?sha1="+blob+"&type=blob"}>{blob}</a></td>
+            {!buttonClicked && <td><MapButton query={blob} from={"blob"}/></td>}
+			</tr>)}
+		  </tbody>
+		</Table>
+	);
+
 }
 
-function a2p(data) {
+function a2p(data, buttonClicked) {
+	//console.log(data);
 	const p_list = [];
 	let URI_ = "";
 	let build_str = ""
@@ -78,26 +107,40 @@ function a2p(data) {
 		p_list.push(build_str);
 	}
 
-	return data.map((Project, index) =>
-			<tr key={Project}>
-			<td>Project:</td>
-			<td><a href={p_list[index]}>{Project}</a></td>
-			</tr>);
+	if (data.length > 1) {
+		return (
+			<Table className="align-items-center table-flush" responsive>
+			  <tbody>
+				{data.map((Project, index) =>
+					<tr key={Project}>
+					<td>Project:</td>
+					<td><a href={p_list[index]}>{Project}</a></td>
+					{!buttonClicked && <td><MapButton query={Project} from={"project"}/></td>}
+					</tr>
+				)}
+				</tbody>
+			 </Table>
+		);
+	}
+	//list root repository (or diff. formatting for commit with only 1 repo)
+	else if (data.length === 1) {
+		return (
+			<ListGroup>
+			  <ListGroupItem>Root Project: <a href={p_list[0]}>{data[0]}</a>
+				{!buttonClicked && <MapButton query={data[0]} from={"project"}/>}
+			  </ListGroupItem>
+			</ListGroup>
+		);
+	}
 }
 
 export function AuthorMap(props) {
-	console.log("AuthorMap");
-	console.log(props);
 	return (
 		<div>
 		  <Card className="bg-secondary shadow border-0">
 		    <CardHeader>Mapping Results for Author {props.state.sha}</CardHeader>
 		      <CardBody>
-				<Table style={styles.table} className="align-items-center table-flush" responsive>
-				  <tbody>
 		            {select_map(props)}
-				  </tbody>
-				</Table> 
 		      </CardBody>
 	      </Card>
 		</div>

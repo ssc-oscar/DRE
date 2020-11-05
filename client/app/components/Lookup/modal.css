@@ -1,0 +1,16 @@
+.modal {
+	overflow-y: auto;
+}
+
+.modal-open {
+	overflow: auto;
+}
+
+.modal-open[style] {
+	padding-right: 0px !important;
+}
+
+body {
+	padding-right:0px !important;
+	margin-right:0px !important;
+}
