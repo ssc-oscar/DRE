@@ -7,5 +7,6 @@ module.exports = {
   clickhouse: 'http://da1.eecs.utk.edu',
   showCnt: (process.env.DRE_LOOKUP_PATH ? (process.env.DRE_LOOKUP_PATH + "/showCnt") : '$HOME/lookup/showCnt'),
   getValues: (process.env.DRE_LOOKUP_PATH ? (process.env.DRE_LOOKUP_PATH + "/getValues") : '$HOME/lookup/getValues'),
+  getNeighbors: (process.env.DRE_LOOKUP_PATH ? (process.env.DRE_LOOKUP_PATH + '/getNeighbors') : '$HOME/lookup/getNeighbors'),
   remoteCmd: (process.env.DRE_REMOTE_CMD || 'ssh -T da4')
 };
