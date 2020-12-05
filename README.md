@@ -265,14 +265,14 @@ These APIs are used to query the Clickhouse database. The details of the databas
   - To get the number of `commits` from time 0 to 1: `/api/clickhouse/commits?start=0&end=1&count=true`
   
 ## Lookup Search
-Lookup Search is a UI on www.worldofcode.org/lookup that utilizes the lookup REST API. It is essentially a graphical interpretation of the "lookup" perl scripts. To access       this, you will need to create an account of WoC and be logged in.
+Lookup Search is a UI on www.worldofcode.org/lookup that utilizes the lookup REST API. It is essentially a graphical interpretation of the "lookup" perl scripts. To access       this, you will need to create an account of WoC and be logged in. You can find a video tutorial on how to use these tools [here](https://youtu.be/KKoZe-gSZaY).
   
 - Lookup Search allows you to view the contents of commit, blob, or tree sha1's using "showCnt" or map them to other objects using "getValues".
   - You can specify whether you want to do a search or a map using the dropdown box on the header of the search card. Additionally, there will be dropdown boxes on the bottom       to specify what type of sha1 you are seaching on (and what you want to map it to in the case of getValues).
     - It is also possible to manually search and view the outputs graphically by passing the arguments directly to the address bar.
-      - For example, to manually do a search on a blob sha, you can type the following in the address bar:
+    - For example, to manually do a search on a blob sha, you can type the following in the address bar:
         `www.worldofcode.org/lookupresults?sha1={sha1 of blob}&type={blob}`
-      - And if you wanted to map a blob to commit you could do the following:
+    - And if you wanted to map a blob to commit you could do the following:
         `www.worldofcode.org/mapresult?sha1={sha1 of blob}&type=b2c`
   - The benefit of using the graphical application rather than querying the REST API directly is the navagation it offers. For example, if you do a search on a commit sha1           using Lookup Search it will return links for the parent and tree sha1 associated with it that you can click on to view the contents of.
        
