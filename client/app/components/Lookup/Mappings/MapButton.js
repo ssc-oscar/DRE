@@ -10,7 +10,7 @@ import { BlobMap } from './BlobMap';
 import { FileMap } from './FileMap';
 import { ProjectMap } from './ProjectMap';
 import { lookupSha } from '../../../../actions/Search';
-import '../modal.css';
+import '../../common/modal.css';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
