@@ -13,7 +13,7 @@ const cmds = {
 
 module.exports = async function(sha1, command, type){
 	if(['getNeighbors'].includes(command))
-		return execProm(config.remoteCmd + ' << EOF\n' + ` ${cmds[command]} ${type} 2 ${sha1}\n` + 'EOF');
+		return execProm(config.remoteCmd + ' << EOF\n' + ` ${cmds[command]} ${type} 2 "${sha1}"\n` + 'EOF');
 	else	
 		return execProm(config.remoteCmd + ' << EOF\n' + `  echo "${sha1}" | ${cmds[command]} ${type}\n` + 'EOF');
 }
