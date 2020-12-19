@@ -12,7 +12,7 @@ module.exports = (app) => {
         if (!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() });
         }
-        console.log (";"+req.query.sha1+";")
+        console.log (req.query.command+";"+req.query.type+";"+req.query.sha1+";")
         execLookup(req.query.sha1, req.query.command, req.query.type).then( ret => res.status(200).send(ret) );
     });
 }

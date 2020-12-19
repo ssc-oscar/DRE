@@ -43,17 +43,18 @@ function getData(sha, type, maxWalkLength = 3) {
         console.log('Error: ', warning);
         return null;
     }
-
+    console .log ('getData:'+sha+' type:'+type);
     let commit;
-    if(type !== 'commit')
-        commit = lookupSha(sha, type[0] + '2c')[0];
-    else
-        commit = sha;
+    //if(type !== 'commit')
+    //    commit = lookupSha(sha, type[0] + '2c')[0];
+    //else
+    commit = sha;
         
         
     function nodeNames(nodes) { return nodes.map(n => n.value); }
     
-    let nodes = [{value: sha, type: 'commit'}]
+    // let nodes = [{value: sha, type: 'commit'}]
+    let nodes = [{value: sha, type: type}]
     let links = {};
 
     return Sha2Val(sha, ['c', 'P', 'c']).then(commits => {
@@ -154,6 +155,7 @@ function getData(sha, type, maxWalkLength = 3) {
 
 module.exports = (app) => {
 	app.get('/api/getGraphData', (req, res, next) => {
+        console .log(req.query.sha + ';' + req.query.type);
         getData(req.query.sha, req.query.type).then(data => {
             res.status(200).json(data);
         });

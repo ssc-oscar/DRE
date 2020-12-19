@@ -12,8 +12,12 @@ const cmds = {
 //perl getNeighbors.perl commit 2 01a8e7bd6086686d3210ea96a3ae86e4d94db6f8
 
 module.exports = async function(sha1, command, type){
+  cToRun = '';
+  console .log (config.remoteCmd + ' << EOF\n' + ` ${cmds[command]} ${type} 2 "${sha1}"\n` + 'EOF');
 	if(['getNeighbors'].includes(command))
-		return execProm(config.remoteCmd + ' << EOF\n' + ` ${cmds[command]} ${type} 2 "${sha1}"\n` + 'EOF', {maxBuffer: 1024 * 500});
+		cToRun = config.remoteCmd + ' << EOF\n' + ` ${cmds[command]} ${type} 2 "${sha1}"\n` + 'EOF';
 	else	
-		return execProm(config.remoteCmd + ' << EOF\n' + `  echo "${sha1}" | ${cmds[command]} ${type}\n` + 'EOF', {maxBuffer: 1024 * 500});
+		cToRun = config.remoteCmd + ' << EOF\n' + `  echo "${sha1}" | ${cmds[command]} ${type}\n` + 'EOF';
+  console .log (cToRun);
+  return execProm (cToRun, {maxBuffer: 1024 * 500});
 }
