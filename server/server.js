@@ -69,9 +69,9 @@ if (port == 3000) {
 }
 else {
   https.createServer({
-    key: fs.readFileSync('/etc/letsencrypt/live/da2.eecs.utk.edu/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/da2.eecs.utk.edu/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/da2.eecs.utk.edu/chain.pem')
+    key: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/chain.pem')
   }, app).listen(443, (err) => {
     if (err) {
       console.log(err);
