@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const webpack = require('webpack');
 const https = require('https');
+const http = require('http');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
@@ -78,6 +79,10 @@ else {
     }
     console.info('>>> 🌎 Open https://0.0.0.0:%s/ in your browser.', port);
   })
+  http.createServer(function (req, res) {
+      res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+      res.end();
+  }).listen(80);
 }
 
 module.exports = app;
