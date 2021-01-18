@@ -40,7 +40,9 @@ class LookupSearchForm extends React.Component {
 			to: '',
 			isLoading: false,
 			anchorEl: null,
-			setAnchorEl: null
+			setAnchorEl: null,
+            badInput: false,
+            noType: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
@@ -55,7 +57,9 @@ class LookupSearchForm extends React.Component {
 		this.setState({isLoading: true});
 
 		if (command === "showCnt"){
-			this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
+            if(sha.length != 40) this.setState({badInput: true, isLoading: false});
+            else if(!type) this.setState({noType: true, isLoading: false});
+            else this.props.history.push(`/lookupresult?sha1=${sha}&type=${type}`);
 		}
 		else if (command === "getValues"){
 			console.log(to);
@@ -123,6 +127,8 @@ class LookupSearchForm extends React.Component {
 				    value={this.state.sha}
 		          	field="sha"
 				  />
+                  {this.state.badInput &&
+                  <div className="row justify-content-center" style={{ color: "red"}}><p>Sha must be 40 characters in length</p></div>}
 				  <div>
 					<FormControl variant="standard" size="medium" style={{minWidth: 80}}> 
 				      <InputLabel id="label" required={true}>Type</InputLabel>
@@ -133,6 +139,8 @@ class LookupSearchForm extends React.Component {
 				        <MenuItem value="blob">blob</MenuItem>
 				      </Select>
 					</FormControl>
+                    {this.state.noType &&
+                    <div className="row justify-content-left" style={{ color: "red"}}><p>A sha type is required</p></div>}
 				    <p></p>
 				  </div>
 				  <FormGroup>

@@ -69,7 +69,7 @@ class LookupResultsForm extends Component{
 		this.Search(sha, type, command);
 	}
 
-	generateWarning(sha, command) {
+	/*generateWarning(sha, command) {
 		let warning = '';
 		let isError = false;
 		let len = sha.length;
@@ -87,6 +87,7 @@ class LookupResultsForm extends Component{
 
 		return { warning, isError };
 	}
+    */
 
 	displayWarning(warning) {
         console.warn(warning);
@@ -94,22 +95,26 @@ class LookupResultsForm extends Component{
 	}
 
 	Search(sha, type, command) {
-		let { warning, isError } = this.generateWarning(sha, command);
+		//let { warning, isError } = this.generateWarning(sha, command);
+        let isError = false;
         console.log(sha);
 
-		if(!isError) {
+		//if(!isError) {
 			this.props.lookupSha(sha, type, command)
 			.then( (response) => {
 				let result = response.data.stdout;
 				let stderr = response.data.stderr;
 
+                console.log(result);
+
 				/*Don't immediately go to error page if lookup returned
 				  empty results. "no {sha} in {*.tch file}" is the only 
 				  error that should be allowed past this check.*/
-				if(!result && !(/no\s.+\sin\s.+/.test(stderr))) {
-					warning = "Search returned nothing.";
+				//if(!result && !(/no\s.+\sin\s.+/.test(stderr))) {
+                if(!result) {
+					let warning = "Search returned nothing.";
 					this.displayWarning(warning);
-					isError = true;
+				    isError = true;
 				}
 	
 				if(!isError) {
@@ -129,7 +134,7 @@ class LookupResultsForm extends Component{
 					});
 				}
 			});
-		} else this.displayWarning(warning);
+//		} else this.displayWarning(warning);
 	}
 
 	generateTable() {	
