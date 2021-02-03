@@ -3,23 +3,14 @@ import React, { useEffect, useState, Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
-import { styles } from '../common/styles';
-import queryString from 'query-string';
-import { BlobMap } from './Mappings/BlobMap';
-import { CommitMap } from './Mappings/CommitMap';
-import { AuthorMap } from './Mappings/AuthorMap';
-import { ProjectMap } from './Mappings/ProjectMap';
-import { FileMap } from './Mappings/FileMap';
+import { BlobMap } from './BlobMap';
+import { CommitMap } from './CommitMap';
+import { AuthorMap } from './AuthorMap';
+import { ProjectMap } from './ProjectMap';
+import { FileMap } from './FileMap';
 import {
-	Container,
-	Row,
-	Col,
 	Card,
 	CardBody,
-	Table,
-	FilterableContent,
-	ListGroup,
-	ListGroupItem
 } from "reactstrap";
 
 class MapResultsForm extends Component{

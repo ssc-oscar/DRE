@@ -47,12 +47,12 @@ class Header extends React.Component {
 
     const userLinks = (
       <>
-	<NavItem>
+	    <NavItem>
           <NavLink
             className="nav-link-icon"
             to={"/sampling"}
             tag={Link}>
-            <i className="fa fa-database" />
+            <i className="fas fa-vial" />
             <span className="nav-link-inner--text">Sampling</span>
           </NavLink>
         </NavItem>
@@ -63,6 +63,24 @@ class Header extends React.Component {
             tag={Link}>
             <i className="fa fa-mouse-pointer" />
             <span className="nav-link-inner--text">Clickhouse</span>
+          </NavLink>
+        </NavItem>
+	    <NavItem>
+          <NavLink
+            className="nav-link-icon"
+            to={"/fastgraph"}
+            tag={Link}>
+            <i className="fas fa-project-diagram" />
+            <span className="nav-link-inner--text">FastGraph</span>
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className="nav-link-icon"
+            to={"/mapping"}
+            tag={Link}>
+            <i className="fas fa-map" />
+            <span className="nav-link-inner--text">Mappings</span>
           </NavLink>
         </NavItem>
         <NavItem>

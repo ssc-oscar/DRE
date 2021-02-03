@@ -3,7 +3,7 @@ import Component from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter, Router } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { styles } from '../../common/styles';
+import { styles } from '../common/styles';
 import { URLS } from './URL';
 import MapButton from './MapButton';
 import { 

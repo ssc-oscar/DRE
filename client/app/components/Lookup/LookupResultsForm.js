@@ -4,10 +4,8 @@ import ReactDOM from 'react-dom';
 import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
-import { options } from './options';
-import { CommitMap } from './Mappings/CommitMap';
-import { AuthorMap } from './Mappings/AuthorMap';
-import MapButton from './Mappings/MapButton';
+import ErrorPage from '../App/NotFound';
+import MapButton from '../Mapping/MapButton';
 import GraphButton from '../FastGraph/GraphButton';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
@@ -69,72 +67,54 @@ class LookupResultsForm extends Component{
 		this.Search(sha, type, command);
 	}
 
-	generateWarning(sha, command) {
-		let warning = '';
-		let isError = false;
-		let len = sha.length;
-
-        if(command === "showCnt") {
-            if(len != 40) {
-                warning = 'Warning: A SHA1 must be 40 characters long.'
-                isError = true;
-            }
-            else if(len == 0) {
-                warning = 'Warning: No SHA1 specified.'
-                isError = true;
-            }
-        }
-
-		return { warning, isError };
-	}
-
 	displayWarning(warning) {
         console.warn(warning);
 		this.props.history.push('./error');
 	}
 
 	Search(sha, type, command) {
-		let { warning, isError } = this.generateWarning(sha, command);
         console.log(sha);
 
-		if(!isError) {
-			this.props.lookupSha(sha, type, command)
-			.then( (response) => {
-				let result = response.data.stdout;
-				let stderr = response.data.stderr;
+        this.props.lookupSha(sha, type, command)
+            .then( (response) => {
+                let result = response.data.stdout;
+                let stderr = response.data.stderr;
 
-				/*Don't immediately go to error page if lookup returned
-				  empty results. "no {sha} in {*.tch file}" is the only 
-				  error that should be allowed past this check.*/
-				if(!result && !(/no\s.+\sin\s.+/.test(stderr))) {
-					warning = "Search returned nothing.";
-					this.displayWarning(warning);
-					isError = true;
-				}
-	
-				if(!isError) {
-					let data = [];
+                console.log(result);
 
-					if(type == "blob") data = result;
-					else data = result.split(/;|\r|\n/);
+                if(!result) {
+                    let warning = "Search returned nothing";
+                    //this.displayWarning(warning);
+                    this.setState({
+                        isError: true,
+                        errorMsg: warning
+                    });
+                } 
+                else {
+                    let data = [];
 
-					if(!this.state.back && command === "showCnt") {
-						window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
-					}
-					this.setState({
-						data: data,
-						type: type,
-						sha: sha,
-						back: false
-					});
-				}
-			});
-		} else this.displayWarning(warning);
-	}
+                    if(type == "blob") data = result;
+                    else data = result.split(/;|\r|\n/);
+
+                    if(!this.state.back && command === "showCnt") {
+                        window.history.pushState({sha: sha, type: type}, '', `./lookupresult?sha1=${sha}&type=${type}`);
+                    }
+                    this.setState({
+                        data: data,
+                        type: type,
+                        sha: sha,
+                        back: false
+                    });
+                }
+            });
+    }
 
 	generateTable() {	
 		let { data, type, sha } = this.state;
-		if(type == 'commit'){
+        if(this.state.isError) {
+            return <ErrorPage errorMsg={ this.state.errorMsg } backLoc={"lookup"} />
+        }
+        else if(type == 'commit'){
 			let spacer = "\xa0";
 			let tree = data[1];
 			let [p, p2] = ((data[2].length > 40) ? data[2].split(":") : [data[2], ""])

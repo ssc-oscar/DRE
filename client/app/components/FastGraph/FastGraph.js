@@ -150,6 +150,7 @@ class FastGraph extends Component {
 
 		//////////// UI EVENTS ////////////
 		function onClick(d) {
+            console.log("Node clicked!");
 			self.props.handler(d.name, d.type);
 			self.makeGraph();
 		}

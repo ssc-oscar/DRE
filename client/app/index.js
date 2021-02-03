@@ -15,7 +15,8 @@ import UploadAuthorsPage from './components/Upload/UploadAuthorsPage';
 import LocateProfilesPage from './components/Locate/LocateProfilesPage';
 import LookupSearchPage from './components/Lookup/LookupSearchPage';
 import LookupResultsPage from './components/Lookup/LookupResultsPage';
-import MapResultsPage from './components/Lookup/MapResultsPage';
+import MappingPage from './components/Mapping/MappingPage';
+import MapResultsPage from './components/Mapping/MapResultsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import ClickhousePage from './components/Clickhouse/ClickhousePage';
 import ClickhouseResultsPage from './components/Clickhouse/ClickhouseResultsPage';
@@ -66,6 +67,7 @@ render((
           <Route path="/locate" component={requireAuth(LocateProfilesPage)} />
 	      <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
 	      <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
+	      <Route path="/mapping" component={requireAuth(MappingPage)} />
 	      <Route path="/mapresult" component={requireAuth(MapResultsPage)} />
           <Route path="/sampling" component={requireAuth(SamplingRestrictionPage)} />
           <Route path="/fastgraph" component={requireAuth(FastGraph)} />

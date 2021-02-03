@@ -3,14 +3,14 @@ import React, { useEffect, useState, Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
-import { options } from '../options';
+import { options } from './options';
 import { CommitMap } from './CommitMap';
 import { AuthorMap } from './AuthorMap';
 import { BlobMap } from './BlobMap';
 import { FileMap } from './FileMap';
 import { ProjectMap } from './ProjectMap';
-import { lookupSha } from '../../../../actions/Search';
-import '../../common/modal.css';
+import { lookupSha } from '../../../actions/Search';
+import '../common/modal.css';
 import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
