@@ -118,11 +118,11 @@ class FastGraph extends Component {
 				.attr("stroke-width", 1)
 				.attr("opacity", (link) => link.opacity)
 				.style("stroke", (link) => link.color);
-	
+    nodes .append("text") .attr("x", 5) .attr("y", "0.31em") .attr("font-size", '7px') .attr("font-weight", 50) .attr("stroke", "black") .text((node) => node.id);	
 		const circles = nodes.append("circle")
 				.attr("r", 5)
 				.attr("stroke", -30)
-				.attr("stroke-width", 2)
+				.attr("stroke-width", 4)
 				.style("fill", (node) => node.color)
 				.call(d3.drag()
 					.on("start", dragstarted)
