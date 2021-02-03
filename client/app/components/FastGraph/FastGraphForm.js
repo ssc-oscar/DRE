@@ -40,10 +40,9 @@ class FastGraphForm extends Component {
     render() {
         return (
           <form onSubmit={this.onSubmit}>
-            <Card className="bg-secondary shadow border-0">
-              <CardHeader className="bg-transparent"/>
-                <CardBody>
-                  <Label>FastGraph</Label>
+            <Card className="bg-secondary shadow border-0" style={{ width: '30rem' }}>
+                <CardBody className="px-lg-5 py-lg-5">
+                  <Label>SHA1</Label>
                   <TextFieldGroup
                     focus={true}
                     label=""

@@ -39,11 +39,15 @@ export default {
   },
   '/lookup': {
     title: 'Lookup Search',
-    blurb: ''
+    blurb: 'Lookup Search returns information associated with a given SHA1.'
   },
   '/lookupresult': {
     title: '',
     blurb: ''
+  },
+  '/mapping': {
+    title: 'Mapping',
+    blurb: 'Mapping allows you to map one entity, such as a project name or commit SHA1, to another.'
   },
   '/mapresult': {
     title: '',
@@ -55,7 +59,8 @@ export default {
   },
   '/fastgraph': {
     title: 'FastGraph',
-    blurb: ''
+    blurb: 'FastGraph generates a graph that represents the relationship associated with the given SHA1.\
+    This is great for visualizing how these projects connect together.'
   },
   '/fastgraphresults': {
     title: '',
