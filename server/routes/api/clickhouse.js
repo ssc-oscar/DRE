@@ -25,10 +25,10 @@ module.exports = (app) => {
     
     if(typeof req.query.start != 'undefined'){
       if(typeof req.query.end != 'undefined'){
-        where += `time>=${req.query.start} AND time<=${req.query.end} LIMIT ${req.query.limit}`;
+        where += `time>=${req.query.start} AND time<=${req.query.end}`;
         valid_params += 2;
       } else {
-        where += `time=${req.query.start} LIMIT ${req.query.limit}`;
+        where += `time=${req.query.start}`;
         valid_params++;
       }
     } else {
@@ -38,9 +38,12 @@ module.exports = (app) => {
     if(valid_params <= 0){
       return res.status(400).send('Invalid query');
     }
+
+    let limit = ' LIMIT ';
+    limit += `${req.query.limit}`;
     
     const tb = 'commits_all'
-    const query = `SELECT ${select} FROM ${tb}${where};`;
+    const query = `SELECT ${select} FROM ${tb}${where}${limit};`;
     const clickhouse = new ClickHouse({
       url: config.clickhouse,
       format: 'json',
@@ -62,7 +65,12 @@ module.exports = (app) => {
   app.get('/api/clickhouse/b2cPtaPkgR', [
     query('start').optional().isInt({min:0}),
     query('end').optional().isInt({min:0}),
-    query('count').optional().isBoolean()
+    query('count').optional().isBoolean(),
+    query('limit').optional().isInt({min:0}),
+    query('language').optional().isString(),
+    query('author').optional().isString(),
+    query('deps').optional().isString(),
+    query('project').optional().isString()
   ],
   (req, res, next) => {
     if(Object.keys(req.query).length === 0){
@@ -78,22 +86,42 @@ module.exports = (app) => {
     }
     
     if(typeof req.query.start != 'undefined'){
-      if(typeof req.query.end != 'undefined'){
-        where += `time>=${req.query.start} AND time<=${req.query.end}`;
-        valid_params += 2;
-      } else {
-        where += `time=${req.query.start}`;
+      if(typeof req.query.end == 'undefined') req.query.end = req.query.start;
+
+      where += `time>=${req.query.start} AND time<=${req.query.end}`;
+      valid_params += 2;
+      
+      if(typeof req.query.language != 'undefined'){ //adding language filtering
+        where += ` AND language=${req.query.language}`;
         valid_params++;
       }
+
+      if(typeof req.query.author != 'undefined'){
+        where += ` AND author=${req.query.author}`;
+        valid_params++;
+      }
+        
+      if(typeof req.query.deps != 'undefined'){
+        where += ` AND deps=${req.query.deps}`;
+        valid_params++;
+      }
+
+      if(typeof req.query.project != 'undefined'){
+        where += ` AND project=${req.query.project}`;
+        valid_params++;
+      }
+
     } else {
       where = '';
     }
     if(valid_params <= 0){
       return res.status(400).send('Invalid query');
     }
+    let limit = ' LIMIT ';
+    limit += `${req.query.limit}`;
     
     const tb = 'b2cPtaPkgR_all'
-    const query = `SELECT ${select} FROM ${tb}${where};`;
+    const query = `SELECT ${select} FROM ${tb}${where}${limit};`;
     const clickhouse = new ClickHouse({
       url: config.clickhouse,
       format: 'json',

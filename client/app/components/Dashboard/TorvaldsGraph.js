@@ -198,7 +198,7 @@ class TorvaldsGraph extends React.Component {
     }
     return (
       <Card className="shadow pr-0">
-        <CardHeader className="border-1 mb-0 pb-0">
+        <CardHeader style={styles.header} className="border-1 mb-0 pb-0">
           <Row className="align-items-center">
             <div className="col">
               <h3 className="mb-0">Your Torvalds Index:</h3>
@@ -225,6 +225,9 @@ class TorvaldsGraph extends React.Component {
 }
 
 const styles = {
+  header: {
+      height: '100px'
+  },
   body: {
     height: '500px'
   }
