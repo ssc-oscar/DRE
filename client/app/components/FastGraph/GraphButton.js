@@ -37,7 +37,6 @@ class GraphButton extends Component {
         this.toggleGraph = this.toggleGraph.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handler = this.handler.bind(this);
-
     }
 
 	componentDidMount() {

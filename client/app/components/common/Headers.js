@@ -5,7 +5,7 @@ export default {
   },
   '/clickhouse': {
 	title: 'Clickhouse',
-	blurb: ''
+	blurb: 'Clickhouse returns a time-based set of commits'
   },
   '/clickhouseresult': {
 	title: '',
@@ -54,13 +54,13 @@ export default {
     blurb: ''
   },
   '/sampling': {
-    title: '',
-    blurb: ''
+    title: 'Sampling',
+    blurb: 'Sampling provides a subset of project or author data from World of Code within the date range based on the filters you apply.'
   },
   '/fastgraph': {
     title: 'FastGraph',
     blurb: 'FastGraph generates a graph that represents the relationship associated with the given SHA1.\
-    This is great for visualizing how these projects connect together.'
+    This is great for visualizing how these entities connect together.'
   },
   '/fastgraphresults': {
     title: '',

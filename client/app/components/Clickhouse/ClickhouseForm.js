@@ -142,11 +142,6 @@ class ClickhouseForm extends Component{
 			<form onSubmit={this.onSubmit}>
 			  <div className="row justify-content-center">
 			    <Card className="bg-secondary shadow border-0" style={{ width: '30rem'}}>
-			      <CardHeader className="bg-transparent">
-			        <div className="text-center mt-2">
-			        Specify a time or timeframe & return a set of commits.
-			        </div>
-			      </CardHeader>
 				  <CardBody className="px-lg-5 py-lg-5">
 					<Label className="control-label" id="start">
 					  Start time <i className="fa fa-info-circle"></i>
@@ -161,14 +156,14 @@ class ClickhouseForm extends Component{
 						value={this.state.start}
 						field="start"
 						error={start_err_msg}
-						label="UNIX timestamp or 'mm:dd:yyyy hh:mm:ss' format"
+						label="UNIX timestamp or 'mm/dd/yyyy hh:mm:ss' format"
 					/>
 				    {this.state.backwards && 
 					<div className="row justify-content-center" style={{ color: "red"}}><p>Start date must be chronologically before end date!</p></div>}
 					<Label>End Time</Label>
 					<TextFieldGroup
 					  focus={true}
-					  label="UNIX timestamp or 'mm:dd:yyyy hh:mm:ss' format"
+					  label="UNIX timestamp or 'mm/dd/yyyy hh:mm:ss' format"
 					  onChange={this.onChange}
 					  value={this.state.end}
 					  field="end"
@@ -220,10 +215,6 @@ class ClickhouseForm extends Component{
 	}
 }
 
-					/*<UncontrolledTooltip placement="top">
-					  If left blank, returns 1000 queries. A maximum of 50,000 queries may be specified,
-					  but load times will be significantly higher.
-					</UncontrolledTooltip>*/
 ClickhouseForm.propTypes = {
 }
 
