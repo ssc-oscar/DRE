@@ -73,7 +73,7 @@ else {
     key: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/chain.pem')
-  }, app).listen(443, (err) => {
+  }, app).listen(8443, (err) => {
     if (err) {
       console.log(err);
     }
@@ -82,7 +82,7 @@ else {
   http.createServer(function (req, res) {
       res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
       res.end();
-  }).listen(80);
+  }).listen(8080);
 }
 
 module.exports = app;
