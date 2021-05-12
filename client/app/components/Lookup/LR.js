@@ -108,7 +108,7 @@ class LR extends Component{
                 }
             });
     }
-
+//hit
 	generateTable() {	
 		let { data, type, sha } = this.state;
         if(this.state.isError) {
