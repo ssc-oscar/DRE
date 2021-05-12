@@ -18,7 +18,7 @@ import {
 	FormGroup
 } from "reactstrap";
 
-class LookupSearchForm extends React.Component {
+class LSF extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = { 
@@ -184,7 +184,7 @@ class LookupSearchForm extends React.Component {
 	}
 }
 
-LookupSearchForm.propTypes = {
+LSF.propTypes = {
 }
 
 function mapStateToProps(state) {
@@ -193,4 +193,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, {})(withRouter(LookupSearchForm));
+export default connect(mapStateToProps, {})(withRouter(LSF));

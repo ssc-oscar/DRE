@@ -49,6 +49,10 @@ export default {
     title: '',
     blurb: ''
   },
+  '/lsp': {
+    title: '',
+    blurb: ''
+  },
   '/mapping': {
     title: 'Mapping',
     blurb: 'Mapping allows you to map one entity, such as a project name or commit SHA1, to another.'

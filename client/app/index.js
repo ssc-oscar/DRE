@@ -14,6 +14,7 @@ import AuthorResultsPage from './components/AuthorSearch/AuthorResultsPage';
 import UploadAuthorsPage from './components/Upload/UploadAuthorsPage';
 import LocateProfilesPage from './components/Locate/LocateProfilesPage';
 import LookupSearchPage from './components/Lookup/LookupSearchPage';
+import LSP from './components/GraphsOverSummer/LSP';
 import LookupResultsPage from './components/Lookup/LookupResultsPage';
 import MappingPage from './components/Mapping/MappingPage';
 import MapResultsPage from './components/Mapping/MapResultsPage';
@@ -67,6 +68,7 @@ render((
           <Route path="/locate" component={requireAuth(LocateProfilesPage)} />
 	      <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
 	      <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
+	      <Route path="/lsp" component={requireAuth(LSP)} />
 	      <Route path="/mapping" component={requireAuth(MappingPage)} />
 	      <Route path="/mapresult" component={requireAuth(MapResultsPage)} />
           <Route path="/sampling" component={requireAuth(SamplingRestrictionPage)} />
