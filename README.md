@@ -42,7 +42,7 @@ CONTAINER ID        IMAGE                     COMMAND                  CREATED  
 docker pull swsc/mern
 NID=atutko #change to your own netid
 PORT=9290 #change to your own port
-docker run -d --name mern$NID -v /home/$NID:/home/NID -p9290:22 -w /home/$NID swsc/mern /bin/startsvc.sh $NID
+docker run -d --name mern$NID -v /home/$NID:/home/$NID -p9290:22 -w /home/$NID swsc/mern /bin/startsvc.sh $NID
 ```
 5. From your own laptop open terminal and run (make sure port netid and da server matches)
 ```
@@ -276,8 +276,20 @@ Lookup Search is a UI on www.worldofcode.org/lookup that utilizes the lookup RES
         `www.worldofcode.org/mapresult?sha1={sha1 of blob}&type=b2c`
   - The benefit of using the graphical application rather than querying the REST API directly is the navagation it offers. For example, if you do a search on a commit sha1           using Lookup Search it will return links for the parent and tree sha1 associated with it that you can click on to view the contents of.
        
-### Adding a mapping to Lookup Search
-- Coming Soon
+## Adding a mapping
+As new mappings are introduced they will need to be added for the website to be able to perform them. This will act as a tutorial on how to do so.
+- Where to add them:
+  - You will find every file you need to edit to add a new mapping in `/client/app/components/Mapping`
+
+- The first thing you should do is alter the options.js to add that mapping as an option on the Mapping page.
+  - options.js is essentially just a JSON file that hold what each element can be mapped to, as well as the character they are represented by in the mapping. For example, `"file": {"author": "a", "blob": "b", "commit": "c"}`, allows file to be mapped to author, blob, and commit.
+- After adding the option, you need to implement the API that does the mapping. In the mapping folder there are several files ending in `Map.js` (ex. FileMap.js) that implements the each mapping for that type.
+  - Each `Map.js` file gets a type as a prop that is in the format `from2to` (ex. Commit to Blob would pass "c2b" to CommitMap.js). Each `Map.js` file has a function call `select_map` which determines which mapping to perform. To add a new mapping, you need to define the API for that mapping, and then have it called by `select_map` when that type is passed to it.
+### Hypothetical example:
+Let's say that I added a new mapping that is File to Project and I need to add it to the website
+  - The first thing I would do is add `"project": "p"` to file in options.js so that project is now an option for file ( File would now look like: `"file": {"author": "a", "blob": "b", "commit": "c", "project": "p"}`).
+  - Next I would locate `FileMap.js` and add a new function called `function f2p(data, buttonClicked)` and implement the API to execute that mapping. Then all you need to do is add a statement under `select_map` to called that function when that mapping is executed.
+
 
 ## External Scripts
 - `check_updates.py` - checks for any updates to a user (including new users) and generates their profile by calling `sdpg.perl`
@@ -290,8 +302,6 @@ Lookup Search is a UI on www.worldofcode.org/lookup that utilizes the lookup RES
 - Adding "Forgot Password/Reset Password" functionality (requires both front-end and backend)
 - `http://worldofcode.org/select` not working as expected. Viewing console outputs `Warning: componentWillMount has been renamed, and is not recommended for use.`. Need to re-factor frontend based on recommendations by the console.
 - `http://worldofcode.org/upload` is purely front-end with no backend capabilities. Work on actually uploading the file, and more importantly, tying the uploaded file with the disambig. algorithm.
-- In the "Your Blobs" section of a profile, provide functionality to view the blob rather than just showing the SHA1 hash.
-  - In doing so, would be the ideal time to try and set-up a framework for 
 ### Measures
 - Go through `sdpg.perl` and identify calculations that are already made/stored elsewhere. Update `sdpg.perl` to use these calculations.
 - Go through `sdpg.perl` and improve some of the measures. For example, only count collaborators for a developer if they have modified the same file instead of counting them if they both committed to the same project.

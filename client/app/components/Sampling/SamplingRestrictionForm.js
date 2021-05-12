@@ -3,37 +3,29 @@ import { FilterableContent } from 'react-filterable-content';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import TextFieldGroup from '../common/TextFieldGroup';
 import DatePicker from "react-datepicker";
 import { Multiselect } from 'multiselect-react-dropdown';
 import { saveAs } from 'file-saver';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import {
   Button,
   Card,
   CardHeader,
   CardBody,
   FormGroup,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
-  Input,
   Label,
-  ListGroup,
-  ListGroupItem,
-  ListGroupItemHeading,
-  ListGroupItemText,
-  InputGroup,
-  Container,
-  Row,
-  Col,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter
 } from "reactstrap";
-import "react-datepicker/dist/react-datepicker.css";
+import { 
+	MuiPickersUtilsProvider, 
+	KeyboardDatePicker 
+} from '@material-ui/pickers';
+import {
+    Select,
+    MenuItem
+}from '@material-ui/core';
 
 
 class SamplingRestrictionForm extends Component {
@@ -83,9 +75,8 @@ class SamplingRestrictionForm extends Component {
 		this.onRemove = this.onRemove.bind(this);
 		this.handleStartSelect = this.handleStartSelect.bind(this);
 		this.handleEndSelect = this.handleEndSelect.bind(this);
-		this.handleClick = this.handleClick.bind(this);
 		this.chooseSampling = this.chooseSampling.bind(this);
-
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 
@@ -118,22 +109,20 @@ class SamplingRestrictionForm extends Component {
 	}
 
 	handleStartSelect(date) {
+        if(!date) return;
 		let sd = parseInt(date.getTime()/1000).toFixed(0);
 		this.setState( (state) => {
 			return { startDate: date, unixStart: sd }
 		});
 	}
 	handleEndSelect(date) {
+        if(!date) return;
 		let ed = parseInt(date.getTime()/1000).toFixed(0);
 		this.setState( (state) => {
 			return { endDate: date, unixEnd: ed }
 		});
 	}
-	handleClick(e) {
-		if( e.target.name == "activityRange" ) this.setState({activityRange: true});
-		else if( e.target.name == "languages" ) this.setState({languages: true});
-		else if( e.target.name == "files" ) this.setState({files: true});
-	}
+
 	chooseSampling(e) {
 		console.log("Here");
 		if( e.target.value == "Authors" ) {
@@ -143,87 +132,100 @@ class SamplingRestrictionForm extends Component {
 			this.setState({sampleType: "Projects"});
 		}
 	}
+	handleChange(e) {
+		console.log(this.state.activityRange);
+		this.setState({
+			[e.target.name]: e.target.checked
+		})
+	}
 
 	render() {
-		return (
-			<form onSubmit={this.onSubmit}>
-			  <Card className="bg-secondary shadow border-0" style={{ width: '30rem'}}>
-			    <CardHeader className="bg-transparent">
-			      <div className="text-center mt-2">
-			        <p>
-			          Sample Projects or Authors
-			        </p>
-			      </div>
-				<select onChange={this.chooseSampling}>
-				  <option value="Projects">Projects</option>
-				  <option value="Authors">Authors</option>
-				</select>
-			    </CardHeader>
-			      <Label>
-				  &nbsp;Activity Range:&nbsp;
-				  <input
-				    name="activityRange"
-				    type="checkbox"
-				    onChange={this.handleClick}  />
-				 <Label>&nbsp;&nbsp;
-				  Language Usage:&nbsp;
-				  <input
-				    name="languages"
-				    type="checkbox"
-				    onChange={this.handleClick} />
-				 </Label>
-                </Label>
-		    <CardBody className="px-lg-5 py-lg-5">
-				<Label>
-				Start Date:&nbsp; 
-				<DatePicker 
-				  selected={this.state.startDate}
-				  onSelect={this.handleStartSelect} // Function will trigger on select event
-				  selectsStart
-				  startDate={this.startDate}
-				  endDate={this.state.endDate}
-				  showMonthDropdown
-				  showYearDropdown
-				/>
-				</Label>	
-				<Label>End Date:&nbsp;&nbsp;&nbsp; 
-			        <DatePicker 
-				  selected={this.state.endDate}
-				  onSelect={this.handleEndSelect} // Function will trigger on select event
-				  selectsEnd
-				  startDate={this.startDate}
-				  endDate={this.state.endDate}
-				  minDate={this.state.startDate}
-				  showMonthDropdown
-				  showYearDropdown
-			       />
-			       </Label>	
-			      
-			
-				<div>
-				<Label>Language Used:&nbsp;
-				
-				<Multiselect
-				options={this.state.options} // Options to display in the dropdown
-				selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-				onSelect={this.onSelect} // Function will trigger on select event
-				onRemove={this.onRemove} // Function will trigger on remove event
-				displayValue="Language" // Property name to display in the dropdown options
-				/> 
-				</Label>
-			      </div>
-			      <FormGroup>
-			        <Button color="primary" disabled={this.state.isLoading}>
-			          Search
-			          {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
-			        </Button>
-			      </FormGroup>
-			    </CardBody>
-			  </Card>
-			</form>
-
- 
-		);
+        let spacer  = "\xa0\xa0";
+        return (
+            <form onSubmit={this.onSubmit}>
+              <Card className="bg-secondary shadow border-0" style={{ width: '30rem'}}>
+                <CardBody className="px-lg-5 py-lg-5">
+                  <div className="text-center mt-2">
+                    Sample: {spacer}
+                    <Select value={this.state.sampleType} onChange={this.onChange} name="sampleType">
+                      <MenuItem value="Projects">Projects</MenuItem>
+                      <MenuItem value="Authors">Authors</MenuItem>
+                    </Select>
+                  </div>
+                <FormGroup>
+                  <div className="text-center mt-2">
+                    By: {spacer}
+                    <FormControlLabel
+                      control={
+                        <Checkbox checked={this.state.activityRange} 
+                        onChange={this.handleChange} 
+                        name="activityRange" 
+                        />
+                      }
+                      label="Activity Range"
+                    />
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={this.state.languages} 
+                        onChange={this.handleChange} 
+                        name="languages" 
+                      />
+                    }
+                    label="Language Usage"
+                  />
+                </div>
+              </FormGroup>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                margin="normal"
+                id="date-picker-dialog"
+                label="Start Date"
+                format="MM/dd/yyyy"
+                fullWidth="true"
+                value={this.state.startDate}
+                onChange={this.handleStartSelect}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </MuiPickersUtilsProvider>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                margin="normal"
+                id="date-picker-dialog"
+                label="End Date"
+                format="MM/dd/yyyy"
+                fullWidth="true"
+                value={this.state.endDate}
+                onChange={this.handleEndSelect}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </MuiPickersUtilsProvider>
+              <p/>
+            <div>
+              <Label>Language Used:&nbsp;
+                <Multiselect
+                  options={this.state.options} // Options to display in the dropdown
+                  selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+                  onSelect={this.onSelect} // Function will trigger on select event
+                  onRemove={this.onRemove} // Function will trigger on remove event
+                  displayValue="Language" // Property name to display in the dropdown options
+                /> 
+                  <p/>
+              </Label>
+            </div>
+            <FormGroup>
+              <Button color="primary" disabled={this.state.isLoading}>
+                Search
+                {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
+              </Button>
+            </FormGroup>
+            </CardBody>
+            </Card>
+            </form>
+        );
 	}
 }
 

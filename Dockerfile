@@ -49,12 +49,12 @@ RUN apt-get update -q \
 #RUN npm install
 
 # set up to work in a UTK environment
-COPY eecsCA_v3.crt /etc/ssl/ 
+COPY euterpe-ilom_eecs_utk_edu_interm.cer /etc/ssl/
 COPY sssd.conf /etc/sssd/ 
 COPY common* /etc/pam.d/ 
-RUN chmod 0600 /etc/sssd/sssd.conf /etc/pam.d/common* 
-RUN if [ ! -d /var/run/sshd ]; then mkdir /var/run/sshd; chmod 0755 /var/run/sshd; fi
-COPY init.sh startsvc.sh notebook.sh startDef.sh /bin/ 
+RUN chmod 0600 /etc/sssd/sssd.conf /etc/pam.d/common* etc/sssd/* && \
+  if [ ! -d /var/run/sshd ]; then mkdir /var/run/sshd; chmod 0755 /var/run/sshd; fi
+COPY *.sh /bin/ 
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 #FROM nginx

@@ -26,7 +26,8 @@ class MappingForm extends React.Component {
 			type: '',
 			from: '',
 			to: '',
-            error: '',
+            inputError: '',
+            typeError: '',
             badInput: false,
             noFrom: false,
             noTo: false,
@@ -46,7 +47,7 @@ class MappingForm extends React.Component {
                 this.setState({
                     badInput: true, 
                     isLoading: false,
-                    error: "Sha must be 40 characters in length"
+                    inputError: "Sha must be 40 characters in length"
                 });
             }
         }
@@ -54,21 +55,21 @@ class MappingForm extends React.Component {
             this.setState({
                 badInput: true,
                 isLoading: false,
-                error: "No element to map specified"
+                inputError: "No element to map specified"
             });
         }
         else if(!from) {
             this.setState({ 
                 noFrom: true, 
                 isLoading: false,
-                error: "A 'From' type is required"
+                typeError: "A 'From' type is required"
             });
         }
         else if(!to) {
             this.setState({
                 noTo: true,
                 isLoading: false,
-                error: "A 'To' is required to do a mapping"
+                typeError: "A 'To' is required to do a mapping"
             });
         }
         else {
@@ -117,7 +118,7 @@ class MappingForm extends React.Component {
 		          	  field="sha"
 				    />
                   {this.state.badInput &&
-                  <div className="row justify-content-center" style={{ color: "red" }} ><p> {this.state.error} </p></div>}
+                  <div className="row justify-content-center" style={{ color: "red" }} ><p> {this.state.inputError} </p></div>}
 				  <div>
 					<FormControl variant="standard" size="medium" style={{minWidth: 80}}> 
 				    <InputLabel id="label" required={true}>From</InputLabel>
@@ -138,9 +139,9 @@ class MappingForm extends React.Component {
 				  </div>
 				  <FormGroup>
                     {this.state.noFrom &&
-                    <div className="row justify-content-left" style={{ color: "red" }}><p> {this.state.error} </p></div>}
+                    <div className="row justify-content-left" style={{ color: "red" }}><p> {this.state.typeError} </p></div>}
                     {this.state.noTo &&
-                    <div className="row justify-content-left" style={{ color: "red" }}><p> {this.state.error} </p></div>}
+                    <div className="row justify-content-left" style={{ color: "red" }}><p> {this.state.typeError} </p></div>}
 				    <Button color="primary" disabled={this.state.isLoading}>
 				      SEARCH
 				      {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}

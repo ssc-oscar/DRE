@@ -15,7 +15,7 @@ import {
   ModalFooter
  }from "reactstrap";
 
- import { styles } from './styles';
+ //import { styles } from './styles';
 
 class ProjStatTable extends React.Component {
   constructor(props) {
@@ -76,7 +76,7 @@ class ProjStatTable extends React.Component {
   render() {
     return (
       <Card className="shadow">
-        <CardHeader className="border-0">
+        <CardHeader style={styles.header} className="border-0">
           <Row className="align-items-center">
             <div className="col">
               <h3 className="mb-0">{this.state.title}</h3>
@@ -106,6 +106,20 @@ class ProjStatTable extends React.Component {
       </Card>
     );
   }
+}
+
+/* I defined the styles here to ensure that
+ * this card, and the card it's next to
+ * have the same height */
+const styles = {
+    header: {
+        height: '100px'
+    },
+    table: {
+        'height': '500px',
+        'overflow': 'scroll',
+        'display': 'block'
+    }
 }
 
 export default ProjStatTable;
