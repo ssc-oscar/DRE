@@ -24,14 +24,9 @@ class LookupSearchForm extends React.Component {
 		this.state = { 
 			sha: '',
 			type: '',
-			fix: '',
-			testmee: "What is this page for?",
-			testmeee: "tree",
 			isLoading: false,
             badInput: false,
 	    tutorial: false,
-	    useTutorial: false,
-	    Test:     false,
             noType:   false
 		}
 		this.onChange = this.onChange.bind(this);
@@ -59,7 +54,6 @@ class LookupSearchForm extends React.Component {
 	}
 	handleHelp() {
 		this.setState({tutorial: true});
-		this.setState({fix: "yes"});
 		this.setState({sha: "464ac950171f673d1e45e2134ac9a52eca422132"});
 		this.setState({type: "tree"});
 	}
@@ -96,8 +90,8 @@ class LookupSearchForm extends React.Component {
 				            <MenuItem value="blob">blob</MenuItem>
 					  </Select>
 					</FormControl>
-                    {this.state.noType &&
-                    <div className="row justify-content-left" style={{ color: "red"}}><p>A sha type is required</p></div>}
+                  {this.state.noType &&
+                  <div className="row justify-content-left" style={{ color: "red"}}><p>A sha type is required</p></div>}
 				    <p></p>
 				  </div>
 				  <FormGroup>
