@@ -41,15 +41,7 @@ export default {
     title: 'Lookup Search',
     blurb: 'Lookup Search returns information associated with a given SHA1.'
   },
-  '/lookuptutorial': {
-    title: '',
-    blurb: ''
-  },
   '/lookupresult': {
-    title: '',
-    blurb: ''
-  },
-  '/lsp': {
     title: '',
     blurb: ''
   },
