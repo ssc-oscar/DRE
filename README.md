@@ -290,6 +290,26 @@ Let's say that I added a new mapping that is File to Project and I need to add i
   - The first thing I would do is add `"project": "p"` to file in options.js so that project is now an option for file ( File would now look like: `"file": {"author": "a", "blob": "b", "commit": "c", "project": "p"}`).
   - Next I would locate `FileMap.js` and add a new function called `function f2p(data, buttonClicked)` and implement the API to execute that mapping. Then all you need to do is add a statement under `select_map` to called that function when that mapping is executed.
 
+## WebAPI (WIP)
+The webAPI allows you to perform lookup commands that would normally only be able to be used on the da servers. This is done by using an HTTP request with CURL. The webAPI has the potential to extend the accessability of the WoC database substantially. Currently it supports two lookup scripts: showCnt and getValues. Each of these scripts can be found under the path `worldofcode.org/webAPI/{scriptname}`
+
+- Required fields for each script
+    - showCnt has two required fields: `sha1` and `type`
+    - getValues has two required fields: `sha1` (going to be changed since getValues can take more than just a sha1) and `mapping`
+- Each script also has an optional field for formatting. This field is specified by the keyword `format`. If format is not specified or blank it will return the default output of the script.
+    - `json` returns an indexed json object
+    - `pretty` returns a formatted string
+- How to use the webAPI
+    - Example for the equivalent of the command `echo 009d7b6da9c4419fe96ffd1fffb2ee61fa61532a | ~/lookup/showCnt commit`
+        - `curl "http://worldofcode.org/webAPI/showCnt?sha1=009d7b6da9c4419fe96ffd1fffb2ee61fa61532a&type=commit"`
+
+### Future Features for the webAPI
+- Extend formatting options to all query types
+- Limit data that can be returned by each script so that it won't bog down the server
+- Limit the amount of requests unauthorized users can make for the same reason above
+- Allow greater request limits for those with authorized access
+- Extend the amount scripts that can be executed
+- Make the perl scripts utilize the webAPI when executed outside of the da servers
 
 ## External Scripts
 - `check_updates.py` - checks for any updates to a user (including new users) and generates their profile by calling `sdpg.perl`
