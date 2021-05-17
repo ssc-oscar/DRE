@@ -3,17 +3,23 @@ const { exec } = require('child_process');
 const { query, validationResult } = require('express-validator');
 const { isHash } = require('validator');
 
-function makeJSON(stdout, type) {
-    let data = stdout.split(/;|\r|\n/);
-    data.pop();
-    var json = { 
-                "Commit": data[0],
-                "Tree": data[1],
-                "Parent": data[2],
-                "Author": data[3],
-                "Author Time": data[5]
-    };
-    return json;
+function formatOutput(stdout, type, format) {
+    if(type === 'commit') {
+        let data = stdout.split(/;|\r|\n/);
+        data.pop();
+        let output = { 
+            "Commit": data[0],
+            "Tree": data[1],
+            "Parent": data[2],
+            "Author": data[3],
+            "Author Time": data[5]
+        };
+
+        if(format === 'pretty') return JSON.stringify(output, null, 1).replace(/"|{|}|,|/g, "");
+        else if(format === 'json') return output;
+    }
+    else if(type === 'tree') {}
+    else if(type === 'blob') {}
 }
 
 module.exports = (app) => {
@@ -34,6 +40,7 @@ module.exports = (app) => {
             return true;
     }).escape(),
         query('type').isIn(types).escape(),
+        query('format').optional().isString().escape(),
     ],
     (req, res, next) => {
         const errors = validationResult(req);
@@ -42,8 +49,9 @@ module.exports = (app) => {
         }
         exec(config.remoteCmd + ' << EOF\n' + ` echo "${req.query.sha1}" | ${cmd} ${req.query.type}\n` + 'EOF',
             (err, stdout, stderr) => {
-                data = makeJSON(stdout, req.query.type);
-                res.status(200).send(JSON.stringify(data, null, 1).replace(/"|{|}|,|/g, ""));
+                if(req.query.format) data = formatOutput(stdout, req.query.type, req.query.format);
+                else data = stdout;
+                res.status(200).send(data);
             }
         );
     }

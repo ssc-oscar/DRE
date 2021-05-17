@@ -3,9 +3,31 @@ const { exec } = require('child_process');
 const { query, validationResult } = require('express-validator');
 const { isHash } = require('validator');
 
+function formatOutput(stdout, mapping, format) {
+
+    let to;
+    if(mapping.length == 3) to = mapping.slice(-1);
+    else to = mapping.slice(-2);
+
+    if(to === 'c') {
+        let output = {}
+        let data = stdout.split(/;|\r|\n/);
+        data.pop();
+        data.map((entry, index) => {
+            output[index] = entry;
+        });
+
+        if(format === 'pretty') {
+            let entries = data.length;
+            let header = "There are " + entries + " commits in this mapping:\n";
+            let prettyOutput = JSON.stringify(output, null, 1).replace(/"|{|}|,|/g, "");
+            return prettyOutput.replace(/^/, header);
+        }
+        else if(format === 'json') return output;
+    }
+}
 
 module.exports = (app) => {
-    /*
     const mappings = {
         a2b: 'a2b', a2p: 'a2p', b2a: 'b2a',
         b2tk: 'b2tk', c2b: 'c2b', c2p: 'c2p',
@@ -21,7 +43,7 @@ module.exports = (app) => {
     const cmd = config.getValues;
     
     app.get('/webAPI/getValues', [
-        query('').custom((value) => {
+        query('sha1').custom((value) => {
             value.split(';').forEach(sha1 => {
                 if(!isHash(sha1, 'sha1')) {
                     throw new Error("Sha1 must be a valid sha1 string or semicolon seperated sha1 string");
@@ -29,19 +51,21 @@ module.exports = (app) => {
             });
             return true;
     }).escape(),
-        query('type').isIn(types).escape(),
+        query('mapping').isIn(mappings).escape(),
+        query('format').optional().isString().escape(),
     ],
     (req, res, next) => {
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() });
         }
-        exec(config.remoteCmd + ' << EOF\n' + ` echo "${req.query.sha1}" | ${cmd} ${req.query.type}\n` + 'EOF',
+        exec(config.remoteCmd + ' << EOF\n' + ` echo "${req.query.sha1}" | ${cmd} ${req.query.mapping}\n` + 'EOF',
             (err, stdout, stderr) => {
-                res.status(200).send({stdout: stdout});
+                if(req.query.format) data = formatOutput(stdout, req.query.mapping, req.query.format);
+                else data = stdout;
+                res.status(200).send(data);
             }
         );
     }
     );
-    */
 }
