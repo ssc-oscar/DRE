@@ -20,7 +20,7 @@ const port  = process.env.PORT || 3000;
 // ================================================================================================
 
 // Set up Mongoose
-mongoose.connect(isDev ? config.db_dev : config.db, { useNewUrlParser: true });
+mongoose.connect(isDev ? config.db_dev : config.db, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 
 const app = express();
