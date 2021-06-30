@@ -149,22 +149,24 @@ class FastGraph extends Component {
 		});
 
 		//////////// UI EVENTS ////////////
-		function onClick(d) {
+        //as of d3v6 d3.event no longer exists, now the event is the first arg in the handler
+        
+		function onClick(e, d) {
             console.log("Node clicked!");
 			self.props.handler(d.name, d.type);
 			self.makeGraph();
 		}
-		function dragstarted(d) {
-			if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+		function dragstarted(e, d) { 
+			if (!e.active) simulation.alphaTarget(0.3).restart();
 			d.fx = d.x;
 			d.fy = d.y;
 		}
-		function dragged(d) {
-			d.fx = d3.event.x;
-			d.fy = d3.event.y;
+		function dragged(e, d) {
+			d.fx = e.x;
+			d.fy = e.y;
 		}
-		function dragended(d) {
-			if (!d3.event.active) simulation.alphaTarget(0.0001);
+		function dragended(e, d) {
+			if (!e.active) simulation.alphaTarget(0.0001);
 			d.fx = null;
 			d.fy = null;
 		}

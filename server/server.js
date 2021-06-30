@@ -12,8 +12,10 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('../config/config');
 const webpackConfig = require('../webpack.config');
 
-const isDev = process.env.NODE_ENV !== 'production';
-const port  = process.env.PORT || 3000;
+const isDev = process.env.NODE_ENV === 'development';
+const port = process.env.PORT || 3000;
+
+console.log(process.env.NODE_ENV);
 
 
 // Configuration
@@ -39,7 +41,7 @@ if (isDev) {
 
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
-    contentBase: path.resolve(__dirname, '../client/public'),
+    //contentBase: path.resolve(__dirname, '../client/public'),
     stats: {
       colors: true,
       hash: false,

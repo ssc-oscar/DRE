@@ -1,15 +1,14 @@
-const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const helpers = require('./helpers');
-const commonConfig = require('./webpack.common');
+const common = require('./webpack.common');
 
-module.exports = merge(commonConfig, {
+module.exports = merge(common, {
   mode: 'production',
 
   output: {
-    filename: 'js/[name].[hash].js',
-    chunkFilename: '[id].[hash].chunk.js'
+    filename: 'js/[name].[fullhash].js',
+    chunkFilename: '[id].[fullhash].chunk.js'
   },
 
   plugins: [
