@@ -1,7 +1,7 @@
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
 # FROM node as build-stage
 
-FROM ubuntu:18.04
+FROM ubuntu
                                                                                                       
 ENV TZ=America/New_York
 ENV DEBIAN_FRONTEND=noninteractive
@@ -37,8 +37,8 @@ RUN apt-get update -q \
     certbot \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
- && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
- && apt-get install -y nodejs
+ && curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - \
+ && sudo apt-get install -y nodejs
 
 #RUN mkdir -p /opt/mern
 #WORKDIR /opt/mern
