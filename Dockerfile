@@ -1,7 +1,7 @@
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
 # FROM node as build-stage
 
-FROM ubuntu
+FROM ubuntu:latest
                                                                                                       
 ENV TZ=America/New_York
 ENV DEBIAN_FRONTEND=noninteractive
