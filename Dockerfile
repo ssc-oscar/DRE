@@ -6,6 +6,10 @@ FROM ubuntu:latest
 ENV TZ=America/New_York
 ENV DEBIAN_FRONTEND=noninteractive
 
+RUN apt update && DEBIAN_FRONTEND='noninteractive' apt install -y  curl gnupg apt-transport-https
+
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+
 RUN apt-get update -q \
  && apt-get install -yqq \
  curl \
