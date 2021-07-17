@@ -36,6 +36,7 @@ RUN apt-get update -q \
     sssd-tools \
     vim \
     git \
+    python \
     curl lsb-release \
     tmux vim-runtime tmux zsh libpng-dev \
     certbot \
