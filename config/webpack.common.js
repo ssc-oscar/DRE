@@ -1,8 +1,6 @@
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 const helpers = require('./helpers');
@@ -19,8 +17,8 @@ module.exports = {
   },
 
   output: {
-    filename: '[name].[fullhash].js',
-    chunkFilename: '[name].[fullhash].js',
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].js',
     path: helpers.root('dist'),
     publicPath: '/'
   },
@@ -35,7 +33,10 @@ module.exports = {
     },
     extensions: ['.js', '.json', '.css', '.scss', '.html'],
     alias: {
-      'app': 'client/app'
+      'app': 'client/app',
+      'react-dom$': 'react-dom/profiling',
+      'scheduler/tracing': 'scheduler/tracing-profiling',
+      'stream': require.resolve('stream-browserify')
     }
   },
 
@@ -43,33 +44,25 @@ module.exports = {
     rules: [
       // JS files
       {
-        //test: /\.jsx?$/,
-        test: /\.m?js/,
+        test: /\.jsx?$/,
         resolve: {
             fullySpecified: false
         },
-          
         exclude: /node_modules/,
-        include: [
-            helpers.root('client')
-        ],
-
-        loader: 'babel-loader'
+        use: 'babel-loader'
       },
 
       // SCSS files
       {
-        test: /\.css$/,
+        test: /\.css$/i,
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader',
         ]
       },
 
       { 
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/, 
-        use: [{
-          loader: 'url-loader?limit=100000'
-        }]
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/i, 
+        type: 'asset/inline'
       }
     ]
   },
@@ -88,11 +81,5 @@ module.exports = {
       inject: 'body'
     }),
 
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: helpers.root('client/public') }
-      ]
-    })
-
-  ].concat(devMode ? [] : [new MiniCssExtractPlugin({ filename: 'css/[name].[fullhash].css' })]),
+  ].concat(!devMode ? [] : [new MiniCssExtractPlugin({ filename: 'css/[name].[contenthash].css' })]),
 };
