@@ -3,13 +3,13 @@ import { FilterableContent } from 'react-filterable-content';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import DatePicker from "react-datepicker";
 import { Multiselect } from 'multiselect-react-dropdown';
 import { saveAs } from 'file-saver';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import DatePicker from '@material-ui/lab/DatePicker';
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import LocalizationProvider from 'material-ui/lab/LocalizationProvider';
 import {
   Button,
   Card,
@@ -18,13 +18,11 @@ import {
   FormGroup,
   Label,
 } from "reactstrap";
-import { 
-	MuiPickersUtilsProvider, 
-	KeyboardDatePicker 
-} from '@material-ui/pickers';
 import {
+    FormControl,
+    MenuItem,
     Select,
-    MenuItem
+    TextField
 }from '@material-ui/core';
 
 
@@ -146,11 +144,15 @@ class SamplingRestrictionForm extends Component {
               <Card className="bg-secondary shadow border-0" style={{ width: '30rem'}}>
                 <CardBody className="px-lg-5 py-lg-5">
                   <div className="text-center mt-2">
-                    Sample: {spacer}
-                    <Select value={this.state.sampleType} onChange={this.onChange} name="sampleType">
-                      <MenuItem value="Projects">Projects</MenuItem>
-                      <MenuItem value="Authors">Authors</MenuItem>
-                    </Select>
+                    <FormControl variant="standard" >
+                      <div>
+                        Sample: {spacer}
+                        <Select value={this.state.sampleType} onChange={this.onChange} name="sampleType">
+                          <MenuItem value="Projects">Projects</MenuItem>
+                          <MenuItem value="Authors">Authors</MenuItem>
+                        </Select>
+                      </div>
+                    </FormControl>
                   </div>
                 <FormGroup>
                   <div className="text-center mt-2">
@@ -175,34 +177,42 @@ class SamplingRestrictionForm extends Component {
                   />
                 </div>
               </FormGroup>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                margin="normal"
-                id="date-picker-dialog"
-                label="Start Date"
-                format="MM/dd/yyyy"
-                fullWidth="true"
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                renderInput={props => 
+                  <TextField 
+                    label="Start Date"
+                    margin="normal"
+                    fullWidth={true}
+                    id="date-picker-dialog"
+                  />
+                }
+                inputFormat="MM/dd/yyyy"
                 value={this.state.startDate}
                 onChange={this.handleStartSelect}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
               />
-            </MuiPickersUtilsProvider>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                margin="normal"
-                id="date-picker-dialog"
-                label="End Date"
-                format="MM/dd/yyyy"
-                fullWidth="true"
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                renderInput={props => 
+                  <TextField 
+                    label="Start Date"
+                    margin="normal"
+                    fullWidth={true}
+                    id="date-picker-dialog"
+                  />
+                }
+                inputFormat="MM/dd/yyyy"
                 value={this.state.endDate}
                 onChange={this.handleEndSelect}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
               />
-            </MuiPickersUtilsProvider>
+            </LocalizationProvider>
               <p/>
             <div>
               <Label>Language Used:&nbsp;

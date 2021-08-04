@@ -33,7 +33,9 @@ module.exports = {
     },
     extensions: ['.js', '.json', '.css', '.scss', '.html'],
     alias: {
+      '@material-ui/styled-engine': '@material-ui/styled-engine-sc',
       'app': 'client/app',
+      'material-ui': '@material-ui',
       'react-dom$': 'react-dom/profiling',
       'scheduler/tracing': 'scheduler/tracing-profiling',
       'stream': require.resolve('stream-browserify')
@@ -62,7 +64,7 @@ module.exports = {
 
       { 
         test: /\.(png|woff|woff2|eot|ttf|svg)$/i, 
-        type: 'asset/inline'
+        type: 'asset/resource'
       }
     ]
   },
