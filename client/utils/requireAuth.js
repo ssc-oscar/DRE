@@ -27,9 +27,11 @@ export default function(ComposedComponent) {
     isAuthenticated: PropTypes.bool.isRequired
   }
 
+  /* Causes routing errors now
   Authenticate.contextTypes = {
     router: PropTypes.object.isRequired
   }
+  */
 
   function mapStateToProps(state) {
     return {
