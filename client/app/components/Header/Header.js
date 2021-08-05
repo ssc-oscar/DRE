@@ -162,9 +162,11 @@ Header.propTypes = {
   logout: PropTypes.func.isRequired
 }
 
+/* This causes routing errors now. Not sure how to fix yet. Excluding doesn't break site
 Header.contextTypes = {
   router: PropTypes.object.isRequired
 }
+*/
 
 function mapStateToProps(state) {
   return {
