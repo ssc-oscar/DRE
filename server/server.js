@@ -11,6 +11,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const config = require('../config/config');
 const webpackConfig = require('../webpack.config');
+const compiler = webpack(webpackConfig);
 
 const isDev = process.env.NODE_ENV === 'development';
 const port = process.env.PORT || 3000;
@@ -30,7 +31,6 @@ app.use(express.json());
 require('./routes')(app);
 
 if (isDev) {
-  const compiler = webpack(webpackConfig);
 
   app.use(historyApiFallback({
     verbose: false
