@@ -10,6 +10,7 @@
   "private": true,
   "scripts": {
     "start": "webpack --progress --profile --color",
+    "build": "cross-env NODE_ENV=production webpack --config=webpack.config.js",
     "start:dev": "cross-env NODE_ENV=development PORT=3000 node server",
     "start:prod": "cross-env NODE_ENV=production PORT=80 node server"
   },

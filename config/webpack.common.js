@@ -83,5 +83,7 @@ module.exports = {
       inject: 'body'
     }),
 
-  ].concat(!devMode ? [] : [new MiniCssExtractPlugin({ filename: 'css/[name].[contenthash].css' })]),
+    new MiniCssExtractPlugin({ filename: 'css/[name].[fullhash].css' }),
+
+  ]
 };
