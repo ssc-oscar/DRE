@@ -1,18 +1,11 @@
-const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
-const commonConfig = require('./webpack.common');
+const common = require('./webpack.common');
 
-module.exports = merge(commonConfig, {
-  devtool: 'eval-source-map',
-
+module.exports = merge(common, {
   mode: 'development',
 
-  entry: {
-    'app': [
-      'webpack-hot-middleware/client?reload=true'
-    ]
-  },
+  devtool: 'eval-source-map',
 
   output: {
     filename: 'js/[name].js',
@@ -22,6 +15,7 @@ module.exports = merge(commonConfig, {
   devServer: {
     contentBase: './client/public',
     historyApiFallback: true,
-    stats: 'minimal' // none (or false), errors-only, minimal, normal (or true) and verbose
-  }
+    stats: 'verbose', // none (or false), errors-only, minimal, normal (or true) and verbose
+    hot: true
+  },
 });

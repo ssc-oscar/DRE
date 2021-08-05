@@ -1,11 +1,7 @@
-switch (process.env.NODE_ENV) {
-  case 'prod':
-  case 'production':
-    module.exports = require('./config/webpack.prod');
-    break;
+var path = require('path');
+const env = process.env.NODE_ENV
 
-  case 'dev':
-  case 'development':
-  default:
-    module.exports = require('./config/webpack.dev');
-}
+if(env === 'development' || env === 'production') {
+  let reduced = env === 'development' ? 'dev' : 'prod';
+  module.exports = require(`./config/webpack.${reduced}`);
+} else throw 'No enviroment variable given. Need either dev or prod.';

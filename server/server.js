@@ -12,15 +12,14 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('../config/config');
 const webpackConfig = require('../webpack.config');
 
-const isDev = process.env.NODE_ENV !== 'production';
-const port  = process.env.PORT || 3000;
-
+const isDev = process.env.NODE_ENV === 'development';
+const port = process.env.PORT || 3000;
 
 // Configuration
 // ================================================================================================
 
 // Set up Mongoose
-mongoose.connect(isDev ? config.db_dev : config.db, { useNewUrlParser: true });
+mongoose.connect(isDev ? config.db_dev : config.db, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 
 const app = express();
@@ -39,7 +38,7 @@ if (isDev) {
 
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
-    contentBase: path.resolve(__dirname, '../client/public'),
+    //contentBase: path.resolve(__dirname, '../client/public'),
     stats: {
       colors: true,
       hash: false,
