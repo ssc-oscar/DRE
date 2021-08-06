@@ -198,7 +198,7 @@ class LookupResultsForm extends Component{
 		          <Card className="bg-secondary shadow border-0">
 			        <CardHeader>Lookup Results for Blob {sha}</CardHeader>
 			        <CardBody>
-				      <Markdown source={data} />
+				      <Markdown children={data} />
 			        </CardBody>
 			      </Card>
 	            </div>
