@@ -8,11 +8,11 @@ This is a boilerplate project using the following technologies:
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/) 6+
+- [Node.js](https://nodejs.org/en/) 16+
 - [MongoDB](https://treehouse.github.io/installation-guides/mac/mongo-mac.html)
 
 ```shell
-npm install
+npm install --legacy-peer-deps
 ```
 
 ## [Recording of the walkthrough](https://tennessee.zoom.us/rec/share/ytFbE43s505IHIX0xV_nRfMDTovdT6a80CJM_aBcy07DlzlHV2C0ftC4HLjSSYD3)
@@ -42,7 +42,7 @@ CONTAINER ID        IMAGE                     COMMAND                  CREATED  
 docker pull swsc/mern
 NID=atutko #change to your own netid
 PORT=9290 #change to your own port
-docker run -d --name mern$NID -v /home/$NID:/home/$NID -p9290:22 -w /home/$NID swsc/mern /bin/startsvc.sh $NID
+docker run -d --name mern$NID -v /home/$NID:/home/$NID -p$PORT:22 -w /home/$NID swsc/mern /bin/startsvc.sh $NID
 ```
 5. From your own laptop open terminal and run (make sure port netid and da server matches)
 ```
@@ -52,12 +52,12 @@ ssh -p9290 -L3001:localhost:443 -L3000:localhost:3000 -L3002:localhost:80 atutko
 7. in the same terminal run
 ```
 cd $HOME/DRE # where you cloned swsc/DRE
-npm install #do it only the first time
+npm install --legacy-peer-deps #do it only the first time
 #in  package.json change line: "start:dev": "PORT=3000 node server",
 npm run start:dev
 ```
 8. Go to your laptop browser for interactive experience (enter http://localhost:3000)
-9. go to the ame terminal and create anothe tmux window vi ctrl-b c
+9. go to the same terminal and create anothe tmux window vi ctrl-b c
 10. edit code there and your other tmux window will show if there are errors
 11. move between tmux windows via ctrl-b n
 12. if you need root access within container do it on the da2 terminal (see item 4)
@@ -74,14 +74,14 @@ This will give you root propmpt within the container
 1. Clone the repo and checkout a new branch
 2. Build the docker container using `docker build --tag {YOUR_TAG} .` NOTE, the `master` branch of the repo is linked to `https://hub.docker.com/repository/docker/swsc/mern`. This means any commit to the `master` branch will auto-build the Docker image on DockerHub and either pass/fail.
 3. Run the docker container (e.g. `docker run -d --name mern -v /home/akarnauc:/home/akarnauc -p9002:22 -p3000:3000 -p80:80 p443:443 -w /home/akarnauc swsc/mern /bin/startsvc.sh akarnauc`). From here, you can access the container externally (sshing on port 9002) or through da2 servers (e.g. `docker exec -it --user root mern bash`) where `mern` is the name of my container and I am accessing it as `root`.
-4. Run `npm install`
-5. Run the web server (`npm run start:dev` for development, `npm run start:prod` for production). NOTE: What these commands do is defined in `package.json`. You can (and should) modify this file to fit your needs. For example, only use port 80 on the live site, modify `package.json` to a different port for development (e.g. port 3000 which we exposed in prev docker command).
+4. Run `npm install --legacy-peer-deps`
+5. Run the web server (`npm run start:dev` for development, `npm run build` and then `npm run start:prod` for production). NOTE: What these commands do is defined in `package.json`. You can (and should) modify this file to fit your needs. For example, only use port 80 on the live site, modify `package.json` to a different port for development (e.g. port 3000 which we exposed in prev docker command).
 
 `config/config.js` contains database connections and jwtSecret for cookies (the latter should eventually be moved to a config file that is **excluded** from this repo).
 
 ## Project Structure
 ### Overview
-- I followed [this](https://www.youtube.com/watch?v=5oiXG9f6GO0&list=PLuNEz8XtB51K-x3bwCC9uNM_cxXaiCcRY) playlist when building the site. I recommend you refer back to it or following from the beginning if struggling with anything.
+- I followed [this](https://www.youtube.com/watch?v=5oiXG9f6GO0&list=PLuNEz8XtB51K-x3bwCC9uNM_cxXaiCcRY) playlist when building the site. I recommend you refer back to it or following from the beginning if struggling with anything. (This is probably still useful, but with the newest version of DRE much of the configurations from this playlist were changed)
 - Front-end (ReactJS) under `client/`
   - Split separate pages/re-usable pieces of code into React **components**, found under `client/app/components`
     For example, the component to upload data for ID resolution is in client/app/components/Upload. The component for showing content of git objects and maps should be client/app/components/lookup. The video on the identity resolution scripts is at https://tennessee.zoom.us/rec/share/os0vcb6vyn1ITY3E4UHwfqswOqn_T6a8hiUc_aAFmkflfPJOnGRl33OBmLN1gDXN
