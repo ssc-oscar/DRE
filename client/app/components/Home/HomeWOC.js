@@ -7,32 +7,11 @@ import PropTypes from 'prop-types';
 class HomeWOC extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isLoading: true
-    };
   }
-
-/*
-  componentDidMount() {
-    const token = localStorage.jwtToken;
-    if (token) {
-      this.props.history.push('/dash');
-    }
-  }
-  */
-
-  componentWillMount() {
-    this.setState({ isLoading: false });
-  }
-
-/*  componentWillReceiveProps(nextProps){
-    this.toggle(nextProps.location.form);
-  }*/
 
   render() {
     return (
       <>
-      {!this.state.isLoading &&
         <Row className="justify-content-center">
             <Card className="bg-secondary shadow border-0">
               <CardHeader className="bg-transparent">
@@ -57,7 +36,6 @@ class HomeWOC extends Component {
               </CardHeader>
             </Card>
         </Row>
-      }
       </>
     );
   }

@@ -16,7 +16,16 @@ export default function(ComposedComponent) {
       }
     }
 
+    /*
+    checkIfAuthenticated = () => {
+      if(!this.props.isAuthenticated) {
+        this.context.router.history.push('/error');
+      }
+    }
+    */
+
     render() {
+      //this.checkIfAuthenticated();
       return (
         <ComposedComponent {...this.props} />
       );

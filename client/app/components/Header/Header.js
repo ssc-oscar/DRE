@@ -30,10 +30,11 @@ class Header extends React.Component {
       collapsed: !this.state.collapsed
     });
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      isAuthenticated: nextProps.auth.isAuthenticated
-    })
+
+  static getDerivedStateFromProps(props, state) {
+    return(
+      state.isAuthenticated = props.auth.isAuthenticated
+    )
   }
 
   logout(e) {
