@@ -6,8 +6,8 @@ module.exports = merge(common, {
   mode: 'production',
 
   output: {
-    filename: 'js/[name].[fullhash].js',
-    chunkFilename: '[id].[fullhash].chunk.js'
+    filename: 'js/[name].js',
+    chunkFilename: '[id].chunk.js'
   },
 
   optimization: {
