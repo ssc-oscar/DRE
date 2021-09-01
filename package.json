@@ -9,13 +9,22 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack --progress --profile --color",
-    "build": "cross-env NODE_ENV=production webpack --config=webpack.config.js",
+    "build": "rm -rf dist && cross-env NODE_ENV=production webpack --config=webpack.config.js",
+    "analyze-bundle": "rm -rf dist && cross-env NODE_ENV=production MODE=analyze webpack --config=webpack.config.js",
     "start:dev": "cross-env NODE_ENV=development PORT=3000 node server",
-    "start:prod": "cross-env NODE_ENV=production PORT=80 node server"
+    "start:prod": "cross-env NODE_ENV=production PORT=80 node server",
+    "test:prod": "cross-env NODE_ENV=production PORT=3000 node server"
+  },
+  "scriptComments": {
+    "PORT": "We use 3000 for development, and 80 for production. It's advised to follow this convention.",
+    "build": "Builds bundle to run in production mode",
+    "analyze-bundle": "Runs a tool that visualizes bundle size. Port is set to 3000; you can change this in config/webpack.common.js",
+    "start:dev": "Serves a development build of the website",
+    "start:prod": "Serves a production build of the website; Make sure to run build first.",
+    "test:prod": "Serves the production build locally on port 3000; Make sure to run build first."
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=16"
   },
   "dependencies": {
     "@date-io/date-fns": "^2.11.0",
@@ -67,13 +76,16 @@
     "@babel/preset-env": "^7.14.7",
     "@babel/preset-react": "^7.14.5",
     "babel-loader": ">=8.2.2",
+    "copy-webpack-plugin": "^9.0.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
     "mini-css-extract-plugin": "^2.0.0",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "style-loader": "^3.0.0",
+    "terser-webpack-plugin": "^5.1.4",
     "webpack": "~5.46.0",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.2",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": ">=2.21.2",

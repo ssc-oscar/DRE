@@ -2,10 +2,14 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyPlugin = require('copy-webpack-plugin');
 
 const helpers = require('./helpers');
 const path = require('path');
 const devMode = process.env.NODE_ENV !== 'production';
+const analyze = process.env.MODE ? true : false;
 
 
 module.exports = {
@@ -17,8 +21,8 @@ module.exports = {
   },
 
   output: {
-    filename: '[name].[contenthash].js',
-    chunkFilename: '[name].[contenthash].js',
+    filename: '[name].js',
+    chunkFilename: '[id].chunk.js',
     path: helpers.root('dist'),
     publicPath: '/'
   },
@@ -56,17 +60,30 @@ module.exports = {
 
       // SCSS files
       {
-        test: /\.css$/i,
+        test: /\.(sa|sc|c)ss$/i,
         use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader',
-        ]
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 
+          'css-loader',
+        ],
       },
 
+      // Image files
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+
+      // Font files
       { 
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/i, 
-        type: 'asset/resource'
+        test: /\.(woff|woff2|eot|ttf|otf)$/i, 
+        type: 'asset/resource',
       }
     ]
+  },
+
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
 
   plugins: [
@@ -83,7 +100,31 @@ module.exports = {
       inject: 'body'
     }),
 
-    new MiniCssExtractPlugin({ filename: 'css/[name].[fullhash].css' }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: helpers.root('client/public'),
+          to: '[path][name][ext]',
+          globOptions: {
+            ignore: [
+              '**/*index.html',
+            ],
+          },
+        }
+      ],
+    }),
 
-  ]
+  ].concat(
+    devMode ? [] : [
+      new MiniCssExtractPlugin({
+        filename: 'css/[name].css',
+        chunkFilename: 'css/[id].chunk.css',
+      })
+    ],
+    !analyze ? [] : [
+      new BundleAnalyzerPlugin({
+        analyzerPort: 3000,
+      })
+    ]
+  ),
 };
