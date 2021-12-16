@@ -110,6 +110,42 @@ class Header extends React.Component {
 
     const guestLinks = (
       <>
+	    <NavItem>
+          <NavLink
+            className="nav-link-icon"
+            to={"/sampling"}
+            tag={Link}>
+            <i className="fas fa-vial" />
+            <span className="nav-link-inner--text">Sampling</span>
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className="nav-link-icon"
+            to={"/mapping"}
+            tag={Link}>
+            <i className="fas fa-map" />
+            <span className="nav-link-inner--text">Mappings</span>
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className="nav-link-icon"
+            to={"/lookup"}
+            tag={Link}>
+            <i className="fa fa-database" />
+            <span className="nav-link-inner--text">Lookup Search</span>
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className="nav-link-icon"
+            to={"/locate"}
+            tag={Link}>
+            <i className="ni ni-planet" />
+            <span className="nav-link-inner--text">Search Profiles</span>
+          </NavLink>
+        </NavItem>
         <NavItem>
           <NavLink
             className="nav-link-icon"
@@ -139,7 +175,7 @@ class Header extends React.Component {
         >
           <Container className="px-4">
             <NavbarBrand
-              to={isAuthenticated ? "/dash" : "/"}
+              to='/'
               tag={Link}>
               <img alt="..." src={require("../../../public/assets/img/woc.png")} />
             </NavbarBrand>
