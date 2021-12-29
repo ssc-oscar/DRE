@@ -3,6 +3,15 @@ import { FilterableContent } from 'react-filterable-content';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  NavItem,
+  NavLink,
+  Nav,
+  Progress,
+  Table,
   Input,
   ListGroup,
   ListGroupItem,
@@ -12,6 +21,10 @@ import {
   Container,
   Row,
   Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter
 } from "reactstrap";
 
 class LocateProfilesForm extends Component {
