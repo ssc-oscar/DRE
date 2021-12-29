@@ -18,7 +18,7 @@ import {
 	FormGroup,
 } from "reactstrap";
 
-class MappingForm extends Component {
+class MappingForm extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = { 
@@ -26,11 +26,11 @@ class MappingForm extends Component {
 			type: '',
 			from: '',
 			to: '',
-      inputError: '',
-      typeError: '',
-      badInput: false,
-      noFrom: false,
-      noTo: false,
+            inputError: '',
+            typeError: '',
+            badInput: false,
+            noFrom: false,
+            noTo: false,
 			isLoading: false
 		}
 		this.onChange = this.onChange.bind(this);
@@ -108,57 +108,58 @@ class MappingForm extends Component {
 	generatecard() {
 			let spacer = "\xa0\xa0\xa0\xa0";
 			return (
-        <CardBody className="px-lg-5 py-lg-5">
-          <Label>Element to Map</Label>
-            <TextFieldGroup
-              label=""
-              focus={true}
-              onChange={this.onChange}
-              value={this.state.sha}
-              field="sha"
-            />
-          {this.state.badInput &&
-            <div className="row justify-content-center" style={{ color: "red" }} ><p> {this.state.inputError} </p></div>}
-              <div>
-                <FormControl variant="standard" size="medium" style={{minWidth: 80}}> 
-                  <InputLabel id="label" required={true}>From</InputLabel>
-                  <Select value={this.state.from} onChange={this.onChange} name="from">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value="author">author</MenuItem>
-                    <MenuItem value="blob">blob</MenuItem>
-                    <MenuItem value="commit">commit</MenuItem>
-                    <MenuItem value="project">project</MenuItem>
-                    <MenuItem value="file">file</MenuItem>
-                  </Select>
-                </FormControl>
-                {spacer}
-                {this.state.from && this.Mappings()}
-                <p></p>
-              </div>
-            <FormGroup>
-             {this.state.noFrom &&
-             <div className="row justify-content-left" style={{ color: "red" }}><p> {this.state.typeError} </p></div>}
-             {this.state.noTo &&
-             <div className="row justify-content-left" style={{ color: "red" }}><p> {this.state.typeError} </p></div>}
-             <Button color="primary" disabled={this.state.isLoading}>
-               SEARCH
-               {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
-            </Button>
-          </FormGroup>
-        </CardBody>
-   )
-  }
+				<CardBody className="px-lg-5 py-lg-5">
+				  <Label>Element to Map</Label>
+				    <TextFieldGroup
+				      label=""
+				      focus={true}
+			          onChange={this.onChange}
+			          value={this.state.sha}
+		          	  field="sha"
+				    />
+                  {this.state.badInput &&
+                  <div className="row justify-content-center" style={{ color: "red" }} ><p> {this.state.inputError} </p></div>}
+				  <div>
+					<FormControl variant="standard" size="medium" style={{minWidth: 80}}> 
+				    <InputLabel id="label" required={true}>From</InputLabel>
+						<Select value={this.state.from} onChange={this.onChange} name="from">
+						<MenuItem value="">
+						<em>None</em>
+						</MenuItem>
+						  <MenuItem value="author">author</MenuItem>
+						  <MenuItem value="blob">blob</MenuItem>
+						  <MenuItem value="commit">commit</MenuItem>
+						  <MenuItem value="project">project</MenuItem>
+						  <MenuItem value="file">file</MenuItem>
+						</Select>
+					</FormControl>
+					{spacer}
+				    {this.state.from && this.Mappings()}
+				    <p></p>
+				  </div>
+				  <FormGroup>
+                    {this.state.noFrom &&
+                    <div className="row justify-content-left" style={{ color: "red" }}><p> {this.state.typeError} </p></div>}
+                    {this.state.noTo &&
+                    <div className="row justify-content-left" style={{ color: "red" }}><p> {this.state.typeError} </p></div>}
+				    <Button color="primary" disabled={this.state.isLoading}>
+				      SEARCH
+				      {this.state.isLoading && <i className="ml-2 fa fa-spinner fa-spin"></i>}
+				    </Button>
+				  </FormGroup>
+				</CardBody>
+			)
+
+		}
 
 	render() {
-    return (
-      <form onSubmit={this.onSubmit}>
-        <Card className="bg-secondary shadow border-0" style={{width: '30rem'}}>
-          {this.generatecard()}
-      </Card>
-      </form>
-    );
+		return (
+            <form onSubmit={this.onSubmit}>
+              <Card className="bg-secondary shadow border-0" style={{width: '30rem'}}>
+                {this.generatecard()}
+              </Card>
+            </form>
+		);
 	}
 }
 

@@ -1,4 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { withRouter, Router } from "react-router-dom";
+import { connect } from 'react-redux';
+import { styles } from '../common/styles';
+import queryString from 'query-string';
 import MapButton from './MapButton';
 import {
 	Card,
