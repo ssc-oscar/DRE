@@ -58,18 +58,18 @@ render((
       <App>
         <Switch>
           <Route exact path="/" component={HomeWOC} />
-	      <Route exact path="/DRE" component={Home} />
-          <Route path="/search" component={requireAuth(AuthorSearchPage)} />
+	        <Route exact path="/DRE" component={Home} />
+          <Route path="/search" component={AuthorSearchPage} />
           <Route path="/clickhouse" component={ClickhousePage} />
           <Route path="/clickhouseresult" component={ClickhouseResultsPage} />
           <Route path="/select" component={requireAuth(AuthorResultsPage)} />
-          <Route path="/dash" component={requireAuth(DashboardPage)} />
-          <Route path="/locate" component={requireAuth(LocateProfilesPage)} />
-	      <Route path="/lookup" component={requireAuth(LookupSearchPage)} />
-	      <Route path="/lookupresult" component={requireAuth(LookupResultsPage)} />
-	      <Route path="/mapping" component={requireAuth(MappingPage)} />
-	      <Route path="/mapresult" component={requireAuth(MapResultsPage)} />
-          <Route path="/sampling" component={requireAuth(SamplingRestrictionPage)} />
+          <Route path="/dash" component={DashboardPage} />
+          <Route path="/locate" component={LocateProfilesPage} />
+          <Route path="/lookup" component={LookupSearchPage} />
+          <Route path="/lookupresult" component={LookupResultsPage} />
+          <Route path="/mapping" component={MappingPage} />
+          <Route path="/mapresult" component={MapResultsPage} />
+          <Route path="/sampling" component={SamplingRestrictionPage} />
           <Route path="/fastgraph" component={requireAuth(FastGraph)} />
           <Route path="/fastgraphresults" component={requireAuth(FastGraphResults)} />
           <Route path="/upload" component={requireAuth(UploadAuthorsPage)} />

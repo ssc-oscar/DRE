@@ -13,7 +13,7 @@ const authenticate = require('../../middlewares/authenticate');
 module.exports = (app) => {
 
   // Submit author selections
-  app.post('/api/users/submit', authenticate, (req, res, next) => {
+  app.post('/api/users/submit', (req, res, next) => {
     const data = req.body;
     const userId = req.currentUser;
 
@@ -32,7 +32,7 @@ module.exports = (app) => {
   })
 
   // Get user information
-  app.get('/api/users/user/:id', authenticate, (req, res, next) => {
+  app.get('/api/users/user/:id', (req, res, next) => {
     const id = req.params.id;
 
     User.findOne({ _id: id })
@@ -55,7 +55,7 @@ module.exports = (app) => {
   });
 
   // Get profile information
-  app.get('/api/users/profile/:id', authenticate, (req, res, next) => {
+  app.get('/api/users/profile/:id', (req, res, next) => {
     const id = req.params.id;
     
     Profile.findOne({ user: id })
@@ -67,7 +67,7 @@ module.exports = (app) => {
   });
 
   // Get all users currently registered
-  app.post('/api/users/locate', authenticate, (req, res, next) => {
+  app.post('/api/users/locate', (req, res, next) => {
     User.find({}, { _id: 1, email: 1, searchParams: 1})
     .exec()
     .then((users) => {
@@ -77,7 +77,7 @@ module.exports = (app) => {
   })
 
   // Search for authorship records
-  app.post('/api/users/search', authenticate, (req, res, next) => {
+  app.post('/api/users/search', (req, res, next) => {
     let { body } = req;
     let results = [];
     let final = [];

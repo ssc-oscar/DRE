@@ -1,9 +1,4 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { withRouter, Router } from "react-router-dom";
-import { connect } from 'react-redux';
-import { styles } from '../common/styles';
-import queryString from 'query-string';
+import React from 'react';
 import MapButton from './MapButton';
 import {
 	Card,
@@ -19,7 +14,7 @@ function select_map(props){
 	let data = props.state.data;
     let buttonClicked = (props.state.buttonClicked) ? true : false;
 
-	if (type === "b2a") return b2a(data, buttonClicked);
+	if (type === "b2fa") return b2a(data, buttonClicked);
 	else if (type === "b2c") return b2c(data, buttonClicked);
 	else if (type === "b2f") return b2f(data, buttonClicked);
 	else if (type === "b2ob") return b2ob(data, buttonClicked);
