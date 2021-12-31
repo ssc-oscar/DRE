@@ -36,7 +36,7 @@ class NotFound extends React.Component {
       if(errorMsg) {
           return (
               <Card className="bg-secondary shadow border-0" style={{ width: '30rem' }}> 
-                <CardBody> <Markdown source={fullError} /> </CardBody>
+                <CardBody> <Markdown children={fullError} /> </CardBody>
               </Card>
           )
       }
@@ -46,7 +46,7 @@ class NotFound extends React.Component {
 
       if(!backLoc) {
           return (
-            <Button onClick={() => this.context.router.history.push('/')}>Back to Home</Button>
+            <Button onClick={() => this.props.history.push('/')}>Back to Home</Button>
           )
       }
       else if(backLoc == "lookup") {
