@@ -54,7 +54,7 @@ module.exports = {
         resolve: {
             fullySpecified: false
         },
-        exclude: /node_modules/,
+        exclude: /(node_modules|bower_components)/,
         use: 'babel-loader'
       },
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FilterableContent } from 'react-filterable-content';
+// import { FilterableContent } from 'react-filterable-content';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';

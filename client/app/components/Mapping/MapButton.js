@@ -11,7 +11,7 @@ import { FileMap } from './FileMap';
 import { ProjectMap } from './ProjectMap';
 import { lookupSha } from '../../../actions/Search';
 import '../common/modal.css';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
     Button as MenuButton,

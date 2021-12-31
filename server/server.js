@@ -14,7 +14,7 @@ const webpackConfig = require('../webpack.config');
 const compiler = webpack(webpackConfig);
 
 const isDev = process.env.NODE_ENV === 'development';
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8443;
 
 // Configuration
 // ================================================================================================
@@ -65,8 +65,7 @@ if (port == 3000) {
     }
     console.info('>>> 🌎 Open http://0.0.0.0:%s/ in your browser.', port);
   });
-}
-else {
+} else {
   https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/cert.pem'),

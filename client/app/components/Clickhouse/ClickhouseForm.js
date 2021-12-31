@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { withRouter, Router } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 import TextFieldGroup from '../common/TextFieldGroup';
 import {
 	Grid,

@@ -23,6 +23,7 @@ RUN apt-get update -q \
  apt-utils \
  iputils-ping \
  telnet \
+ socat \
  less \
     locales \
     libzmq3-dev \

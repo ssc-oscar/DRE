@@ -7,7 +7,7 @@ import { styles } from '../common/styles';
 import ErrorPage from '../App/NotFound';
 import MapButton from '../Mapping/MapButton';
 import GraphButton from '../FastGraph/GraphButton';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
     Button as MenuButton,
