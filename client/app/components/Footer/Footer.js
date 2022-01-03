@@ -10,7 +10,7 @@ class Footer extends React.Component {
             <Row className="align-items-center justify-content-xl-between">
               <Col xl="6">
                 <div className="copyright text-center text-xl-left text-muted">
-                  © 2020{" "}
+                  © 202{" "}
                   <a
                     className="font-weight-bold ml-1"
                     href="/"
@@ -24,7 +24,7 @@ class Footer extends React.Component {
                 <Nav className="nav-footer justify-content-center justify-content-xl-end">
                   <NavItem>
                     <NavLink
-                      href="https://github.com/ssc-oscar"
+                      href="https://github.com/ssc-oscar/DRE"
                       target="_blank"
                     >
                       <i className="fa fa-code-branch"></i>
