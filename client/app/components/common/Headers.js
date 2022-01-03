@@ -1,7 +1,7 @@
 export default {
   '/': {
     title: 'World of Code: Complete, Curated, Cross-referenced, and Current Collection of Open Source Version Control Data',
-    blurb: 'E.g., get stratified samples for natural experiments, measure cross-project code flow and developer/code networks, conduct census'
+    blurb: 'E.g., WoC makes it possible (and fast) to get stratified samples from the entirety of OSS, measure cross-project code flow and developer/code networks, conduct code or developer census. It also provides deforking of repositories and aliasing of author IDs. In short it makes research on global properties of OSS not only possible, but fun.'
   },
   '/clickhouse': {
 	title: 'Clickhouse',
