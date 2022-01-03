@@ -1,7 +1,7 @@
 export default {
   '/': {
-    title: 'Welcome to the World of Code',
-    blurb: 'An infrastructure to do the hard work that enables research on global properties of the Free/Libre Open Source Software (FLOSS) ecosystem.'
+    title: 'World of Code: Complete, Curated, Cross-referenced, and Current Collection of Open Source Version Control Data',
+    blurb: 'E.g., get stratified samples for natural experiments, measure cross-project code flow and developer/code networks, conduct census'
   },
   '/clickhouse': {
 	title: 'Clickhouse',

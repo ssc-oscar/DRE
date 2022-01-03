@@ -18,7 +18,10 @@ class HomeWOC extends Component {
                   <p>Listed below are some additional resources about the World of Code dataset</p>
                   <ListGroup>
                     <ListGroupItem>
-                      <a href="https://github.com/woc-hack/tutorial">How to access and use the WoC dataset and APIs</a>
+                      <a href="https://github.com/woc-hack/tutorial">Tutorial on the use of WoC</a>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      <a href="http://bit.ly/WoCSignup">Sign up to use WoC/participate in upcoming WoC hackathons</a>
                     </ListGroupItem>
                     <ListGroupItem>
                       <a href="https://bitbucket.org/swsc/lookup/src/master/README.md">Details on WoC storage and the APIs</a>
