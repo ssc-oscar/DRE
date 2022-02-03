@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import ErrorPage from '../App/NotFound';
 import MapButton from '../Mapping/MapButton';
-import GraphButton from '../FastGraph/GraphButton';
+//import GraphButton from '../FastGraph/GraphButton';
 // import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
@@ -130,19 +130,19 @@ class LookupResultsForm extends Component{
                         <ListGroup>
                           <ListGroupItem>Commit: {sha}
 							<MapButton query={sha} from="commit"/>                          
-                            <GraphButton sha={sha} type="commit"/>
+              {/*<GraphButton sha={sha} type="commit"/> */}
 						  </ListGroupItem>
                           <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree", tree, "showCnt")}>{tree}</a></ListGroupItem>
                           <ListGroupItem>Parent:{spacer}
 						  {(p ? <a href="#" onClick={(e) => this.onClick(e,"commit", p, "showCnt")}>{p}</a>
 							  : "This commit has no parents")}
 						  {p && <MapButton query={p} from="commit"/>}                          
-						  {p && <GraphButton sha={p} type="commit"/>}
+						  {/*p && <GraphButton sha={p} type="commit"/>*/}
 						  </ListGroupItem>
                           {p2 && <ListGroupItem>Parent:{spacer} 
 							<a href="#" onClick={(e) => this.onClick(e,"commit", p2, "showCnt")}>{p2}</a>
 						   <MapButton query={p2} from="commit"/>
-                           <GraphButton sha={p2} type="commit"/>
+                            {/*<GraphButton sha={p2} type="commit"/>*/}
                           </ListGroupItem>}
                           <ListGroupItem>Author: {author}
 						   <MapButton query={author} from="author"/>
