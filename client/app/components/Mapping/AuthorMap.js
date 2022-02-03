@@ -1,5 +1,6 @@
 import React from 'react';
 import { URLS } from './URL';
+import { styles } from '../common/styles';
 import MapButton from './MapButton';
 import {
 	Card,

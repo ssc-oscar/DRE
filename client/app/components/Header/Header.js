@@ -66,6 +66,7 @@ class Header extends React.Component {
             <span className="nav-link-inner--text">Clickhouse</span>
           </NavLink>
         </NavItem>
+      { /*
 	    <NavItem>
           <NavLink
             className="nav-link-icon"
@@ -84,6 +85,7 @@ class Header extends React.Component {
             <span className="nav-link-inner--text">Mappings</span>
           </NavLink>
         </NavItem>
+        */}
         <NavItem>
           <NavLink
             className="nav-link-icon"
