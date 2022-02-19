@@ -67,9 +67,9 @@ if (port == 3000) {
   });
 } else {
   https.createServer({
-    key: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/worldofcode.org/chain.pem')
+    key: fs.readFileSync('/home/audris/swsc/DRE/worldofcode.org/WoCPrivate1.key'),
+    cert: fs.readFileSync('/home/audris/swsc/DRE/worldofcode.org/worldofcode_org_cert.cer'),
+    ca: fs.readFileSync('/home/audris/swsc/DRE/worldofcode.org/worldofcode_org_interm.cer')
   }, app).listen(8443, (err) => {
     if (err) {
       console.log(err);
