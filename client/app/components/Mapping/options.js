@@ -1,7 +1,7 @@
 let options = {
     "commit": {"blob": "b", "project": "p", "root project": "P", 
 			"child commit": "cc", "file": "f", "head commit": "h", 
-			"parent commit": "pc", "tdiff": "td"},
+			"parent commit": "pc", "tdiff": "td", "data": "dat"},
     "author": {"blob": "fb", "commit": "c", "file": "f", "project": "p"},
     "blob": {"author": "fa", "commit": "c", "file": "f", 
 			"old blob": "ob", "tokens": "tk"},

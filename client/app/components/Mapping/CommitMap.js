@@ -24,7 +24,7 @@ function select_map(props) {
 	else if(type === 'c2f') return c2f(data, buttonClicked);
 	//else if(type === 'c2ta') return c2ta(data, buttonClicked);
 	else if(type === 'c2td') return c2td(data, buttonClicked);
-	//else if(type === 'c2dat') return c2dat(data, buttonClicked);
+	else if(type === 'c2dat') return c2dat(data, buttonClicked);
 }
 
 function c2project(data,type,buttonClicked) {
@@ -179,31 +179,30 @@ function c2td(data) {
 	);
 }
 
-/*
-function c2dat(data) {
+function c2dat(data, buttonClicked) {
 	console.log('In c2dat');
+	let c_time = data[0];
+	let tz = data[1];
+	let author = data[2];
+	let tree = data[3];
+	for(let i = 0; i < 4; i++) data.shift();
+	console.log(data);
 	return (
 		<ListGroup>
-			<ListGroupItem>Commit: {data[0]}
-				{!buttonClicked && <MapButton query={data[0]} from={"commit"} />}
-			</ListGroupItem>
-			<ListGroupItem>Commit Time: {data[1]} </ListGroupItem>
-			<ListGroupItem>Timezone: {data[1]} </ListGroupItem>
-		  <ListGroupItem>Author: {data[3]}
-			{!buttonClicked && <MapButton query={data[3]} from={"author"}/>}
+			<ListGroupItem>Commit Time: {c_time} </ListGroupItem>
+			<ListGroupItem>Timezone: {tz} </ListGroupItem>
+		  <ListGroupItem>Author: {author}
+			{!buttonClicked && <MapButton query={author} from={"author"}/>}
 		  </ListGroupItem>
-		  <ListGroupItem>Tree: {data[4]}
-			{!buttonClicked && <MapButton query={data[4]} from={"tree"}/>}
-		  </ListGroupItem>
-			{ data.map((parent, index * 5) => {
-				 <ListGroupItem>Parent: {parent}
+		  <ListGroupItem>Tree: {tree} </ListGroupItem>
+			{ data.map((parent) => 
+				 <ListGroupItem key={parent}>Parent: {parent}
 				 {!buttonClicked && <MapButton query={parent} from={"commit"} />}
 				 </ListGroupItem>
-			})}
+			)}
 		</ListGroup>
 	);
 }
-*/
 
 export function CommitMap(props) {
 	console.log("CommitMap");
