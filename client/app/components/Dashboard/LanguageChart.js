@@ -1,7 +1,12 @@
 import React from "react";
 
 // reactstrap components
-import { Container, Row, Col, Card, CardHeader, CardBody, Button, Table } from "reactstrap";
+import { 
+  Row, 
+  Card, 
+  CardHeader, 
+  CardBody, 
+} from "reactstrap";
 import { ResponsivePie } from '@nivo/pie';
 
 class LanguageChart extends React.Component {

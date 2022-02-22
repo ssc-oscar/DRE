@@ -1,24 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { withRouter } from "react-router-dom";
 import {
   Button,
   Card,
   CardHeader,
   CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
   Row,
-  Col,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter
+  Col
 } from "reactstrap";
 
 class UploadAuthorsPage extends Component {

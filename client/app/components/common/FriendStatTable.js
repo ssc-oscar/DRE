@@ -2,17 +2,10 @@ import React from "react";
 
 // reactstrap components
 import {
-  Container,
   Row,
-  Col,
   Card,
   CardHeader,
-  Button,
   Table,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
  }from "reactstrap";
 
  //import { styles } from './styles';

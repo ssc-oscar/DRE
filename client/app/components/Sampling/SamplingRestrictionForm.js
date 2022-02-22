@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-// import { FilterableContent } from 'react-filterable-content';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Multiselect } from 'multiselect-react-dropdown';
-import { saveAs } from 'file-saver';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import DatePicker from '@material-ui/lab/DatePicker';
@@ -13,7 +11,6 @@ import LocalizationProvider from 'material-ui/lab/LocalizationProvider';
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Label,

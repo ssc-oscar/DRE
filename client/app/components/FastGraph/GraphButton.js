@@ -1,26 +1,15 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState, Component } from 'react';
-import ReactDOM from 'react-dom';
-import { withRouter, Router } from "react-router-dom";
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FastGraph from './FastGraph';
 import { lookupSha } from '../../../actions/Search';
 import '../common/modal.css';
 
-import {
-    Button as MenuButton,
-    FormControl,
-    Menu,
-    MenuItem,
-    InputLabel,
-    Select
-} from '@material-ui/core';
+import { Button as MenuButton } from '@material-ui/core';
 
 import {
     Card,
     CardBody,
     Modal,
-    ModalHeader,
     ModalBody,
 } from 'reactstrap';
 

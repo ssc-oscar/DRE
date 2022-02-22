@@ -1,34 +1,18 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState, Component } from 'react';
-import ReactDOM from 'react-dom';
-import { withRouter, Router } from "react-router-dom";
+import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 import ErrorPage from '../App/NotFound';
 import MapButton from '../Mapping/MapButton';
-//import GraphButton from '../FastGraph/GraphButton';
+import GraphButton from '../FastGraph/GraphButton';
 // import queryString from 'query-string';
 import Markdown from 'react-markdown';
 import {
-    Button as MenuButton,
-    FormControl,
-    Menu,
-    MenuItem,
-    InputLabel,
-    Select
-} from '@material-ui/core';
-
-import {
-	Button,
 	Card,
 	CardBody,
 	CardHeader,
-	FormGroup,
 	ListGroup,
 	ListGroupItem,
-	Modal,
-	ModalHeader,
-	ModalBody,
 	Table
 } from "reactstrap";
 
@@ -130,19 +114,19 @@ class LookupResultsForm extends Component{
                         <ListGroup>
                           <ListGroupItem>Commit: {sha}
 							<MapButton query={sha} from="commit"/>                          
-              {/*<GraphButton sha={sha} type="commit"/> */}
+              <GraphButton sha={sha} type="commit"/>
 						  </ListGroupItem>
                           <ListGroupItem>Tree: <a href="#" onClick={(e) => this.onClick(e,"tree", tree, "showCnt")}>{tree}</a></ListGroupItem>
                           <ListGroupItem>Parent:{spacer}
 						  {(p ? <a href="#" onClick={(e) => this.onClick(e,"commit", p, "showCnt")}>{p}</a>
 							  : "This commit has no parents")}
 						  {p && <MapButton query={p} from="commit"/>}                          
-						  {/*p && <GraphButton sha={p} type="commit"/>*/}
+						  {p && <GraphButton sha={p} type="commit"/>}
 						  </ListGroupItem>
                           {p2 && <ListGroupItem>Parent:{spacer} 
 							<a href="#" onClick={(e) => this.onClick(e,"commit", p2, "showCnt")}>{p2}</a>
 						   <MapButton query={p2} from="commit"/>
-                            {/*<GraphButton sha={p2} type="commit"/>*/}
+                          <GraphButton sha={p2} type="commit"/>
                           </ListGroupItem>}
                           <ListGroupItem>Author: {author}
 						   <MapButton query={author} from="author"/>
@@ -195,13 +179,13 @@ class LookupResultsForm extends Component{
 		else if(type == 'blob'){
 			return (
 				<div className="row justify-content-center">
-		          <Card className="bg-secondary shadow border-0">
-			        <CardHeader>Lookup Results for Blob {sha}</CardHeader>
-			        <CardBody>
-				      <Markdown children={data} />
-			        </CardBody>
-			      </Card>
-	            </div>
+					<Card className="bg-secondary shadow border-0">
+						<CardHeader>Lookup Results for Blob {sha}</CardHeader>
+						<CardBody>
+							<Markdown children={data} />
+						</CardBody>
+					</Card>
+				</div>
 			)
 		}
 	}

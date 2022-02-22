@@ -8,6 +8,6 @@ let options = {
     "project": {"author": "a", "commit": "c", "central commit": "Pc"},
     "file": {"author": "a", "blob": "b", "commit": "c"}
 }
-//add back in when fixed: "commit": {"time author": "ta"}
+//add back in when fixed: "commit": {"data": "dat"}
 
 export {options};

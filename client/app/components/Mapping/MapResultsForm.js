@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState, Component } from 'react';
-import ReactDOM from 'react-dom';
-import { withRouter, Router } from "react-router-dom";
+import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { BlobMap } from './BlobMap';
 import { CommitMap } from './CommitMap';

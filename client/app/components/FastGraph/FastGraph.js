@@ -1,6 +1,5 @@
 import { getGraphData } from '../../../actions/getGraph';
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 
 // reactstrap components
 import {

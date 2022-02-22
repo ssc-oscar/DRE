@@ -10,12 +10,12 @@ import {
 	Table,
 } from "reactstrap";
 
-function select_map(props){
+function select_map(props) {
 	let type = props.state.type;
 	let data = props.state.data;
-    let buttonClicked = (props.state.buttonClicked) ? true : false;
+	let buttonClicked = (props.state.buttonClicked) ? true : false;
 
-    if(data[data.length - 1] === "") data.pop();
+	if (data[data.length - 1] === "") data.pop();
 
 	if (type === "p2a") return p2a(data, buttonClicked);
 	else if (type === "p2c" || type === "P2c") return p2c(data, buttonClicked);
@@ -32,12 +32,12 @@ function p2a(data, buttonClicked){
 
 
 	return (
-			<Table style={styles.table} className="align-items-center table-flush" responsive>
-			  <tbody>
-			    {authors}
-			  </tbody>
-			</Table>
-		   );
+		<Table style={styles.table} className="align-items-center table-flush" responsive>
+			<tbody>
+				{authors}
+			</tbody>
+		</Table>
+	);
 
 }
 
@@ -52,11 +52,11 @@ function p2c(data, buttonClicked){
 	
 	data.shift();
 	const commits = data.map((commit) =>
-			<tr key={commit}>
-			  <td>Commit:</td>
-			  <td><a href={"./lookupresult?sha1="+commit+"&type=commit"}>{commit}</a></td>
-              {!buttonClicked && <td><MapButton query={commit} from={'commit'}/></td>}
-			</tr>);
+		<tr key={commit}>
+			<td>Commit:</td>
+			<td><a href={"./lookupresult?sha1=" + commit + "&type=commit"}>{commit}</a></td>
+			{!buttonClicked && <td><MapButton query={commit} from={'commit'} /></td>}
+		</tr>);
 
 
 	return (
