@@ -1,17 +1,12 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState, Component } from 'react';
-import ReactDOM from 'react-dom';
-import { withRouter, Router } from "react-router-dom";
+import React, {Component } from 'react';
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { styles } from '../common/styles';
 // import queryString from 'query-string';
-import Markdown from 'react-markdown';
 import {
 	Card,
 	CardBody,
 	CardHeader,
-	ListGroup,
-	ListGroupItem,
 	Table
 } from "reactstrap";
 

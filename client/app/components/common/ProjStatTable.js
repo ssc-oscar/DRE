@@ -1,7 +1,13 @@
 import React from "react";
 
 // reactstrap components
-import { Container, Row, Col, Card, CardHeader, Button, Table, UncontrolledTooltip } from "reactstrap";
+import {
+  Row,
+  Card,
+  CardHeader,
+  Table,
+  UncontrolledTooltip
+} from "reactstrap";
 import { styles } from './styles';
 
 class ProjStatTable extends React.Component {

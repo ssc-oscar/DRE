@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter } from "react-router-dom";
 import ClickhouseForm from './ClickhouseForm';
 import { clickhouseQuery } from '../../../actions/Search';
 

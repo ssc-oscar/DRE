@@ -1,7 +1,5 @@
 import React from 'react';
 import { Card, CardBody, CardTitle, Row, Col } from "reactstrap";
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 
 const DashboardStatCard = ({
   title, stat, icon, color, blurb

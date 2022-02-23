@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
-import RootReducer from '../rootReducer';
 import App from './components/App/App';
 import NotFound from './components/App/NotFound';
 import Home from './components/Home/Home';
@@ -31,7 +30,6 @@ import { setCurrentUser } from '../actions/signUpActions';
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   Switch
 } from 'react-router-dom'
 import "../public/assets/vendor/nucleo/css/nucleo.css";

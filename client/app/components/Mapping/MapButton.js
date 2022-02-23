@@ -1,7 +1,4 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState, Component } from 'react';
-import ReactDOM from 'react-dom';
-import { withRouter, Router } from "react-router-dom";
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { options } from './options';
 import { CommitMap } from './CommitMap';
@@ -12,42 +9,34 @@ import { ProjectMap } from './ProjectMap';
 import { lookupSha } from '../../../actions/Search';
 import '../common/modal.css';
 // import queryString from 'query-string';
-import Markdown from 'react-markdown';
 import {
     Button as MenuButton,
-    FormControl,
     Menu,
-    MenuItem,
-    InputLabel,
-    Select
+    MenuItem
 } from '@material-ui/core';
 
 import {
 	Modal,
-	ModalHeader,
 	ModalBody,
 } from "reactstrap";
 
 class MapButton extends Component{
 	constructor(props){
 		super(props);
-
-		this.state = {
-			query: '',
-			data: [],
-			from: '',
-            type: '',
-            showMap: false,
-            Anchor: null,
-            isLoaded: false,
-		}
-
-	    this.onClick = this.onClick.bind(this);
-        this.toggleMap = this.toggleMap.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-
-	}
+    this.state = {
+      query: '',
+      data: [],
+      from: '',
+      type: '',
+      showMap: false,
+      Anchor: null,
+      isLoaded: false,
+    }
+    this.onClick = this.onClick.bind(this);
+    this.toggleMap = this.toggleMap.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
 
     componentDidMount() {
         this.setState({
@@ -63,18 +52,18 @@ class MapButton extends Component{
 		});
 	}
 
-	onClick(e,type){
-		e.preventDefault();
-		this.Search(type);
-	}
+  onClick(e, type) {
+    e.preventDefault();
+    this.Search(type);
+  }
 
-    handleClick(e){
-        this.setState({ Anchor: e.currentTarget });
-    }
+  handleClick(e) {
+    this.setState({ Anchor: e.currentTarget });
+  }
 
-    handleClose(e){
-        this.setState({ Anchor: null })	
-	}
+  handleClose(e) {
+    this.setState({ Anchor: null })
+  }
 
 	showItems(){
 		return (
@@ -95,21 +84,21 @@ class MapButton extends Component{
 		);
 	}
 
-    Search(type) {
-        this.props.lookupSha(this.state.query, type, "getValues")
-            .then( (response) => {
-                let result = response.data.stdout;
-                let stderr = response.data.stderr;
-                let data = [];
-                data = result.split(/;|\r|\n/);
-                this.setState({
-                    data: data,
-                    type: type,
-					showMap: !this.state.showMap,
-					Anchor: null
-                });
-            });
-    }
+  Search(type) {
+    this.props.lookupSha(this.state.query, type, "getValues")
+      .then((response) => {
+        let result = response.data.stdout;
+        let stderr = response.data.stderr;
+        let data = [];
+        data = result.split(/;|\r|\n/);
+        this.setState({
+          data: data,
+          type: type,
+          showMap: !this.state.showMap,
+          Anchor: null
+        });
+      });
+  }
 
     renderButton() {
         let from = this.state.from;
@@ -139,19 +128,19 @@ class MapButton extends Component{
 
 	
 	render() {
-		return (
-            <>
-             {this.state.isLoaded && this.renderButton()}
-			 {this.state.Anchor && this.showItems()}
-             {this.state.data && <Modal isOpen={this.state.showMap} centered={true} size="lg"
-                fade={false} toggle={this.toggleMap}>
-                <ModalBody>
-                  {this.renderModal()}
-                </ModalBody>
-              </Modal>}
-            </>
-		);
-	}
+    return (
+      <>
+        {this.state.isLoaded && this.renderButton()}
+        {this.state.Anchor && this.showItems()}
+        {this.state.data && <Modal isOpen={this.state.showMap} centered={true} size="lg"
+          fade={false} toggle={this.toggleMap}>
+          <ModalBody>
+            {this.renderModal()}
+          </ModalBody>
+        </Modal>}
+      </>
+    );
+  }
 }
 
 

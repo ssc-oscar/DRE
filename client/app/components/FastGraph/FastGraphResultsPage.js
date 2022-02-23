@@ -1,11 +1,6 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Card, CardBody } from 'reactstrap';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import FastGraph from './FastGraph.js';
-import { lookupSha } from '../../../actions/Search';
-import { type } from 'os';
 
 class FastGraphResultsPage extends Component {
     constructor(props) {

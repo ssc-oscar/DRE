@@ -2,14 +2,10 @@ import React from "react";
 
 // reactstrap components
 import { 
-  Container,
   Row,
-  Col,
   Card,
   CardHeader,
   CardBody,
-  Button,
-  Table,
   UncontrolledTooltip
  } from "reactstrap";
 import { Graph } from 'react-d3-graph';

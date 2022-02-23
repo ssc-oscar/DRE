@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-// import { FilterableContent } from 'react-filterable-content';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
-import Markdown from 'react-markdown';
 import { 
 	FormControl,
 	InputLabel,
@@ -18,16 +16,16 @@ import {
 	FormGroup
 } from "reactstrap";
 
-class LookupSearchForm extends React.Component {
+class LookupSearchForm extends Component {
 	constructor(props){
 		super(props);
-		this.state = { 
+		this.state = {
 			sha: '',
 			type: '',
 			isLoading: false,
-            badInput: false,
-	    tutorial: false,
-            noType:   false
+			badInput: false,
+			tutorial: false,
+			noType: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);

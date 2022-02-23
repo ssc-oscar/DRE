@@ -22,8 +22,9 @@ function select_map(props) {
 	else if(type === 'c2b') return c2b(data, buttonClicked);
 	else if(type === 'c2cc' || type === "c2pc" || type === "c2h") return c2c(data,type, buttonClicked);
 	else if(type === 'c2f') return c2f(data, buttonClicked);
-	else if(type === 'c2ta') return c2ta(data, buttonClicked);
+	//else if(type === 'c2ta') return c2ta(data, buttonClicked);
 	else if(type === 'c2td') return c2td(data, buttonClicked);
+	else if(type === 'c2dat') return c2dat(data, buttonClicked);
 }
 
 function c2project(data,type,buttonClicked) {
@@ -155,6 +156,7 @@ function c2c(data, type, buttonClicked) {
 }
 
 
+/*
 function c2ta(data, buttonClicked) {
 	return (
 		<ListGroup>
@@ -167,11 +169,37 @@ function c2ta(data, buttonClicked) {
 		</ListGroup>
 	);
 }
+*/
 		
 function c2td(data) {
 	return (
 		<ListGroup>
 		  <ListGroupItem>Tdiff: {(data ? "No tdiff available for this commit" : data[0])}</ListGroupItem>
+		</ListGroup>
+	);
+}
+
+function c2dat(data, buttonClicked) {
+	console.log('In c2dat');
+	let c_time = data[0];
+	let tz = data[1];
+	let author = data[2];
+	let tree = data[3];
+	for(let i = 0; i < 4; i++) data.shift();
+	console.log(data);
+	return (
+		<ListGroup>
+			<ListGroupItem>Commit Time: {c_time} </ListGroupItem>
+			<ListGroupItem>Timezone: {tz} </ListGroupItem>
+		  <ListGroupItem>Author: {author}
+			{!buttonClicked && <MapButton query={author} from={"author"}/>}
+		  </ListGroupItem>
+		  <ListGroupItem>Tree: {tree} </ListGroupItem>
+			{ data.map((parent) => 
+				 <ListGroupItem key={parent}>Parent: {parent}
+				 {!buttonClicked && <MapButton query={parent} from={"commit"} />}
+				 </ListGroupItem>
+			)}
 		</ListGroup>
 	);
 }
