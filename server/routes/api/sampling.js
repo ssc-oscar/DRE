@@ -1,5 +1,6 @@
 const ProjMetadata = require('../../models/ProjMetadata');
 const AuthMetadata = require('../../models/AuthMetadata');
+const APIMetadata = require('../../models/APIMetadata');
 const User = require('../../models/User');
 const config = require('../../../config/config');
 const authenticate = require('../../middlewares/authenticate');
@@ -14,7 +15,7 @@ module.exports = (app) => {
     let state  = req.body;
 
     if( state.activityRange == true ) {
-	    queryParam["EarlistCommitDate"] = { $gte: state.unixStart };
+	    queryParam["EarliestCommitDate"] = { $gte: state.unixStart };
 	    queryParam["LatestCommitDate"] = { $lt: state.unixEnd };
     }
     if( state.languages == true && state.selected[0].Id != "tmp" ) {
@@ -31,14 +32,24 @@ module.exports = (app) => {
       		res.status(200).json({ sampling });
     	})
     	.catch((err) => console.log(err));
-    }
-    else {
-	AuthMetadata.find(queryParam).limit(1000)
-    	.exec()
-    	.then((sampling) => {
-      		res.status(200).json({ sampling });
-    	})
-    	.catch((err) => console.log(err));
+    } else {
+      if( state.sampleType == "Authors" ) {
+    	  AuthMetadata.find(queryParam).limit(1000)
+    	  .exec()
+    	  .then((sampling) => {
+      	  	res.status(200).json({ sampling });
+    	  })
+    	  .catch((err) => console.log(err));
+      }else{
+        if( state.sampleType == "APIs" ) {
+          console.log(queryParam)
+          APIMetadata.find(queryParam).limit(1000)
+          .exec()
+          .then((sampling) => {
+            res.status(200).json({ sampling });
+          })
+        }
+      }
     }
 
   })

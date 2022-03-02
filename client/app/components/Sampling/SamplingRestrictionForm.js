@@ -39,28 +39,36 @@ class SamplingRestrictionForm extends Component {
 			isLoading: false,
 			selected: [{ Id: "tmp", Language: "tmp"}],
 			options: [ 
-				   {"Id": "total_ada_files", "Language": "Ada"}, 
-				   {"Id": "total_c_or_c++_files", "Language": "C/C++"}, 
-				   {"Id": "total_cob_files", "Language": "COBOL"}, 
-				   {"Id": "total_csharp_files", "Language": "CSharp"}, 
-				   {"Id": "total_erlang_files", "Language": "Erlang"}, 
-				   {"Id": "total_fml_files", "Language": "FML"}, 
-				   {"Id": "total_fortran_files", "Language": "Fortran"}, 
-				   {"Id": "total_go_files", "Language": "Go"}, 
-				   {"Id": "total_java_files", "Language": "Java"}, 
-				   {"Id": "total_javascript_files", "Language": "Javascript"}, 
-				   {"Id": "total_jl_files", "Language": "JL"}, 
-				   {"Id": "total_lisp_files", "Language": "Lisp"}, 
-				   {"Id": "total_lua_files", "Language": "Lua"}, 
-				   {"Id": "total_perl_files", "Language": "Perl"}, 
-				   {"Id": "total_php_files", "Language": "PHP"}, 
-				   {"Id": "total_python_files", "Language": "Python"}, 
-				   {"Id": "total_r_files", "Language": "R"}, 
-				   {"Id": "total_ruby_files", "Language": "Ruby"},  
-				   {"Id": "total_rust_files", "Language": "Rust"},  
-				   {"Id": "total_scala_files", "Language": "Scala"},  
-				   {"Id": "total_sql_files", "Language": "SQL"},  
-				   {"Id": "total_swift_files", "Language": "Swift"}  
+				   {"Id": "Ada", "Language": "Ada"}, 
+				   {"Id": "C/C++", "Language": "C/C++"}, 
+				   {"Id": "Cobol", "Language": "COBOL"}, 
+				   {"Id": "C#", "Language": "CSharp"}, 
+				   {"Id": "Erlang", "Language": "Erlang"}, 
+				   {"Id": "fml", "Language": "FML"}, 
+				   {"Id": "Fortran", "Language": "Fortran"}, 
+				   {"Id": "Go", "Language": "Go"}, 
+				   {"Id": "Java", "Language": "Java"}, 
+				   {"Id": "JavaScript", "Language": "Javascript"}, 
+				   {"Id": "TypeScript", "Language": "Typescript"}, 
+				   {"Id": "Julia", "Language": "JL"}, 
+				   {"Id": "Lisp", "Language": "Lisp"}, 
+				   {"Id": "Lua", "Language": "Lua"}, 
+				   {"Id": "Perl", "Language": "Perl"}, 
+				   {"Id": "PHP", "Language": "PHP"}, 
+				   {"Id": "Python", "Language": "Python"}, 
+				   {"Id": "R", "Language": "R"}, 
+				   {"Id": "Ruby", "Language": "Ruby"},  
+				   {"Id": "Rust", "Language": "Rust"},  
+				   {"Id": "Scala", "Language": "Scala"},  
+				   {"Id": "Sql", "Language": "SQL"},  
+				   {"Id": "Swift", "Language": "Swift"},  
+				   {"Id": "Kotlin", "Language": "Kotlin"},  
+				   {"Id": "Clojure", "Language": "Clojure"},  
+				   {"Id": "OCaml", "Language": "OCaml"},  
+				   {"Id": "Basic", "Language": "Basic"},  
+				   {"Id": "Dart", "Language": "Dart"},  
+				   {"Id": "ipy", "Language": "IpythonNotebook"},  
+				   {"Id": "Other", "Language": "Other"}  
 				 ]
 
 		};
@@ -122,9 +130,12 @@ class SamplingRestrictionForm extends Component {
 		console.log("Here");
 		if( e.target.value == "Authors" ) {
 			this.setState({sampleType: "Authors"});
-		}
-		else {
-			this.setState({sampleType: "Projects"});
+		} else {
+      if( e.target.value == "Projects" ){
+			  this.setState({sampleType: "Projects"});
+      }else{
+        this.setState({sampleType: "APIs"});
+      }
 		}
 	}
 	handleChange(e) {
@@ -147,6 +158,7 @@ class SamplingRestrictionForm extends Component {
                         <Select value={this.state.sampleType} onChange={this.onChange} name="sampleType">
                           <MenuItem value="Projects">Projects</MenuItem>
                           <MenuItem value="Authors">Authors</MenuItem>
+                          <MenuItem value="APIs">APIs</MenuItem>
                         </Select>
                       </div>
                     </FormControl>

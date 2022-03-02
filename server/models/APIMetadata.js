@@ -1,11 +1,17 @@
 const mongoose = require('mongoose');
 
 const ProjectSchema = new mongoose.Schema({
-  FileInfo: {
-    type: Object,
-    default: ''
+  NumAuthors: {
+    type: Number,
+    default: 0,
+    min: 0
   },
-  AuthorID: {
+  NumProjects: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  API: {
     type: String,
     default: ''
   },
@@ -17,15 +23,10 @@ const ProjectSchema = new mongoose.Schema({
     type: Number,
     default: -1,
   },
-  NumProjects: {
-    type: Number,
-    default: 0,
-    min: 0
-  },
   LatestCommitDate: {
     type: Number,
     default: -1
   },
-}, { collection: 'A_metadata.U' });
+}, { collection: 'API_metadata.U' });
 
-module.exports = mongoose.model('AuthMetadata', ProjectSchema);
+module.exports = mongoose.model('APIMetadata', ProjectSchema);

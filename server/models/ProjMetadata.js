@@ -5,20 +5,20 @@ const ProjectSchema = new mongoose.Schema({
     type: Object,
     default: ''
   },
-  numStars: {
+  NumStars: {
     type: Number,
     default: ''
   },
-  numAuthors: {
+  NumAuthors: {
     type: Number,
     default: 0,
     min: 0
   },
-  projectID: {
+  ProjectID: {
     type: String,
     default: ''
   },
-  EarlistCommitDate: {
+  EarliestCommitDate: {
     type: Number,
     default: -1
   },
@@ -30,6 +30,6 @@ const ProjectSchema = new mongoose.Schema({
     type: Number,
     default: -1
   },
-}, { collection: 'proj_metadata.R' });
+}, { collection: 'P_metadata.U' });
 
 module.exports = mongoose.model('ProjMetadata', ProjectSchema);
