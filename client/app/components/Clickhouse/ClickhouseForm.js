@@ -23,8 +23,11 @@ class ClickhouseForm extends Component{
 		this.state = {
 			start: '',
 			end: '',
+      author: '',
+      project: '',
+      comment: '',
 			count: false,
-			slideValue: 1000,
+			slideValue: 20,
 			start_error: false,
 			end_error: false,
 			backwards: false,
@@ -40,7 +43,7 @@ class ClickhouseForm extends Component{
 	onSubmit(e){
 		e.preventDefault();
 		let s_err = false, e_err = false, back = false;
-		let {start, end, count, slideValue} = this.state;
+		let {start, end, author, project, comment, count, slideValue} = this.state;
 		let [new_start, new_end] = this.checkDate(start, end);
 		if (new_start === "bad start") s_err = true; 
 		if (new_end === "bad end") e_err = true;
@@ -53,7 +56,7 @@ class ClickhouseForm extends Component{
 				backwards: back,
 			})
 		}
-		else this.props.history.push(`/clickhouseresult?start=${new_start}&end=${new_end}&count=${count}&limit=${slideValue}`);
+		else this.props.history.push(`/clickhouseresult?start=${new_start}&end=${new_end}&author=${author}&project=${project}&comment=${comment}&count=${count}&limit=${slideValue}`);
 	}
 
 	onChange(e) {
@@ -140,7 +143,7 @@ class ClickhouseForm extends Component{
 					  Filling this field while leaving "End time" blank will search 
 					  for all commits made at this specific timestamp, rather than a time range.
 					</UncontrolledTooltip>
-			        <TextFieldGroup
+			    <TextFieldGroup
 						focus={true}
 						onChange={this.onChange}
 						value={this.state.start}
@@ -159,7 +162,31 @@ class ClickhouseForm extends Component{
 					  field="end"
 					  error={end_err_msg}
 					/>
-					<Label className="control-label" target="limit">
+          <Label>Author</Label>
+          <TextFieldGroup
+            label="Author"
+            focus={true}
+            onChange={this.onChange}
+            value={this.state.author}
+            field="author"
+          />
+          <Label>Project</Label>
+          <TextFieldGroup
+            label="Project"
+            focus={true}
+            onChange={this.onChange}
+            value={this.state.project}
+            field="project"
+          />
+          <Label> Comment</Label>
+          <TextFieldGroup
+            label="Comment"
+            focus={true}
+            onChange={this.onChange}
+            value={this.state.comment}
+            field="comment"
+          />
+					<Label className="control-label" target="limit"> 
 					  Query Limit 
 					</Label>
 					<div> 

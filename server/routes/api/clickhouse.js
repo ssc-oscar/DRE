@@ -7,6 +7,9 @@ module.exports = (app) => {
   app.get('/api/clickhouse/commits', [
     query('start').optional().isInt({min:0}),
     query('end').optional().isInt({min:0}),
+    query('author').optional().isString(),
+    query('project').optional().isString(),
+    query('comment').optional().isString(),
     query('count').optional().isBoolean(),
     query('limit').optional().isInt({min:0})
   ],
@@ -24,16 +27,32 @@ module.exports = (app) => {
     }
     
     if(typeof req.query.start != 'undefined'){
-      if(typeof req.query.end != 'undefined'){
-        where += `time>=${req.query.start} AND time<=${req.query.end}`;
-        valid_params += 2;
-      } else {
-        where += `time=${req.query.start}`;
-        valid_params++;
-      }
-    } else {
-      where = '';
+      where += `time=${req.query.start}`;
+      valid_params++;
     }
+    if(typeof req.query.end != 'undefined'){
+      if (where != ' WHERE '){ 
+        where += ' AND '; 
+      }
+      where += `time=${req.query.end}`;
+      valid_params++;
+    } 
+    if(typeof req.query.comment != 'undefined'){
+      if (where != ' WHERE '){ where += ' AND '; }
+      where += `match(comment, ${req.query.comment})`;
+      valid_params++;
+    }
+    if(typeof req.query.author != 'undefined'){
+      if (where != ' WHERE '){ where += ' AND '; }
+      where += `match(author, ${req.query.author})`;
+      valid_params++;
+    }
+    if(typeof req.query.project != 'undefined'){
+      if (where != ' WHERE '){ where += ' AND '; }
+      where += `match(project, ${req.query.project})`;
+      valid_params++;
+    }
+    if (where == ' WHERE '){ where += ''; }
     
     if(valid_params <= 0){
       return res.status(400).send('Invalid query');

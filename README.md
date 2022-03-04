@@ -42,7 +42,7 @@ CONTAINER ID        IMAGE                     COMMAND                  CREATED  
 docker pull swsc/mern
 NID=atutko #change to your own netid
 PORT=9290 #change to your own port
-docker run -d --name mern$NID -v /home/$NID:/home/$NID -p$PORT:22 -w /home/$NID swsc/mern /bin/startsvc.sh $NID
+docker run -d --name mern$NID --link dbWoC:dbWoC -v /home/$NID:/home/$NID -p$PORT:22 -w /home/$NID swsc/mern /bin/startsvc.sh $NID
 ```
 5. From your own laptop open terminal and run (make sure port netid and da server matches)
 ```
