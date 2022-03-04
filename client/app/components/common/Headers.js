@@ -41,6 +41,10 @@ export default {
     title: 'Lookup Search',
     blurb: 'Lookup Search returns information associated with a given SHA1.'
   },
+  '/vulnerability': {
+    title: 'Vulnerability Search',
+    blurb: 'Vulnerability Search returns information associated with a given vulnerability.'
+  },
   '/lookupresult': {
     title: '',
     blurb: ''
