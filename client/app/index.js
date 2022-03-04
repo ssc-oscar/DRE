@@ -14,6 +14,7 @@ import UploadAuthorsPage from './components/Upload/UploadAuthorsPage';
 import LocateProfilesPage from './components/Locate/LocateProfilesPage';
 import LookupSearchPage from './components/Lookup/LookupSearchPage';
 import LookupResultsPage from './components/Lookup/LookupResultsPage';
+import VulnerabilitySearchPage from './components/Vulnerability/VulnerabilitySearchPage';
 import MappingPage from './components/Mapping/MappingPage';
 import MapResultsPage from './components/Mapping/MapResultsPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
@@ -65,6 +66,7 @@ render((
           <Route path="/locate" component={LocateProfilesPage} />
           <Route path="/lookup" component={LookupSearchPage} />
           <Route path="/lookupresult" component={LookupResultsPage} />
+          <Route path="/vulnerability" component={VulnerabilitySearchPage} />
           <Route path="/mapping" component={MappingPage} />
           <Route path="/mapresult" component={MapResultsPage} />
           <Route path="/sampling" component={SamplingRestrictionPage} />
