@@ -24,8 +24,8 @@ class HomeWOC extends Component {
             <p>How to use/cite World of Code:</p>
             <ListGroup>
             <ListGroupItem> <a href="https://github.com/woc-hack/tutorial">Tutorial</a></ListGroupItem>	    
-            <ListGroupItem> <a href="http://bit.ly/WoCSignup">Sign up to use WoC/participate in upcoming WoC hackathons</a></ListGroupItem>
-	    <ListGroupItem> <a href="https://bitbucket.org/swsc/overview/src/master/README.md">General WoC infrastructure overview</a> </ListGroupItem>
+            <ListGroupItem> <a href="https://forms.gle/DiGpfQ9ZPoKRLLWs7">Sign up to use WoC/participate in upcoming WoC hackathon in Pittsburgh, PA, May 21-22, 2022</a></ListGroupItem>
+	          <ListGroupItem> <a href="https://bitbucket.org/swsc/overview/src/master/README.md">General WoC infrastructure overview</a> </ListGroupItem>
             <ListGroupItem> <a href="https://bitbucket.org/swsc/lookup/src/master/README.md">More details on WoC APIs</a> </ListGroupItem>
             <ListGroupItem> <a href="https://bitbucket.org/swsc/overview/src/master/fun/README.md">Fun facts about some crazy competitions among git repositories</a> </ListGroupItem>
             <ListGroupItem>
