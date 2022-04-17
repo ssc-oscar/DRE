@@ -26,6 +26,7 @@ module.exports = (app) => {
     
 	  
     if( state.sampleType == "Projects" ) {
+      console.log("Projects: ", queryParam)
     	ProjMetadata.find(queryParam).limit(1000)
     	.exec()
     	.then((sampling) => {
@@ -34,6 +35,7 @@ module.exports = (app) => {
     	.catch((err) => console.log(err));
     } else {
       if( state.sampleType == "Authors" ) {
+          console.log("Authors: ", queryParam)
     	  AuthMetadata.find(queryParam).limit(1000)
     	  .exec()
     	  .then((sampling) => {
@@ -42,7 +44,7 @@ module.exports = (app) => {
     	  .catch((err) => console.log(err));
       }else{
         if( state.sampleType == "APIs" ) {
-          console.log(queryParam)
+          console.log("APIs: ", queryParam)
           APIMetadata.find(queryParam).limit(1000)
           .exec()
           .then((sampling) => {

@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { Multiselect } from 'multiselect-react-dropdown';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import DatePicker from '@material-ui/lab/DatePicker';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from 'material-ui/lab/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import {
   Button,
   Card,
@@ -112,8 +112,10 @@ class SamplingRestrictionForm extends Component {
 	}
 
 	handleStartSelect(date) {
-        if(!date) return;
+    console.log({date})
+    if(!date) return;
 		let sd = parseInt(date.getTime()/1000).toFixed(0);
+    console.log({sd})
 		this.setState( (state) => {
 			return { startDate: date, unixStart: sd }
 		});
@@ -139,7 +141,7 @@ class SamplingRestrictionForm extends Component {
 		}
 	}
 	handleChange(e) {
-		console.log(this.state.activityRange);
+		console.log(e.target.name, this.state.activityRange);
 		this.setState({
 			[e.target.name]: e.target.checked
 		})
@@ -190,6 +192,7 @@ class SamplingRestrictionForm extends Component {
               <DatePicker
                 renderInput={props => 
                   <TextField 
+                    {...props}
                     label="Start Date"
                     margin="normal"
                     fullWidth={true}
@@ -203,20 +206,17 @@ class SamplingRestrictionForm extends Component {
                   'aria-label': 'change date',
                 }}
               />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                label="End Date"
                 renderInput={props => 
                   <TextField 
-                    label="Start Date"
-                    margin="normal"
+                    {...props}
                     fullWidth={true}
-                    id="date-picker-dialog"
                   />
                 }
                 inputFormat="MM/dd/yyyy"
                 value={this.state.endDate}
-                onChange={this.handleEndSelect}
+                onChange={(date) => { this.handleEndSelect(date)}}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
