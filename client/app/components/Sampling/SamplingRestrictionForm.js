@@ -85,17 +85,20 @@ class SamplingRestrictionForm extends Component {
 
 	onSubmit(e) {
 	  e.preventDefault();
-	  //this.setState({ isLoading: true });
-	  console.log(this.state);
-	  this.props.getSampling( this.state )
-	  .then((sampling) => {
-	    console.log( sampling );
-	    var FileSaver = require('file-saver');
-	    var blob = new Blob([JSON.stringify(sampling)], {type: "application/json"});
-	    FileSaver.saveAs(blob, "sampling.json");
-	  },
-	  (err) => { console.log(err) }
-	  );
+    if(this.state.startDate > this.state.endDate) {
+      window.alert("Start date must be before end date!")
+
+    } else {
+      //this.setState({ isLoading: true });
+      this.props.getSampling(this.state)
+        .then((sampling) => {
+          var FileSaver = require('file-saver');
+          var blob = new Blob([JSON.stringify(sampling)], { type: "application/json" });
+          FileSaver.saveAs(blob, "sampling.json");
+        },
+          (err) => { console.error(err) }
+        );
+    }
 	}
 	
 	
@@ -112,16 +115,14 @@ class SamplingRestrictionForm extends Component {
 	}
 
 	handleStartSelect(date) {
-    console.log({date})
     if(!date) return;
 		let sd = parseInt(date.getTime()/1000).toFixed(0);
-    console.log({sd})
 		this.setState( (state) => {
 			return { startDate: date, unixStart: sd }
 		});
 	}
 	handleEndSelect(date) {
-        if(!date) return;
+    if(!date) return;
 		let ed = parseInt(date.getTime()/1000).toFixed(0);
 		this.setState( (state) => {
 			return { endDate: date, unixEnd: ed }
@@ -129,7 +130,6 @@ class SamplingRestrictionForm extends Component {
 	}
 
 	chooseSampling(e) {
-		console.log("Here");
 		if( e.target.value == "Authors" ) {
 			this.setState({sampleType: "Authors"});
 		} else {
@@ -141,7 +141,6 @@ class SamplingRestrictionForm extends Component {
 		}
 	}
 	handleChange(e) {
-		console.log(e.target.name, this.state.activityRange);
 		this.setState({
 			[e.target.name]: e.target.checked
 		})
@@ -216,7 +215,7 @@ class SamplingRestrictionForm extends Component {
                 }
                 inputFormat="MM/dd/yyyy"
                 value={this.state.endDate}
-                onChange={(date) => { this.handleEndSelect(date)}}
+                onChange={this.handleEndSelect}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
