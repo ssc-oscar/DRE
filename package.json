@@ -47,7 +47,7 @@
     "mongoose": "^6.0.0",
     "mongoose-unique-validator": "^3.0.0",
     "multiselect-react-dropdown": "^2.0.4",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.20",
     "os": "^0.1.1",
     "react": "^17.0.0",
     "react-bootstrap": ">=1.6.1",
