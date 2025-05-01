@@ -196,7 +196,7 @@ class SamplingRestrictionForm extends Component {
               <DatePicker
                 renderInput={props => 
                   <TextField 
-                    label="Start Date"
+                    label="End Date"
                     margin="normal"
                     fullWidth={true}
                     id="date-picker-dialog"
